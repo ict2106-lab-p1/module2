@@ -3,6 +3,11 @@
 - example: `$ git checkout -b g1-50-file-processing dev`
 - example: `$ git checkout -b g2-100-dashboard dev`
 
+## Development Workflow
+```master```: Only codes that are ready to deploy will be merged here
+<br>
+```dev```: This is where completed features are being merged
+
 ## Getting started
 - Have Node >v16
 - Run `npm install` 
@@ -87,6 +92,18 @@ Alternatively, run the web app and let dotnet run migrations automatically. If y
 #### Clean state
 Remove `livinglab.sqlite`, rerun migrations.
 
+## Github ID
+### P1-01 Student ID & Name & Github ID
+- 2002437 Han Yi hanyi97
+- 2002866 Hui Shan Huishan99
+- 2002362 Jia Jia jiajiatan
+- 2002288 Mary Michelle mmichelle1
+- 2001868 Yong Zheng PixlRainbow
+### P1-02 Student ID & Name & Github ID
+- 2000522 Chen Dong Don-Whis
+- 2002230 Joey Chua 170joeychua
+- 2000990 Lee Wei Jie Guthixo
+- 2001631 Hong Ying HongYing222
 ---
 
 Credits: Thanks Percy for setting up the MVC skeleton + Tailwind integration.
