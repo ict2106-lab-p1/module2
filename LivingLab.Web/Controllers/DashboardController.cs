@@ -38,7 +38,7 @@ public class DashboardController : Controller
             builder.AppendLine($"{log.DeviceSerialNo},{log.DeviceType},{log.ToatlEnergyUsage},{log.EnergyUsageCost},{log.EnergyUsageIntensity}");
         }
 
-        return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "users.csv");
+        return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "Device Energy Usage.csv");
     }
     
 
