@@ -12,6 +12,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     // Add new DB tables here
     public DbSet<Todo> Todos { get; set; }
+    public DbSet<Lab> Labs { get; set; }
+    public DbSet<Device> Devices { get; set; }
+    public DbSet<EnergyUsageLog> EnergyUsageLogs { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
@@ -31,5 +34,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UserLogin");
         modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaim");
         modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserToken");
+
+        modelBuilder.Seed();
     }
 }
