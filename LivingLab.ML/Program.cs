@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 
 using LivingLab.Core.Constants;
+using LivingLab.ML;
 using LivingLab.ML.Model;
 
 // Uncomment to generate model

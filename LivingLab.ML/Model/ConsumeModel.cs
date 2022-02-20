@@ -9,7 +9,7 @@ public class ConsumeModel
 {
     private static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictionEngine = new(CreatePredictionEngine);
 
-    public static string MLNetModelPath = Path.GetFullPath("Data/MLModel.zip");
+    public static string MLNetModelPath = Path.GetFullPath("Model/MLModel.zip");
 
     /// <summary>
     /// Call this method to predict the output of the model.
