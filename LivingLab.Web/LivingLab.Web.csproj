@@ -34,4 +34,10 @@
     <_ContentIncludedByDefault Remove="Views\ManualLogExample\Index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="MLModel\MLModel.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -16,4 +16,10 @@
       <ProjectReference Include="..\LivingLab.Core\LivingLab.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Data\energy-usage.csv">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
