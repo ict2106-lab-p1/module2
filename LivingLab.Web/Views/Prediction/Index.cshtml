@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Energy Prediction";
+}
+
+<h1 class="text-gray-700 text-2xl">Smart Sensor</h1>
+
+<table id="table" class="display">
+    <thead>
+    <tr>
+        <th>Device Serial No.</th>
+        <th>Energy Usage (J)</th>
+        <th>Energy Usage Cost (SGD)</th>
+        <th>Average Energy Usage (J/hr)</th>
+        <th>Energy Intensity (J/SQWM)</th>
+        <th>Predicted Energy Usage (J/hr)</th>
+        <th>Carbon Emission (CO2 kg)</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script>
+    $(document).ready( function () {
+        $('#table').DataTable();
+    } );
+    </script>
+}
