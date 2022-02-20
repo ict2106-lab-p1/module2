@@ -4,6 +4,7 @@ using LivingLab.Core.Interfaces.Services;
 using LivingLab.Infrastructure.Data;
 using LivingLab.Infrastructure.Repositories;
 using LivingLab.Infrastructure.Services.CsvParser;
+using LivingLab.ML;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,7 @@ public static class ConfigureServiceContainer
         services.AddTransient<ITodoRepository, TodoRepository>();
         services.AddTransient<IEnergyUsageRepository, EnergyUsageRepository>();
         services.AddTransient<IEnergyUsageLogCsvParser, EnergyUsageLogCsvParser>();
+        services.AddTransient<IEnergyPredictionService, EnergyPredictionService>();
     }
 
     public static void AddScopedServices(this IServiceCollection services)

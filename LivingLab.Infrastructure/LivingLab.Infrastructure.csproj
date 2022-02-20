@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LivingLab.Core\LivingLab.Core.csproj" />
+      <ProjectReference Include="..\LivingLab.ML\LivingLab.ML.csproj" />
     </ItemGroup>
 
     <ItemGroup>
