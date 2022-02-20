@@ -1,6 +1,3 @@
-using System.Globalization;
-
-using LivingLab.Core.Constants;
 using LivingLab.ML.Model;
 
 using Microsoft.ML;
@@ -8,7 +5,9 @@ using Microsoft.ML.Data;
 using Microsoft.ML.Trainers.FastTree;
 
 namespace LivingLab.ML;
-
+/// <summary>
+/// Train, Evaluate and Create prediction model.
+/// </summary>
 public static class ModelBuilder
 {
     const string DEVICE_TYPE = "DeviceType";
@@ -23,6 +22,9 @@ public static class ModelBuilder
 
     private static MLContext _mlContext = new MLContext(0);
 
+    /// <summary>
+    /// Call this method to train the model and save it to disk.
+    /// </summary>
     public static void CreateModel()
     {
         // Load Data
@@ -47,6 +49,11 @@ public static class ModelBuilder
         SaveModel(mlModel, trainData.Schema);
     }
 
+    /// <summary>
+    /// Builds the pipeline for the training.
+    /// </summary>
+    ///
+    /// <returns>Training pipeline</returns>
     private static IEstimator<ITransformer> BuildPipeline()
     {
         // Data process configuration with pipeline data transformations 
@@ -74,6 +81,14 @@ public static class ModelBuilder
         return trainingPipeline;
     }
 
+    /// <summary>
+    /// Trains the model using the pipeline created.
+    /// </summary>
+    /// 
+    /// <param name="trainingDataView">Training data</param>
+    /// <param name="trainingPipeline">Training pipeline</param>
+    /// 
+    /// <returns>Trained model</returns>
     private static ITransformer TrainModel(IDataView trainingDataView, IEstimator<ITransformer> trainingPipeline)
     {
         Console.WriteLine("=============== Training  model ===============");
@@ -84,6 +99,12 @@ public static class ModelBuilder
         return model;
     }
 
+    /// <summary>
+    /// Evaluate the quality of the model.
+    /// </summary>
+    /// 
+    /// <param name="testDataView">Testing data</param>
+    /// <param name="trainingPipeline">Training pipeline</param>
     private static void Evaluate(IDataView testDataView, IEstimator<ITransformer> trainingPipeline)
     {
         Console.WriteLine("=============== Cross-validating to get model's accuracy metrics ===============");
@@ -92,6 +113,12 @@ public static class ModelBuilder
         PrintRegressionFoldsAverageMetrics(crossValidationResults);
     }
 
+    /// <summary>
+    /// Saves the model into a ZIP file.
+    /// </summary>
+    /// 
+    /// <param name="mlModel">Trained model</param>
+    /// <param name="modelInputSchema">Schema for trained data</param>
     private static void SaveModel(ITransformer mlModel, DataViewSchema modelInputSchema)
     {
         Console.WriteLine($"=============== Saving the model  ===============");
@@ -99,10 +126,16 @@ public static class ModelBuilder
         Console.WriteLine("The model is saved to {0}", GetAbsolutePath(MODEL_FILE));
     }
     
+    /// <summary>
+    /// Retrieves the absolute path of a file.
+    /// </summary>
+    /// 
+    /// <param name="relativePath">Relative path of file</param>
+    /// <returns>Absolute path of file</returns>
     private static string GetAbsolutePath(string relativePath)
     {
-        FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
-        string assemblyFolderPath = _dataRoot.Directory.FullName;
+        FileInfo dataRoot = new FileInfo(typeof(Program).Assembly.Location);
+        string assemblyFolderPath = dataRoot.Directory.FullName;
 
         string fullPath = Path.Combine(assemblyFolderPath, relativePath);
 
