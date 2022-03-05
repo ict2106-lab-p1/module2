@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer components {
+    .z-100 {
+        z-index: 100;
+    }
+}
 
 @layer components {
     .z-100 {
@@ -37,6 +42,27 @@ td:not(:last-child) {
 
 th:not(:last-child) {
     border-bottom: 2px solid rgba(0, 0, 0, .1);
+body {
+    font-family: "Nunito Sans", sans-serif;
+    @apply bg-inherit;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.overlay {
+    position: relative;
+}
+
+.btn {
+    @apply font-bold py-2 px-4 rounded;
+}
+.btn-blue {
+    @apply bg-denim-600 text-white;
+}
+.btn-blue:hover {
+    @apply bg-blue-700;
 }
 
 @media only screen and (max-width: 1023px) {

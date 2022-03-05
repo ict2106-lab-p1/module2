@@ -24,5 +24,17 @@ public class MappingProfile : Profile
                 opt => opt.MapFrom(src => new Device { DeviceSerialNumber = src.DeviceSerialNo }))
             .ForMember(dest => dest.Interval,
                 opt => opt.MapFrom(src => TimeSpan.FromMinutes(src.Interval)));
+
+        // Domain to ViewModel/ApiModel
+        CreateMap<Device, DeviceViewModel>();
+
+        // ViewModel/ApiModel to Domain
+        CreateMap<DeviceViewModel, Device>();
+
+        // Domain to ViewModel/ApiModel (Accessory)
+        CreateMap<Accessory, AccessoryViewModel>();
+
+        // ViewModel/ApiModel to Domain (Accessory)
+        CreateMap<AccessoryViewModel, Accessory>();
     }
 }

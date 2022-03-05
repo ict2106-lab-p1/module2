@@ -33,10 +33,17 @@ public static class ConfigureServiceContainer
         services.AddTransient<ITodoRepository, TodoRepository>();
         services.AddTransient<IEnergyUsageRepository, EnergyUsageRepository>();
         services.AddTransient<IEnergyUsageLogCsvParser, EnergyUsageLogCsvParser>();
+        services.AddTransient<IAccessoryRepository, AccessoryRepository>();
+        services.AddTransient<IAccessoryTypeRepository, AccessoryTypeRepository>();
+        services.AddTransient<IDeviceRepository, DeviceRepository>();
+        services.AddTransient<ILabRepository, LabRepository>();
+        services.AddTransient<ILoggingRepository, LoggingRepository>();
     }
 
     public static void AddScopedServices(this IServiceCollection services)
     {
         // services.AddScoped<ITodoRepository, TodoRepository>();
     }
+
+
 }

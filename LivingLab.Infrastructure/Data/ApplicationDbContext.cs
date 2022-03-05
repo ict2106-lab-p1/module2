@@ -5,6 +5,7 @@ using LivingLab.Infrastructure.Data.Config;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace LivingLab.Infrastructure.Data;
 
@@ -15,6 +16,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Lab> Labs { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<EnergyUsageLog> EnergyUsageLogs { get; set; }
+    public DbSet<Accessory> Accessory { get; set; }
+    public DbSet<Device> Device { get; set; }
+    // public DbSet<DeviceType> DeviceType { get; set; }
+    public DbSet<Lab> Lab { get; set; }
+    public DbSet<Logging> Logging { get; set; }
+    public DbSet<AccessoryType> AccessoryType { get; set; }
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
@@ -36,5 +44,24 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UserToken");
 
         modelBuilder.Seed();
+
+        modelBuilder.Entity<Device>(entity =>
+        {
+            entity.HasOne(d => d.Lab)
+            .WithMany(l => l.Devices)
+            .HasForeignKey("LabId");
+        });
+
+        modelBuilder.Entity<Accessory>(entity =>
+        {
+            entity.HasOne(a => a.Lab)
+            .WithMany(l => l.Accessories)
+            .HasForeignKey("LabId");
+            entity.HasOne(a => a.AccessoryType)
+            .WithMany(l => l.Accessories)
+            .HasForeignKey("AccessoryTypeId");
+        });
+
     }
+
 }
