@@ -2,12 +2,13 @@ using System.Diagnostics;
 
 using AutoMapper;
 
+using LivingLab.Core.Constants;
 using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.Identity;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Interfaces.Services;
 using LivingLab.Core.Models;
-using LivingLab.Web.ViewModels;
+using LivingLab.Web.Models.ViewModels;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
