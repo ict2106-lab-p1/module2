@@ -2,8 +2,8 @@ using LivingLab.Core.Entities.Identity;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Interfaces.Services;
 using LivingLab.Infrastructure.Data;
+using LivingLab.Infrastructure.InfraServices.CsvParser;
 using LivingLab.Infrastructure.Repositories;
-using LivingLab.Infrastructure.Services.CsvParser;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
