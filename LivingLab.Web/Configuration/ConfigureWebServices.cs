@@ -1,3 +1,4 @@
+using LivingLab.Web.UIServices.ManualLogs;
 using LivingLab.Web.UIServices.Todo;
 
 namespace LivingLab.Web.Configuration;
@@ -19,6 +20,7 @@ public static class ConfigureWebServices
     private static IServiceCollection AddWebTransientServices(this IServiceCollection services)
     {
         services.AddTransient<ITodoService, TodoService>();
+        services.AddTransient<IManualLogService, ManualLogService>();
         
         return services;
     }
