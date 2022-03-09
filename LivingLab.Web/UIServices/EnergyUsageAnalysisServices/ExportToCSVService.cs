@@ -11,7 +11,7 @@ public class ExportToCSVService : IExportToCSVService
     public ExportToCSVService (IExportData exportData) {
         _exportData = exportData;
     }
-    public byte[] Export(List<DeviceEnergyUsageModel> Content, string ColNames) {
+    public string Export(List<DeviceEnergyUsageModel> Content, string ColNames) {
         return _exportData.ExportContentBuilder(Content, ColNames);
     }
 }

@@ -17,10 +17,12 @@ public class EnergyUsageAnalysisController : Controller
 {
     private readonly ILogger<EnergyUsageAnalysisController> _logger;
     private readonly IEnergyUsageRepository _repository;
-    public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository)
+    private readonly IExportToCSVService _exportService;
+    public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository, IExportToCSVService exportService)
     {
         _logger = logger;
         _repository = repository;
+        _exportService = exportService;
     }
 
     public IActionResult Index()

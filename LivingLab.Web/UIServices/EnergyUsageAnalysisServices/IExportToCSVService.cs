@@ -5,5 +5,5 @@ namespace LivingLab.Web.UIServices.EnergyUsageAnalysis;
 
 public interface IExportToCSVService
 {
-    public byte[] Export(List<DeviceEnergyUsageModel> Content, string ColNames);
+    public string Export(List<DeviceEnergyUsageModel> Content, string ColNames);
 }
