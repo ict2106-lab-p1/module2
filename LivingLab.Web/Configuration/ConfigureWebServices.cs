@@ -1,6 +1,6 @@
+using LivingLab.Web.UIServices.EnergyUsageAnalysisServices;
 using LivingLab.Web.UIServices.ManualLogs;
 using LivingLab.Web.UIServices.Todo;
-using LivingLab.Web.UIServices.EnergyUsageAnalysis;
 
 namespace LivingLab.Web.Configuration;
 

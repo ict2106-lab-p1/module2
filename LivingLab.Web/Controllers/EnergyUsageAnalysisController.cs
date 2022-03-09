@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Entities;
 using LivingLab.Web.Models.ViewModels;
-using LivingLab.Web.UIServices.EnergyUsageAnalysis;
+using LivingLab.Web.UIServices.EnergyUsageAnalysisServices;
 
 
 namespace LivingLab.Web.Controllers;

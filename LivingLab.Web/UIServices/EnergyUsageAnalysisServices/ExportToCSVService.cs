@@ -1,8 +1,7 @@
-using LivingLab.Web.Models.ViewModels;
-using LivingLab.Core.Models;
 using LivingLab.Core.Interfaces.Services;
+using LivingLab.Core.Models;
 
-namespace LivingLab.Web.UIServices.EnergyUsageAnalysis;
+namespace LivingLab.Web.UIServices.EnergyUsageAnalysisServices;
 
 public class ExportToCSVService : IExportToCSVService
 {
