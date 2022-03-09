@@ -7,6 +7,9 @@ using LivingLab.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Entities;
+using LivingLab.Web.Models.ViewModels;
+using LivingLab.Web.UIServices.EnergyUsageAnalysis;
+
 
 namespace LivingLab.Web.Controllers;
 
@@ -43,8 +46,28 @@ public class EnergyUsageAnalysisController : Controller
 
         return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "Device Energy Usage.csv");
     }
-    
+    // [HttpGet]
+    // public IActionResult Export1()
+    // {
 
+    //     List<DeviceEnergyUsageModel> Logs = DeviceEUList();
+    //     var ColName = "";
+    //     foreach(var propertyInfo in typeof(DeviceEnergyUsageModel).GetProperties())
+    //     {
+    //         ColName = ColName + propertyInfo.Name + ",";
+    //     }
+    //     byte [] content =  _exportService.Export(Logs,ColName);
+
+
+    //     return File(content, "text/csv", "Device Energy Usage.csv");
+    // }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+    
     public struct Log{
         public Log (String DeviceserialNo, String Devicetype, int Totalenergyusage, int Energyusageperhour, double Energyusagecost) {
             DeviceSerialNo = DeviceserialNo;
