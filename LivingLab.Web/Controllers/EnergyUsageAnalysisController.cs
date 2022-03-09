@@ -34,35 +34,27 @@ public class EnergyUsageAnalysisController : Controller
         return View(Logs);
     }
 
-    [Route("export")]
-    public IActionResult Export()
-    {
-
-        var builder = new StringBuilder();
-        List<Log> Logs = logList();
-        builder.AppendLine("Device SerialNo,Device Type,Total Energy Usage,Energy Usage Per Hour,Energy Usage Cost");
-        foreach (var log in Logs)
-        {
-            builder.AppendLine($"{log.DeviceSerialNo},{log.DeviceType},{log.TotalEnergyUsage},{log.EnergyUsagePerHour},{log.EnergyUsageCost}");
-        }
-
-        return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "Device Energy Usage.csv");
-    }
-    // [HttpGet]
-    // public IActionResult Export1()
+    // [Route("export")]
+    // public IActionResult Export()
     // {
 
-    //     List<DeviceEnergyUsageModel> Logs = DeviceEUList();
-    //     var ColName = "";
-    //     foreach(var propertyInfo in typeof(DeviceEnergyUsageModel).GetProperties())
+    //     var builder = new StringBuilder();
+    //     List<Log> Logs = logList();
+    //     builder.AppendLine("Device SerialNo,Device Type,Total Energy Usage,Energy Usage Per Hour,Energy Usage Cost");
+    //     foreach (var log in Logs)
     //     {
-    //         ColName = ColName + propertyInfo.Name + ",";
+    //         builder.AppendLine($"{log.DeviceSerialNo},{log.DeviceType},{log.TotalEnergyUsage},{log.EnergyUsagePerHour},{log.EnergyUsageCost}");
     //     }
-    //     byte [] content =  _exportService.Export(Logs,ColName);
 
-
-    //     return File(content, "text/csv", "Device Energy Usage.csv");
+    //     return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "Device Energy Usage.csv");
     // }
+    [HttpGet]
+    public IActionResult Export()
+    {
+        List<DeviceEnergyUsageModel> Logs = DeviceEUList();
+        byte [] content =  _exportService.Export(Logs);
+        return File(content, "text/csv", "Device Energy Usage.csv");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

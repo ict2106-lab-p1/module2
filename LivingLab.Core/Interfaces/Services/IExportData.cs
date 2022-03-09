@@ -3,5 +3,5 @@ namespace LivingLab.Core.Interfaces.Services;
 
 public interface IExportData
 {
-     public string ExportContentBuilder(List<DeviceEnergyUsageModel> Content, string ColNames);
+     public byte[] ExportContentBuilder(List<DeviceEnergyUsageModel> Content);
 }
