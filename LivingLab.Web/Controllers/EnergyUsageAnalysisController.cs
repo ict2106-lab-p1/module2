@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Data;
 using System.Text;
 
-using LivingLab.Web.ViewModels;
 using LivingLab.Core.Models;
 
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +10,11 @@ using LivingLab.Core.Entities;
 
 namespace LivingLab.Web.Controllers;
 
-public class DashboardController : Controller
+public class EnergyUsageAnalysisController : Controller
 {
-    private readonly ILogger<DashboardController> _logger;
+    private readonly ILogger<EnergyUsageAnalysisController> _logger;
     private readonly IEnergyUsageRepository _repository;
-    public DashboardController(ILogger<DashboardController> logger, IEnergyUsageRepository repository)
+    public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository)
     {
         _logger = logger;
         _repository = repository;
