@@ -1,4 +1,4 @@
-@* your model imports/calls go here as per usual *@
+@model List<LivingLab.Core.Models.DeviceEnergyUsageModel>
 
 <div class="flex">
     <div class="flex-grow">
@@ -29,15 +29,15 @@
                                 Total Energy Usage
                             </th>
                             <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
-                                Energy Usage Cost
+                                Energy Usage Per Hour
                             </th>
                             <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
-                                Energy Usage Intensity
+                                Energy Usage Cost
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in @ViewBag.Logs)
+                        @foreach (var item in Model)
                         {
                         <tr class="border-b odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600 text-center">
                             <td class="py-4 px-6 text-sm text-gray-900 whitespace-nowrap dark:text-white">
@@ -50,10 +50,10 @@
                                 @item.TotalEnergyUsage kW
                             </td>
                             <td class="py-4 px-6 text-sm text-gray-900 whitespace-nowrap dark:text-gray-400">
-                                $ @item.EnergyUsageCost
+                                @item.EnergyUsagePerHour kW/h
                             </td>
                             <td class="py-4 px-6 text-sm text-gray-900 whitespace-nowrap dark:text-gray-400">
-                                @item.EnergyUsageIntensity kW/M&sup2
+                                $ @item.EnergyUsageCost
                             </td>
                         </tr>
                         }
