@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LivingLab.Infrastructure.Repositories;
 
+/// <remarks>
+/// Author: Team P1-1
+/// </remarks>
 public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRepository
 {
     private readonly ApplicationDbContext _context;
@@ -21,8 +24,8 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         foreach (var log in logs)
         {
             // TODO: Change to repo method
-            log.Device = await _context.Devices.FirstOrDefaultAsync(d => d.DeviceSerialNumber == log.Device.DeviceSerialNumber);
-            log.Lab = await _context.Labs.FirstOrDefaultAsync(l => l.Id == 1);
+            log.Device = await _context.Devices.FirstOrDefaultAsync(d => d.SerialNo == log.Device.SerialNo);
+            log.Lab = await _context.Labs.FirstOrDefaultAsync(l => l.LabId == 1);
             await _context.AddAsync(log);
         }
 
@@ -33,6 +36,26 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
     {
         logs.ToList().ForEach(log => log.LoggedBy = loggedBy);
         await BulkInsertAsync(logs);
+    }
+
+    public Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByDateTime(DateTime start, DateTime end)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<EnergyUsageLog>> GetDistinctDeviceEnergyUsage()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<EnergyUsageLog>> GetDistinctLabEnergyUsage()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<EnergyUsageLog>> GetAllDeviceByLab()
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<List<EnergyUsageLog>> GetUsageByDeviceId(int id)
@@ -54,7 +77,7 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
     public async Task<List<EnergyUsageLog>> GetUsageByLabId(int id)
     {
         var logsForLab = await _context.EnergyUsageLogs
-            .Where(log => log.Lab!.Id == id)
+            .Where(log => log.Lab!.LabId == id)
             .ToListAsync();
         return logsForLab;
     }

@@ -1,9 +1,12 @@
 using AutoMapper;
 
 using LivingLab.Core.Entities;
+using LivingLab.Core.Entities.DTO;
 using LivingLab.Core.Models;
-using LivingLab.Web.ApiModels;
-using LivingLab.Web.ViewModels;
+using LivingLab.Web.Models.DTOs.Todo;
+using LivingLab.Web.Models.ViewModels;
+using LivingLab.Web.Models.ViewModels.Accessory;
+using LivingLab.Web.Models.ViewModels.Device;
 
 namespace LivingLab.Web.Mapping;
 
@@ -15,26 +18,21 @@ public class MappingProfile : Profile
         CreateMap<Todo, TodoDTO>();
         CreateMap<EnergyUsageCsvModel, LogItemViewModel>();
         CreateMap<EnergyUsageLog, LogItemViewModel>();
+        CreateMap<Device, DeviceViewModel>();
+        CreateMap<Accessory, AccessoryViewModel>();
+        CreateMap<ViewDeviceTypeDTO, DeviceTypeViewModel>();
+        CreateMap<ViewAccessoryTypeDTO, AccessoryTypeViewModel>();
+
 
         // ViewModel/ApiModel to Domain
         CreateMap<TodoDTO, Todo>();
         CreateMap<LogItemViewModel, EnergyUsageCsvModel>();
         CreateMap<LogItemViewModel, EnergyUsageLog>()
             .ForMember(dest => dest.Device,
-                opt => opt.MapFrom(src => new Device { DeviceSerialNumber = src.DeviceSerialNo }))
+                opt => opt.MapFrom(src => new Device { SerialNo = src.DeviceSerialNo }))
             .ForMember(dest => dest.Interval,
                 opt => opt.MapFrom(src => TimeSpan.FromMinutes(src.Interval)));
-
-        // Domain to ViewModel/ApiModel
-        CreateMap<Device, DeviceViewModel>();
-
-        // ViewModel/ApiModel to Domain
         CreateMap<DeviceViewModel, Device>();
-
-        // Domain to ViewModel/ApiModel (Accessory)
-        CreateMap<Accessory, AccessoryViewModel>();
-
-        // ViewModel/ApiModel to Domain (Accessory)
         CreateMap<AccessoryViewModel, Accessory>();
     }
 }
