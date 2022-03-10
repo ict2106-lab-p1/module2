@@ -41,16 +41,20 @@ public static class ConfigureServiceContainer
 
     private static IServiceCollection AddTransientServices(this IServiceCollection services)
     {
+        // Repositories
         services.AddTransient<ITodoRepository, TodoRepository>();
-        services.AddTransient<ITodoDomainService, TodoDomainService>();
         services.AddTransient<IEnergyUsageRepository, EnergyUsageRepository>();
+        services.AddTransient<ISmsRepository, SmsRepository>();
+        services.AddTransient<IEmailRepository, EmailRepository>();
+        services.AddTransient<IPowerGenerationMixRepository, PowerGenerationMixRepository>();
+        
+        // Services
+        services.AddTransient<ITodoDomainService, TodoDomainService>();
         services.AddTransient<IEnergyUsageLogCsvParser, EnergyUsageLogCsvParser>();
         services.AddTransient<IExportData, ExportData>();
         services.AddTransient<IEnergyUsageService, EnergyUsageService>();
-        services.AddTransient<IEmailRepository, EmailRepository>();
-        services.AddTransient<ISmsRepository, SmsRepository>();
-        services.AddTransient<IPowerGenerationMixRepository, PowerGenerationMixRepository>();
         services.AddTransient<IManualLogDomainService, ManualLogDomainService>();
+        services.AddTransient<INotificationDomainService, NotificationDomainService>();
 
         return services;
     }
