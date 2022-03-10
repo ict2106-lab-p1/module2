@@ -50,6 +50,7 @@ public static class ConfigureServiceContainer
         services.AddTransient<IEmailRepository, EmailRepository>();
         services.AddTransient<ISmsRepository, SmsRepository>();
         services.AddTransient<IPowerGenerationMixRepository, PowerGenerationMixRepository>();
+        services.AddTransient<IManualLogDomainService, ManualLogDomainService>();
 
         return services;
     }
