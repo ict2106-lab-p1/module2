@@ -55,6 +55,7 @@ public static class ConfigureServiceContainer
         services.AddTransient<IEnergyUsageService, EnergyUsageService>();
         services.AddTransient<IManualLogDomainService, ManualLogDomainService>();
         services.AddTransient<INotificationDomainService, NotificationDomainService>();
+        services.AddTransient<IEnergyLogDomainService, EnergyLogDomainService>();
 
         return services;
     }
