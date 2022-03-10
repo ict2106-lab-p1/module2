@@ -33,21 +33,7 @@ public class EnergyUsageAnalysisController : Controller
         // GetAll();
         return View(Logs);
     }
-
-    // [Route("export")]
-    // public IActionResult Export()
-    // {
-
-    //     var builder = new StringBuilder();
-    //     List<Log> Logs = logList();
-    //     builder.AppendLine("Device SerialNo,Device Type,Total Energy Usage,Energy Usage Per Hour,Energy Usage Cost");
-    //     foreach (var log in Logs)
-    //     {
-    //         builder.AppendLine($"{log.DeviceSerialNo},{log.DeviceType},{log.TotalEnergyUsage},{log.EnergyUsagePerHour},{log.EnergyUsageCost}");
-    //     }
-
-    //     return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", "Device Energy Usage.csv");
-    // }
+    
     [HttpGet]
     public IActionResult Export()
     {
@@ -110,17 +96,6 @@ public class EnergyUsageAnalysisController : Controller
         {
             Console.WriteLine(item);
         }
-        
-        // double? TotalEU = 0.0;
-        // int? TotalEUTime = 0;
-        // foreach (var item in records)
-        // {
-        //     TotalEU += item.EnergyUsage;
-        //     TotalEUTime += item.Interval.Minutes;
-        // }
-
-        // Console.WriteLine(CalculateEUPerHour(TotalEU,TotalEUTime));
-        // Console.WriteLine(EUPerHour.ToString());
     }
 
     public List<int> FindAllUniqueID (List<EnergyUsageLog> Records) {
