@@ -16,20 +16,20 @@ public static class ConfigureWebServices
         AddWebSingletonServices(services);
         return services;
     }
-    
+
     private static IServiceCollection AddWebTransientServices(this IServiceCollection services)
     {
         services.AddTransient<ITodoService, TodoService>();
         services.AddTransient<IManualLogService, ManualLogService>();
-        
+
         return services;
     }
-    
+
     private static IServiceCollection AddWebScopedServices(this IServiceCollection services)
     {
         return services;
     }
-    
+
     private static IServiceCollection AddWebSingletonServices(this IServiceCollection services)
     {
         return services;
