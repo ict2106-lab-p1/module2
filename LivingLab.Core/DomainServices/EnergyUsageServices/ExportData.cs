@@ -1,17 +1,18 @@
 using System.Text;
 
-using LivingLab.Core.Interfaces.Services;
-using LivingLab.Core.Models;
-
-namespace LivingLab.Infrastructure.InfraServices;
-
+using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
+using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
+namespace LivingLab.Core.DomainServices.EnergyUsageServices;
+/// <remarks>
+/// Author: Team P1-2
+/// </remarks>
 public class ExportData : IExportData
 {
-    public byte[] ExportContentBuilder (List<DeviceEnergyUsageModel> Content)
+    public byte[] ExportContentBuilder (List<DeviceEnergyUsageDTO> Content)
     {
         var builder = new StringBuilder();
         var ColNames = "";
-        foreach(var propertyInfo in typeof(DeviceEnergyUsageModel).GetProperties())
+        foreach(var propertyInfo in typeof(DeviceEnergyUsageDTO).GetProperties())
         {
             ColNames = ColNames + propertyInfo.Name + ",";
         }

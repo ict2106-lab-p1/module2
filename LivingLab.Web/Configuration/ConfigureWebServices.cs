@@ -1,4 +1,4 @@
-using LivingLab.Web.UIServices.EnergyUsageAnalysisServices;
+using LivingLab.Web.UIServices.EnergyUsage;
 using LivingLab.Web.UIServices.ManualLogs;
 using LivingLab.Web.UIServices.Accessory;
 using LivingLab.Web.UIServices.Device;
@@ -24,7 +24,8 @@ public static class ConfigureWebServices
     {
         services.AddTransient<ITodoService, TodoService>();
         services.AddTransient<IManualLogService, ManualLogService>();
-        services.AddTransient<IExportToCSVService, ExportToCSVService>();
+        services.AddTransient<IEnergyUsageAnalysisService, EnergyUsageAnalysisService>();
+        services.AddTransient<IEnergyUsageComparisonService, EnergyUsageComparisonService>();
         services.AddTransient<IDeviceService, DeviceService>();
         services.AddTransient<IAccessoryService, AccessoryServices>();
 

@@ -1,34 +1,34 @@
 using System.Diagnostics;
-using System.Data;
-using System.Text;
 
-using LivingLab.Core.Models;
+using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 
 using Microsoft.AspNetCore.Mvc;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Entities;
 using LivingLab.Web.Models.ViewModels;
-using LivingLab.Web.UIServices.EnergyUsageAnalysisServices;
+using LivingLab.Web.UIServices.EnergyUsage;
 
 
 namespace LivingLab.Web.Controllers;
-
+/// <remarks>
+/// Author: Team P1-2
+/// </remarks>
 public class EnergyUsageAnalysisController : Controller
 {
     private readonly ILogger<EnergyUsageAnalysisController> _logger;
     private readonly IEnergyUsageRepository _repository;
-    private readonly IExportToCSVService _exportService;
-    public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository, IExportToCSVService exportService)
+    private readonly IEnergyUsageAnalysisService _analysisService;
+    public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository, IEnergyUsageAnalysisService analysisService)
     {
         _logger = logger;
         _repository = repository;
-        _exportService = exportService;
+        _analysisService = analysisService;
     }
 
     public IActionResult Index()
     {
         // List<Log> Logs = logList();
-        List<DeviceEnergyUsageModel> Logs = DeviceEUList();
+        List<DeviceEnergyUsageDTO> Logs = DeviceEUList();
         ViewBag.Logs = Logs;
         // GetAll();
         return View(Logs);
@@ -37,8 +37,8 @@ public class EnergyUsageAnalysisController : Controller
     [HttpGet]
     public IActionResult Export()
     {
-        List<DeviceEnergyUsageModel> Logs = DeviceEUList();
-        byte [] content =  _exportService.Export(Logs);
+        List<DeviceEnergyUsageDTO> Logs = DeviceEUList();
+        byte [] content =  _analysisService.Export();
         return File(content, "text/csv", "Device Energy Usage.csv");
     }
 
@@ -72,11 +72,11 @@ public class EnergyUsageAnalysisController : Controller
         return Logs;
     }
 
-    public List<DeviceEnergyUsageModel> DeviceEUList() {
-        var Logs = new List<DeviceEnergyUsageModel>(){
-            new DeviceEnergyUsageModel{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsagePerHour=112,EnergyUsageCost=23.21},
-            new DeviceEnergyUsageModel{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsagePerHour=23,EnergyUsageCost=12.21},
-            new DeviceEnergyUsageModel{DeviceSerialNo="Robot-73",DeviceType="Robot",TotalEnergyUsage=671,EnergyUsagePerHour=211,EnergyUsageCost=72.45}
+    public List<DeviceEnergyUsageDTO> DeviceEUList() {
+        var Logs = new List<DeviceEnergyUsageDTO>(){
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsagePerHour=112,EnergyUsageCost=23.21},
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsagePerHour=23,EnergyUsageCost=12.21},
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Robot-73",DeviceType="Robot",TotalEnergyUsage=671,EnergyUsagePerHour=211,EnergyUsageCost=72.45}
         };
         return Logs;
     }
