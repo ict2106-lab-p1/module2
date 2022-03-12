@@ -47,32 +47,9 @@ public class EnergyUsageAnalysisController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-    
-    public struct Log{
-        public Log (String DeviceserialNo, String Devicetype, int Totalenergyusage, int Energyusageperhour, double Energyusagecost) {
-            DeviceSerialNo = DeviceserialNo;
-            DeviceType = Devicetype;
-            TotalEnergyUsage = Totalenergyusage;
-            EnergyUsagePerHour = Energyusageperhour;
-            EnergyUsageCost = Energyusagecost;
-        } 
-        public String DeviceSerialNo { get; }
-        public String DeviceType { get; }
-        public int TotalEnergyUsage { get; }
-        public int EnergyUsagePerHour { get; }
-        public double EnergyUsageCost { get; }
-    }
 
-    public List<Log> logList() {
-        List<Log> Logs = new List<Log>();
-        Logs.Add(new Log("Sensor-12120","Sensor",234,112,23.21));
-        Logs.Add(new Log("Actuator-0881","Actuator",121,231,13.45));
-        Logs.Add(new Log("Robot-73","Robot",691,122,83.45));
-
-        return Logs;
-    }
-
-    public List<DeviceEnergyUsageDTO> DeviceEUList() {
+    public List<DeviceEnergyUsageDTO> DeviceEUList() 
+    {
         var Logs = new List<DeviceEnergyUsageDTO>(){
             new DeviceEnergyUsageDTO{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsagePerHour=112,EnergyUsageCost=23.21},
             new DeviceEnergyUsageDTO{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsagePerHour=23,EnergyUsageCost=12.21},
@@ -98,7 +75,8 @@ public class EnergyUsageAnalysisController : Controller
         }
     }
 
-    public List<int> FindAllUniqueID (List<EnergyUsageLog> Records) {
+    public List<int> FindAllUniqueID (List<EnergyUsageLog> Records) 
+    {
         List<int> IdList = new List<int>();
         foreach (var item in Records)
         {
@@ -111,18 +89,21 @@ public class EnergyUsageAnalysisController : Controller
     }
 
     // convert time in minutes to hour
-    public double ConvertTimeToHour(int TimeInMinute) {
+    public double ConvertTimeToHour(int TimeInMinute) 
+    {
         return (double)TimeInMinute / (double)60;
     }
     // calculate energy usage per hour
-    public double? CalculateEUPerHour (double? TotalEU, int? TotalEUTime) {
+    public double? CalculateEUPerHour (double? TotalEU, int? TotalEUTime) 
+    {
         double? hour = (double)TotalEUTime / (double)60;
         double? EUPerHour = TotalEU / hour;
         return (int)EUPerHour;
     }
 
     // calculate total energy usage cost
-    public double CalculateEUCost(double cost, int TotalEU, double TotalEUTime) {
+    public double CalculateEUCost(double cost, int TotalEU, double TotalEUTime) 
+    {
         double Total = Math.Round((cost * (double)TotalEU * TotalEUTime),2);
         return Total;
     }
