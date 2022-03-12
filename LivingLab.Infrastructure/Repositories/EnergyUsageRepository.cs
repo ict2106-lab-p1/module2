@@ -43,6 +43,11 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         throw new NotImplementedException();
     }
 
+    public Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByDeviceTypeAndDate(string deviceType, DateTime start, DateTime end)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<List<EnergyUsageLog>> GetDistinctDeviceEnergyUsage()
     {
         throw new NotImplementedException();
