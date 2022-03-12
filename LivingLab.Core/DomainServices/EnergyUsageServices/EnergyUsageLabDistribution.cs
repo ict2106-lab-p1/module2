@@ -6,8 +6,10 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public class EnergyUsageLabDistribution : IEnergyUsageLabDistribution{
-    public List<LabEnergyUsageDTO> GetLabAllDevice(DateTime start, DateTime end, int labId){
+public class EnergyUsageLabDistribution : IEnergyUsageLabDistribution
+{
+    public List<LabEnergyUsageDTO> GetLabAllDevice(DateTime start, DateTime end, int labId)
+    {
         throw new NotImplementedException();
     }
 }

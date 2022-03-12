@@ -5,7 +5,8 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public class TopSevenEnergyUsage : ITopSevenEnergyUsage{
+public class TopSevenEnergyUsage : ITopSevenEnergyUsage
+{
     public List<DeviceEnergyUsageDTO> GetEnergyUsageEachLab(DateTime star, DateTime end){
         throw new NotImplementedException();
     }

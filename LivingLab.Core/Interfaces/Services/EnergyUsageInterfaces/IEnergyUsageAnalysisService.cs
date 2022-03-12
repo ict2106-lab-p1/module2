@@ -3,7 +3,8 @@ namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public interface IEnergyUsageAnalysisService {
+public interface IEnergyUsageAnalysisService 
+{
     public byte[] Export();
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end);
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end);

@@ -3,7 +3,8 @@ namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public interface IEnergyUsageCalculationService {
+public interface IEnergyUsageCalculationService 
+{
     public double CalculateEnergyUsagePerHour(double totalEU, int totalEUTime);
     public double CalculateEnergyUsageCost(double cost, double totalEU, double totalEUTime);
     public double CalculateEnergyIntensity(int area, int totalEU);
