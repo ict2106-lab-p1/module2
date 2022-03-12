@@ -16,12 +16,14 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task<T> GetByIdAsync(int id)
     {
-        return await _context.Set<T>().FindAsync(id);
+        var entity = await _context.Set<T>().FindAsync(id);
+        await IncludeReferencesForFindAsync(entity);
+        return entity;
     }
 
     public async Task<List<T>> GetAllAsync()
     {
-        return await _context.Set<T>().ToListAsync();
+        return await IncludeReferences(_context.Set<T>()).ToListAsync();
     }
 
     public async Task<T> AddAsync(T entity)
@@ -51,4 +53,12 @@ public class Repository<T> : IRepository<T> where T : class
 
         return entity;
     }
+
+    // Load referenced entities in query results.
+    // Default implementation returns query result as-is without loading anything extra.
+    protected virtual IQueryable<T> IncludeReferences(IQueryable<T> subset) => subset;
+
+    // Same as IncludeReferences, but for DbSet.Find operations
+    // Because for some reason, Entity Framework has a seperate API for it
+    protected virtual Task IncludeReferencesForFindAsync(T entity) => Task.CompletedTask;
 }

@@ -37,24 +37,30 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
 
     public async Task<List<EnergyUsageLog>> GetUsageByDeviceId(int id)
     {
-        var logsForDevice = await _context.EnergyUsageLogs
-            .Where(log => log.Device!.Id == id)
+        var logsForDevice = await IncludeReferences(
+                _context.EnergyUsageLogs
+                .Where(log => log.Device!.Id == id)
+            )
             .ToListAsync();
         return logsForDevice;
     }
 
     public async Task<List<EnergyUsageLog>> GetUsageByDeviceType(string deviceType)
     {
-        var logsForType = await _context.EnergyUsageLogs
-            .Where(log => log.Device!.Type == deviceType)
+        var logsForType = await IncludeReferences(
+                _context.EnergyUsageLogs
+                .Where(log => log.Device!.Type == deviceType)
+            )
             .ToListAsync();
         return logsForType;
     }
 
     public async Task<List<EnergyUsageLog>> GetUsageByLabId(int id)
     {
-        var logsForLab = await _context.EnergyUsageLogs
-            .Where(log => log.Lab!.Id == id)
+        var logsForLab = await IncludeReferences(
+                _context.EnergyUsageLogs
+                .Where(log => log.Lab!.Id == id)
+            )
             .ToListAsync();
         return logsForLab;
     }
@@ -62,13 +68,30 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
     public Task<List<EnergyUsageLog>> GetUsageByUser(ApplicationUser? user)
     {
         if(user == null) {
-            return _context.EnergyUsageLogs
-                .Where(log => log.LoggedBy != null)
+            return IncludeReferences(
+                    _context.EnergyUsageLogs
+                    .Where(log => log.LoggedBy != null)
+                )
                 .ToListAsync();
         } else {
-            return _context.EnergyUsageLogs
-                .Where(log => log.LoggedBy != null && log.LoggedBy.Equals(user))
+            return IncludeReferences(
+                    _context.EnergyUsageLogs
+                    .Where(log => log.LoggedBy != null && log.LoggedBy.Equals(user))
+                )
                 .ToListAsync();
         }
+    }
+    protected override IQueryable<EnergyUsageLog> IncludeReferences(IQueryable<EnergyUsageLog> logQuery) {
+        return base.IncludeReferences(logQuery)
+            .Include(log => log.Device)
+            .Include(log => log.Lab);
+    }
+
+    protected override async Task IncludeReferencesForFindAsync(EnergyUsageLog log)
+    {
+        await base.IncludeReferencesForFindAsync(log);
+        var deviceLoadTask = _context.Entry(log).Reference(l => l.Device).LoadAsync();
+        var labLoadTask = _context.Entry(log).Reference(l => l.Lab).LoadAsync();
+        await Task.WhenAll(deviceLoadTask, labLoadTask);
     }
 }
