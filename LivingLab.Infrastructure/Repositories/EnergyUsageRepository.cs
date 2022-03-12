@@ -38,14 +38,21 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         await BulkInsertAsync(logs);
     }
 
-    public Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByDateTime(DateTime start, DateTime end)
+    public async Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByDateTime(DateTime start, DateTime end)
     {
-        throw new NotImplementedException();
+        var logsForDateRange = await _context.EnergyUsageLogs
+            .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)
+            .ToListAsync();
+        return logsForDateRange;
     }
 
-    public Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByDeviceTypeAndDate(string deviceType, DateTime start, DateTime end)
+    public async Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByDeviceTypeAndDate(string deviceType, DateTime start, DateTime end)
     {
-        throw new NotImplementedException();
+        var logsForTypeInDateRange = await _context.EnergyUsageLogs
+            .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)
+            .Where(log => log.Device!.Type == deviceType)
+            .ToListAsync();
+        return logsForTypeInDateRange;
     }
 
     public Task<List<EnergyUsageLog>> GetDistinctDeviceEnergyUsage()
