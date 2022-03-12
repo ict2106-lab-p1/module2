@@ -105,7 +105,7 @@ public class EnergyUsageRepoTest
         using var context = CreateContext();
         var repo = new EnergyUsageRepository(context);
 
-        var logs = await repo.GetUsageByLabId(testLab.Id);
+        var logs = await repo.GetUsageByLabId(testLab.LabId);
         if(logs.Count > 0) {
             Assert.NotNull(logs[0].Lab);
         }
