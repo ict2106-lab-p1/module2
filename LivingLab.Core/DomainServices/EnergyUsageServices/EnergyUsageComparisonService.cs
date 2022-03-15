@@ -16,7 +16,15 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
     {
         throw new NotImplementedException();
     }
-    public List<LabEnergyUsageDTO> GetEnergyUsageEnergyIntensitySelectedLab (List<int> labIds, DateTime start, DateTime end)
+    public List<LabEnergyUsageDTO> GetEnergyUsageEnergyIntensitySelectedLab (int labId, DateTime start, DateTime end)
+    {
+        throw new NotImplementedException();
+    }
+    public List<string> GetAllDeviceType()
+    {
+        throw new NotImplementedException();
+    }
+    public List<string> GetAllLabLocation()
     {
         throw new NotImplementedException();
     }
