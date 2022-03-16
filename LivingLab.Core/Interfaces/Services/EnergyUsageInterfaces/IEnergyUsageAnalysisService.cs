@@ -1,4 +1,5 @@
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
+using LivingLab.Core.Entities;
 namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 /// <remarks>
 /// Author: Team P1-2
@@ -18,5 +19,7 @@ public interface IEnergyUsageAnalysisService
     // not sure what will be your DTO looks like may have to create in LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
     public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, string deviceType);
     public List<DeviceInLabDTO> GetEnergyUsageDeviceDistribution(DateTime start, DateTime end, int labID);
+
+    public List<EnergyUsageLog> test(DateTime start, DateTime end);
 
 }
