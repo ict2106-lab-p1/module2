@@ -5,7 +5,6 @@ using LivingLab.Core.Interfaces.Services;
 using LivingLab.Core.DomainServices.EnergyUsageServices;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using LivingLab.Infrastructure.Data;
-using LivingLab.Infrastructure.InfraServices;
 using LivingLab.Infrastructure.InfraServices.CsvParser;
 using LivingLab.Infrastructure.Repositories;
 
@@ -56,7 +55,7 @@ public static class ConfigureServiceContainer
         // Services
         services.AddTransient<ITodoDomainService, TodoDomainService>();
         services.AddTransient<IEnergyUsageLogCsvParser, EnergyUsageLogCsvParser>();
-        services.AddTransient<IEnergyUsageService, EnergyUsageService>();
+        services.AddTransient<IEnergyUsageDomainService, EnergyUsageDomainService>();
         services.AddTransient<IManualLogDomainService, ManualLogDomainService>();
         services.AddTransient<INotificationDomainService, NotificationDomainService>();
         services.AddTransient<IDeviceDomainService, DeviceDomainService>();
