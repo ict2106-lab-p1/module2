@@ -1,5 +1,8 @@
-namespace LivingLab.Core.Models.Prediction;
+namespace LivingLab.Core.Entities.Prediction;
 
+/// <remarks>
+/// Author: Team P1-1
+/// </remarks>
 public class PredictionModelInput
 {
     public string DeviceType { get; set; }
