@@ -11,14 +11,13 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 {
     private readonly IEnergyUsageRepository _repository;
 
-    private readonly IEnergyUsageCalculationService _calculator;
+    private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
 
     private double cost = 0.2544;
 
-    public EnergyUsageAnalysisService(IEnergyUsageRepository repository, IEnergyUsageCalculationService calculator)
+    public EnergyUsageAnalysisService(IEnergyUsageRepository repository)
     {
         _repository = repository;
-        _calculator = calculator;
     }
 
     public byte[] Export() 
@@ -28,7 +27,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end) 
     {
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
-
+        Console.WriteLine($"result ={result}");
         List<string> uniqueDevice = new List<string>();
         List<int> DeviceEU = new List<int>();
         List<int> DeviceUsageTime = new List<int>();
@@ -38,7 +37,11 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         List<DeviceEnergyUsageDTO> DeviceEUList = new List<DeviceEnergyUsageDTO>();
         foreach (var item in result)
         {
-            if (uniqueDevice.Contains(item.Device.SerialNo))
+            Console.WriteLine($"serial no = {item.Device.SerialNo}");
+        }
+        foreach (var item in result)
+        {
+            if (!uniqueDevice.Contains(item.Device.SerialNo))
             {
                 uniqueDevice.Add(item.Device.SerialNo);
                 DeviceEU.Add(0);
