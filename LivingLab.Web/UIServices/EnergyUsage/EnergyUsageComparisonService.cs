@@ -17,4 +17,12 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
     {
         throw new NotImplementedException();
     }
+    public List<string> GetAllDeviceType()
+    {
+        throw new NotImplementedException();
+    }
+    public List<string> GetAllLabLocation()
+    {
+        throw new NotImplementedException();
+    }
 }

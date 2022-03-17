@@ -25,7 +25,7 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
         throw new NotImplementedException();
     }
     // joey
-    public List<Top7LabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end)
+    public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end)
     {
         throw new NotImplementedException();
     }

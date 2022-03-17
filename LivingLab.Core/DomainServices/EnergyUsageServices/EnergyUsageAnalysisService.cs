@@ -143,7 +143,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 
     }
     // joey
-    public List<Top7LabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end) 
+    public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end) 
     {
         throw new NotImplementedException();
     }
@@ -155,14 +155,13 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     {
         throw new NotImplementedException();
     }
-
     // weijie
     // not sure what will be your DTO looks like may have to create in LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
-    public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, string deviceType) 
+    public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, int labId)
     {
         throw new NotImplementedException();
     }
-    public List<DeviceInLabDTO> GetEnergyUsageDeviceDistribution(DateTime start, DateTime end, int labID) 
+    public List<DeviceInLabDTO> GetEnergyUsageDeviceDistribution(DateTime start, DateTime end, string deviceType)
     {
         throw new NotImplementedException();
     }
