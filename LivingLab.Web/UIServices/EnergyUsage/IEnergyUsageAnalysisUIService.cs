@@ -3,14 +3,14 @@ namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public interface IEnergyUsageAnalysisService
+public interface IEnergyUsageAnalysisUIService
 {
     public byte[] Export();
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end);
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end);
 
     // joey
-    public List<Top7LabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end);
+    public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end);
     public List<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end);
     public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId);
 
