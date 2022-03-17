@@ -86,6 +86,9 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     }
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end) 
     {
+        // missing of lab area, commenting this part to ensure no error
+
+
         // List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
         // List<string> uniqueLab = new List<string>();
         // List<int> LabEU = new List<int>();
@@ -133,6 +136,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         //     LabEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,LabEU[i],EnergyUsageTime[i]));
         //     // LabEUIntensity.Add(_calculator.CalculateEnergyIntensity())
         // }
+        
 
         
         throw new NotImplementedException();
