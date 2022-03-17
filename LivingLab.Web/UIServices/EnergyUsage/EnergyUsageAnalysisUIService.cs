@@ -1,17 +1,24 @@
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
+using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService 
+public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService 
 {
+    private readonly IEnergyUsageAnalysisService _analysis;
+
+    public EnergyUsageAnalysisUIService(IEnergyUsageAnalysisService analysis)
+    {
+        _analysis = analysis;
+    }
     public byte[] Export()
     {
         throw new NotImplementedException();
     }
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end)
     {
-        throw new NotImplementedException();
+        return _analysis.GetDeviceEnergyUsageByDate(start,end);
     }
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end)
     {

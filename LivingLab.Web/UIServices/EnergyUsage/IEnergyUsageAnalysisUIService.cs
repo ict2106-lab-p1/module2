@@ -3,7 +3,7 @@ namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public interface IEnergyUsageAnalysisService
+public interface IEnergyUsageAnalysisUIService
 {
     public byte[] Export();
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end);
