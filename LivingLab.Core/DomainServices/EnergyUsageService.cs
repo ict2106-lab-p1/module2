@@ -6,7 +6,7 @@ namespace LivingLab.Core.DomainServices;
 /// <remarks>
 /// Author: Team P1-1
 /// </remarks>
-public class EnergyUsageService : IEnergyUsageService
+public class EnergyUsageDomainService : IEnergyUsageDomainService
 {
     public Task LogUsage(EnergyUsageLog log)
     {
