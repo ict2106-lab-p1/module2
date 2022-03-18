@@ -24,7 +24,7 @@ public static class ConfigureWebServices
     {
         services.AddTransient<ITodoService, TodoService>();
         services.AddTransient<IManualLogService, ManualLogService>();
-        services.AddTransient<IEnergyUsageAnalysisService, EnergyUsageAnalysisService>();
+        services.AddTransient<IEnergyUsageAnalysisUIService, EnergyUsageAnalysisUIService>();
         services.AddTransient<IEnergyUsageComparisonService, EnergyUsageComparisonService>();
         services.AddTransient<IDeviceService, DeviceService>();
         services.AddTransient<IAccessoryService, AccessoryServices>();
