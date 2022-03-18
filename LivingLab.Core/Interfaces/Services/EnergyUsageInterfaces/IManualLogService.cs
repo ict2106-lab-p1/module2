@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace LivingLab.Core.Interfaces.Services;
+namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 
 /// <remarks>
 /// Author: Team P1-1

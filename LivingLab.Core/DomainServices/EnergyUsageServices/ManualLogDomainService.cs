@@ -1,12 +1,12 @@
 using LivingLab.Core.Constants;
 using LivingLab.Core.Entities;
 using LivingLab.Core.Interfaces.Repositories;
-using LivingLab.Core.Interfaces.Services;
+using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using LivingLab.Core.Models;
 
 using Microsoft.AspNetCore.Http;
 
-namespace LivingLab.Core.DomainServices;
+namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 
 /// <remarks>
 /// Author: Team P1-1

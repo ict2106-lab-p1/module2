@@ -28,6 +28,7 @@ public static class ConfigureWebServices
         services.AddTransient<IEnergyUsageComparisonService, EnergyUsageComparisonService>();
         services.AddTransient<IDeviceService, DeviceService>();
         services.AddTransient<IAccessoryService, AccessoryServices>();
+        services.AddTransient<IEnergyUsageService, EnergyUsageService>();
 
         return services;
     }

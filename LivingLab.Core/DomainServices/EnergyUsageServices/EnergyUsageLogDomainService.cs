@@ -1,12 +1,12 @@
 using LivingLab.Core.Entities;
-using LivingLab.Core.Interfaces.Services;
+using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 
-namespace LivingLab.Core.DomainServices;
+namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 
 /// <remarks>
 /// Author: Team P1-1
 /// </remarks>
-public class EnergyUsageDomainService : IEnergyUsageDomainService
+public class EnergyUsageLogDomainService : IEnergyUsageLogDomainService
 {
     public Task LogUsage(EnergyUsageLog log)
     {
