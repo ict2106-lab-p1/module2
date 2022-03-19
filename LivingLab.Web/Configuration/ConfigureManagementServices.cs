@@ -4,6 +4,9 @@ using LivingLab.Web.UIServices.ManualLogs;
 
 namespace LivingLab.Web.Configuration;
 
+/// <summary>
+/// Team P1-3 & P1-5 to add dependency injections for mod 1 here.
+/// </summary>
 public static class ConfigureManagementServices
 {
     public static IServiceCollection AddManagementServices(this IServiceCollection services)
@@ -27,6 +30,7 @@ public static class ConfigureManagementServices
     {
         return services;
     }
+    
     private static IServiceCollection AddWebSingletonServices(this IServiceCollection services)
     {
         return services;

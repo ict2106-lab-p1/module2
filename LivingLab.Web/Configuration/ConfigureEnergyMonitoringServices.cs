@@ -1,9 +1,10 @@
-using LivingLab.Web.UIServices.Accessory;
-using LivingLab.Web.UIServices.Device;
 using LivingLab.Web.UIServices.EnergyUsage;
 
 namespace LivingLab.Web.Configuration;
 
+/// <summary>
+/// Team P1-1 & P1-2 to add dependency injections for mod 2 here.
+/// </summary>
 public static class ConfigureEnergyMonitoringServices
 {
     public static IServiceCollection AddEnergyMonitoringServices(this IServiceCollection services)
@@ -27,6 +28,7 @@ public static class ConfigureEnergyMonitoringServices
     {
         return services;
     }
+    
     private static IServiceCollection AddWebSingletonServices(this IServiceCollection services)
     {
         return services;
