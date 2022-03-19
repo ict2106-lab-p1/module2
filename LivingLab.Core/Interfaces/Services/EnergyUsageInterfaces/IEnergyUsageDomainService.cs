@@ -7,6 +7,7 @@ namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 /// </remarks>
 public interface IEnergyUsageDomainService
 {
-    Task<List<EnergyUsageDTO>> GetEnergyUsage(EnergyUsageFilterDTO filter);
+    Task<EnergyUsageDTO> GetEnergyUsage(EnergyUsageFilterDTO filter);
     Task SetLabEnergyBenchmark(EnergyBenchmarkDTO benchmark);
 }
+ 

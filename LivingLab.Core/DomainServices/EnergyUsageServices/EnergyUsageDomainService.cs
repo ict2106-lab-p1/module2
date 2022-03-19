@@ -18,13 +18,29 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
         _energyUsageRepository = energyUsageRepository;
     }
     
-    public Task<List<EnergyUsageDTO>> GetEnergyUsage(EnergyUsageFilterDTO filter)
+    /// <summary>
+    /// 1. Call Energy Usage repo to get filtered energy usage data
+    /// 2. Map logs to DTO
+    /// </summary>
+    /// <param name="filter">Filter DTO object</param>
+    /// <returns>EnergyUsageDTO</returns>
+    public async Task<EnergyUsageDTO> GetEnergyUsage(EnergyUsageFilterDTO filter)
     {
-        // TODO: Call Energy Usage repo to get filtered energy usage
-        // TODO: Map to DTO
-        throw new NotImplementedException();
+        var logs = await _energyUsageRepository
+            .GetDeviceEnergyUsageByLabAndDate(filter.Lab.LabId, filter.Start, filter.End);
+        
+        var dto = new EnergyUsageDTO
+        {
+            Logs = logs,
+            // TODO: call lab repo and map to DTO
+        };
+        return dto;
     }
 
+    /// <summary>
+    /// Call Lab repo to set the current lab total energy benchmark
+    /// </summary>
+    /// <param name="benchmark">Benchmark DTO object</param>
     public Task SetLabEnergyBenchmark(EnergyBenchmarkDTO benchmark)
     {
         // TODO: Call Lab repo to set energy benchmark
