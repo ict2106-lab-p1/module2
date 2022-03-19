@@ -32,12 +32,10 @@ public static class ConfigureEnergyMonitoringServices
         services.AddTransient<IPowerGenerationMixRepository, PowerGenerationMixRepository>();
 
         // Services
-        services.AddTransient<ITodoDomainService, TodoDomainService>();
         services.AddTransient<IEnergyUsageLogCsvParser, EnergyUsageLogCsvParser>();
         services.AddTransient<IEnergyUsageLogDomainService, EnergyUsageLogDomainService>();
         services.AddTransient<IManualLogDomainService, ManualLogDomainService>();
         services.AddTransient<INotificationDomainService, NotificationDomainService>();
-        services.AddTransient<IDeviceDomainService, DeviceDomainService>();
         services.AddTransient<IEnergyLogDomainService, EnergyLogDomainService>();
         services.AddTransient<IEnergyUsageAnalysisService, EnergyUsageAnalysisService>();
         services.AddTransient<IEnergyUsageComparisonService, EnergyUsageComparisonService>();

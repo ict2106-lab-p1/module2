@@ -27,6 +27,7 @@ public static class ConfigureManagementServices
         services.AddTransient<IAccessoryTypeRepository, AccessoryTypeRepository>();
         services.AddTransient<IDeviceRepository, DeviceRepository>();
         services.AddTransient<ISessionStatsRepository, SessionStatsRepository>();
+        services.AddTransient<ILabRepository, LabRepository>();
 
         // Services
         services.AddTransient<IDeviceDomainService, DeviceDomainService>();
