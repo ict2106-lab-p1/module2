@@ -1,7 +1,14 @@
 using LivingLab.Web.UIServices.EnergyUsage;
 using LivingLab.Web.UIServices.ManualLogs;
 using LivingLab.Web.UIServices.Accessory;
+using LivingLab.Web.UIServices.Account;
 using LivingLab.Web.UIServices.Device;
+using LivingLab.Web.UIServices.SessionStats;
+using LivingLab.Web.UIServices.Identity;
+using LivingLab.Web.UIServices.LabAccess;
+using LivingLab.Web.UIServices.LabBooking;
+using LivingLab.Web.UIServices.LabProfile;
+using LivingLab.Web.UIServices.NotificationManagement;
 using LivingLab.Web.UIServices.Todo;
 
 namespace LivingLab.Web.Configuration;

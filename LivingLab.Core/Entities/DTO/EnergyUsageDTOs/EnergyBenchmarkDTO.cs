@@ -1,3 +1,4 @@
+
 namespace LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 
 /// <remarks>
@@ -7,5 +8,5 @@ public class EnergyBenchmarkDTO
 {
     public double EnergyUsageBenchmark { get; set; }
     public Lab Lab { get; set; }
-    public Device Device { get; set; }
+    public Entities.Device Device { get; set; }
 }
