@@ -1,6 +1,13 @@
 using LivingLab.Web.UIServices.Accessory;
+using LivingLab.Web.UIServices.Account;
 using LivingLab.Web.UIServices.Device;
+using LivingLab.Web.UIServices.Identity;
+using LivingLab.Web.UIServices.LabAccess;
+using LivingLab.Web.UIServices.LabBooking;
+using LivingLab.Web.UIServices.LabProfile;
 using LivingLab.Web.UIServices.ManualLogs;
+using LivingLab.Web.UIServices.NotificationManagement;
+using LivingLab.Web.UIServices.SessionStats;
 
 namespace LivingLab.Web.Configuration;
 
@@ -19,9 +26,15 @@ public static class ConfigureManagementServices
 
     private static IServiceCollection AddWebTransientServices(this IServiceCollection services)
     {
-        services.AddTransient<IManualLogService, ManualLogService>();
         services.AddTransient<IDeviceService, DeviceService>();
         services.AddTransient<IAccessoryService, AccessoryServices>();
+        services.AddTransient<IAccountService, AccountService>();
+        services.AddTransient<INotificationManagementService, NotificationManagementService>();
+        services.AddTransient<ILabBookingService, LabBookingService>();
+        services.AddTransient<ILabProfileService, LabProfileService>();
+        services.AddTransient<IIdentityService, IdentityService>();
+        services.AddTransient<ILabAccessService, LabAccessService>();
+        services.AddTransient<ISessionStatsService, SessionStatsService>();
 
         return services;
     }
@@ -30,7 +43,7 @@ public static class ConfigureManagementServices
     {
         return services;
     }
-    
+
     private static IServiceCollection AddWebSingletonServices(this IServiceCollection services)
     {
         return services;

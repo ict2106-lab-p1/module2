@@ -39,7 +39,7 @@ public static class ConfigureServiceContainer
     {
         services.AddEnergyMonitoringServices();
         services.AddManagementServices();
-        
+
         services.AddTransient<ITodoRepository, TodoRepository>();
         services.AddTransient<ITodoDomainService, TodoDomainService>();
 

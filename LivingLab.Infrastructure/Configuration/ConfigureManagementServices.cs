@@ -28,11 +28,21 @@ public static class ConfigureManagementServices
         services.AddTransient<IDeviceRepository, DeviceRepository>();
         services.AddTransient<ISessionStatsRepository, SessionStatsRepository>();
         services.AddTransient<ILabRepository, LabRepository>();
+        services.AddTransient<IAccountRepository, AccountRepository>();
+        services.AddTransient<ILabProfileRepository, LabProfileRepository>();
+        services.AddTransient<IBookingRepository, BookingRepository>();
 
         // Services
         services.AddTransient<IDeviceDomainService, DeviceDomainService>();
         services.AddTransient<IAccessoryDomainService, AccessoryDomainService>();
-        
+        services.AddTransient<IAccountDomainService, AccountDomainService>();
+        services.AddTransient<ILabProfileDomainService, LabProfileDomainService>();
+        services.AddTransient<IBookingDomainService, BookingDomainService>();
+        services.AddTransient<IIdentityDomainService, IdentityDomainService>();
+        services.AddTransient<ILabAccessDomainService, LabAccessDomainService>();
+        services.AddTransient<ISessionStatsDomainService, SessionStatsDomainService>();
+
+
         return services;
     }
 
@@ -42,7 +52,6 @@ public static class ConfigureManagementServices
 
         return services;
     }
-    
     private static IServiceCollection AddSingletonServices(this IServiceCollection services)
     {
         // services.AddSingleton<ITodoRepository, TodoRepository>();
