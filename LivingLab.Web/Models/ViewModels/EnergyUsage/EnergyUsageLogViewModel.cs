@@ -1,8 +1,6 @@
-using LivingLab.Core.Entities.Identity;
 using LivingLab.Web.Models.ViewModels.Device;
-using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
-namespace LivingLab.Web.Models.ViewModels;
+namespace LivingLab.Web.Models.ViewModels.EnergyUsage;
 
 /// <remarks>
 /// Author: Team P1-1
