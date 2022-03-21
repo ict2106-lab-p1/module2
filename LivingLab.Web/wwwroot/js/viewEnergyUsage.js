@@ -1,10 +1,47 @@
 $(document).ready(async function() {
+    initDatepicker();
+    $("#filter").click(filter);
     const data = await getData();
     if (!data) return;
     
-    console.log(data);
     showLineChart(data);
 })
+
+/**
+ * Initialize the datepicker
+ */
+function initDatepicker() {
+    const $start = $('#start');
+    const $end = $('#end');
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+    
+    $.datepicker.setDefaults({
+        maxDate: today,
+    })
+    
+    $start.datepicker({
+        defaultDate: firstDay,
+        minDate: oneMonthAgo,
+        onSelect: function(dateText) {
+            $end.datepicker("option", "minDate", dateText);
+        }
+    })
+    
+    $end.datepicker({
+        defaultDate: today,
+        onSelect: function(dateText) {
+            $start.datepicker("option", "maxDate", dateText);
+        }
+    });
+}
+
+function filter(e) {
+    const start = $('#start').val();
+    const end = $('#end').val();
+    console.log(start, end);
+}
 
 /**
  * Setup the line chart with
