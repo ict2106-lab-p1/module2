@@ -2,7 +2,6 @@ using AutoMapper;
 
 using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
-using LivingLab.Core.Models;
 using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
@@ -15,7 +14,7 @@ public class EnergyUsageProfile : Profile
 {
     public EnergyUsageProfile()
     {
-        CreateMap<EnergyUsageCsvModel, LogItemViewModel>().ReverseMap();
+        CreateMap<EnergyUsageCsvDTO, LogItemViewModel>().ReverseMap();
         CreateMap<EnergyUsageFilterDTO, EnergyUsageFilterViewModel>().ReverseMap();
         CreateMap<EnergyUsageDTO, EnergyUsageViewModel>().ReverseMap();
         CreateMap<EnergyBenchmarkDTO, EnergyBenchmarkViewModel>().ReverseMap();
