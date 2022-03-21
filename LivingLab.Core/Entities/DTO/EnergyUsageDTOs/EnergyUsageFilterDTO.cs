@@ -6,7 +6,7 @@ namespace LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 public class EnergyUsageFilterDTO
 {
     public double EnergyUsage { get; set; }
-    public DateTime Start { get; set; }
-    public DateTime End { get; set; }
+    public DateTime? Start { get; set; }
+    public DateTime? End { get; set; }
     public Lab Lab { get; set; }
 }

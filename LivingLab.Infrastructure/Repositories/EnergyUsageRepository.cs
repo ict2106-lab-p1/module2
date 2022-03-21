@@ -59,8 +59,13 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         return logsForTypeInDateRange;
     }
 
-    public async Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByLabAndDate(int labId, DateTime start, DateTime end)
+    public async Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByLabAndDate(int labId, DateTime? start, DateTime? end)
     {
+        var now = DateTime.Now;
+        
+        start ??= new DateTime(now.Year, now.Month, 1);
+        end ??= now;
+        
         var logsForLabInDateRange = await IncludeReferences(
                 _context.EnergyUsageLogs
                     .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)

@@ -1,5 +1,6 @@
 using LivingLab.Core.Entities.Identity;
 using LivingLab.Web.Models.ViewModels.Device;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
 namespace LivingLab.Web.Models.ViewModels;
 
@@ -9,9 +10,8 @@ namespace LivingLab.Web.Models.ViewModels;
 public class EnergyUsageLogViewModel
 {
     public double EnergyUsage { get; set; }
-    public double Interval { get; set; }
+    public TimeSpan Interval { get; set; }
     public DateTime LoggedDate { get; set; }
-    public ApplicationUser LoggedBy { get; set; }
-    public LabViewModel Lab { get; set; }
+    public EnergyUsageLabViewModel Lab { get; set; }
     public DeviceViewModel Device { get; set; }
 }

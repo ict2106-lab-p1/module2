@@ -30,13 +30,12 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
         var logs = await _energyUsageRepository
             .GetDeviceEnergyUsageByLabAndDate(filter.Lab.LabId, filter.Start, filter.End);
 
-        var benchmark = await _labRepository.GetLabEnergyBenchmark(filter.Lab.LabId);
+        var lab = await _labRepository.GetByIdAsync(filter.Lab.LabId);
         
         var dto = new EnergyUsageDTO
         {
             Logs = logs,
-            LabId = filter.Lab.LabId,
-            EnergyUsageBenchmark = benchmark
+            Lab = lab
         };
         return dto;
     }

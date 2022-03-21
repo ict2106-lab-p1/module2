@@ -18,11 +18,11 @@ public class EnergyUsageProfile : Profile
     {
         CreateMap<EnergyUsageCsvDTO, LogItemViewModel>().ReverseMap();
         CreateMap<EnergyUsageFilterDTO, EnergyUsageFilterViewModel>().ReverseMap();
-        CreateMap<EnergyUsageDTO, EnergyUsageViewModel>().ReverseMap();
         CreateMap<Lab, EnergyBenchmarkViewModel>().ReverseMap();
+        CreateMap<EnergyUsageLog, EnergyUsageLogViewModel>().ReverseMap();
+        CreateMap<EnergyUsageDTO, EnergyUsageViewModel>().ReverseMap();
         
-        CreateMap<EnergyUsageLog, LogItemViewModel>();
-        CreateMap<LogItemViewModel, EnergyUsageLog>()
+        CreateMap<EnergyUsageLog, LogItemViewModel>().ReverseMap()
             .ForMember(dest => dest.Device,
                 opt => opt.MapFrom(src => new Device { SerialNo = src.DeviceSerialNo }))
             .ForMember(dest => dest.Interval,

@@ -1,6 +1,7 @@
 using AutoMapper;
 
 using LivingLab.Core.Entities;
+using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
@@ -20,9 +21,11 @@ public class EnergyUsageService : IEnergyUsageService
         _energyUsageDomainService = energyUsageDomainService;
     }
     
-    public Task<List<EnergyUsageViewModel>> GetEnergyUsage(EnergyUsageFilterViewModel filter)
+    public async Task<EnergyUsageViewModel> GetEnergyUsage(EnergyUsageFilterViewModel filter)
     {
-        throw new NotImplementedException();
+        var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
+        var logs = await _energyUsageDomainService.GetEnergyUsage(energyUsageFilter);
+        return _mapper.Map<EnergyUsageDTO, EnergyUsageViewModel>(logs);
     }
 
     public async Task<EnergyBenchmarkViewModel> GetLabEnergyBenchmark(int labId)

@@ -24,9 +24,22 @@ public class EnergyUsageController : Controller
         return View();
     }
 
-    public IActionResult ViewUsage(EnergyUsageViewModel usage)
+    public async Task<IActionResult> ViewUsage(EnergyUsageFilterViewModel filter)
     {
-        return View();
+        try
+        {
+            if (filter.Lab == null)
+            {
+                filter.Lab = new EnergyUsageLabViewModel { LabId = 1 };
+            }
+            var model = await _energyUsageService.GetEnergyUsage(filter);
+            return View(model);
+        }
+        catch (Exception e)
+        {
+            _logger.Log(LogLevel.Error, e.Message);
+            return View();
+        }
     }
     
     public async Task<IActionResult> Benchmark(int labId = 1)
