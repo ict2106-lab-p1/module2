@@ -52,10 +52,12 @@ public class ManualLogsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Save(List<LogItemViewModel> logs)
+    public async Task<IActionResult> Save([FromBody] List<LogItemViewModel> logs)
     {
         try
         {
+            if (logs.Count == 0) return Error();
+            
             await _manualLogService.SaveLogs(logs);
             return Ok();
         }
