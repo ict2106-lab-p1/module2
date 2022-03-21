@@ -1,10 +1,11 @@
+let chart;
 $(document).ready(async function() {
-    initDatepicker();
-    $("#filter").click(filter);
     const data = await getData();
     if (!data) return;
     
-    showLineChart(data);
+    initLineChart(data);
+    initDatepicker();
+    $("#filter").click(filter);
 })
 
 /**
@@ -37,10 +38,18 @@ function initDatepicker() {
     });
 }
 
-function filter(e) {
+/**
+ * Filter the data.
+ */
+async function filter(e) {
+    e.preventDefault();
     const start = $('#start').val();
     const end = $('#end').val();
-    console.log(start, end);
+    const data = await getData(start, end);
+    
+    // Update the chart
+    chart.destroy()
+    chart = getLineChart(data);
 }
 
 /**
@@ -49,9 +58,19 @@ function filter(e) {
  * 
  * @param {Object} data
  */
-function showLineChart(data) {
+function initLineChart(data) {
+    chart = getLineChart(data);
+}
+
+/**
+ * Get the line chart.
+ * 
+ * @param {Object} data
+ * @returns {Chart} Chart
+ */
+function getLineChart(data) {
     const ctx = $("#lineChart");
-    const lineChart = new Chart(ctx, {
+    return new Chart(ctx, {
         type: "line",
         data: {
             labels: getDates(),
@@ -104,11 +123,18 @@ function getBenchmark(data) {
 /**
  * Ajax call to get data from the server.
  */
-async function getData() {
+async function getData(start = null, end = null) {
+    const data = {
+        Start: start,
+        End: end
+    }
+    
     try {
         return await $.ajax({
             url: "/EnergyUsage/ViewUsage",
-            type: "GET",
+            type: "POST",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
         })
     } catch (error) {
         console.log(error)

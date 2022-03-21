@@ -24,8 +24,8 @@ public class EnergyUsageController : Controller
         return View();
     }
 
-    [HttpGet]
-    public async Task<IActionResult> ViewUsage(EnergyUsageFilterViewModel filter)
+    [HttpGet, HttpPost]
+    public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
         try
         {
