@@ -38,7 +38,8 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
                 EnergyUsage = log.Sum(l => l.EnergyUsage),
                 Device = log.First().Device,
                 Lab = log.First().Lab
-            }).ToList();;
+            })
+            .OrderBy(log => log.LoggedDate).ToList();;
 
         var lab = await _labRepository.GetByIdAsync(filter.Lab.LabId);
         

@@ -24,6 +24,7 @@ public class EnergyUsageController : Controller
         return View();
     }
 
+    [HttpGet]
     public async Task<IActionResult> ViewUsage(EnergyUsageFilterViewModel filter)
     {
         try
@@ -33,12 +34,12 @@ public class EnergyUsageController : Controller
                 filter.Lab = new EnergyUsageLabViewModel { LabId = 1 };
             }
             var model = await _energyUsageService.GetEnergyUsage(filter);
-            return View(model);
+            return Json(model);
         }
         catch (Exception e)
         {
             _logger.Log(LogLevel.Error, e.Message);
-            return View();
+            return NotFound();
         }
     }
     
