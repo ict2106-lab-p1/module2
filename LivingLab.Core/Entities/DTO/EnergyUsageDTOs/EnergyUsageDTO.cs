@@ -6,5 +6,6 @@ namespace LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 public class EnergyUsageDTO
 {
     public List<EnergyUsageLog> Logs { get; set; }
-    public Lab Lab { get; set; }
+    public int LabId { get; set; }
+    public double EnergyUsageBenchmark { get; set; }
 }

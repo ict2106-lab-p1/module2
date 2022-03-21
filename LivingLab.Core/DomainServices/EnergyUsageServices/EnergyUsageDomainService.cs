@@ -28,11 +28,14 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     {
         var logs = await _energyUsageRepository
             .GetDeviceEnergyUsageByLabAndDate(filter.Lab.LabId, filter.Start, filter.End);
+
+        var benchmark = await _labRepository.GetLabEnergyBenchmark(filter.Lab.LabId);
         
         var dto = new EnergyUsageDTO
         {
             Logs = logs,
-            // TODO: call lab repo and map to DTO
+            LabId = filter.Lab.LabId,
+            EnergyUsageBenchmark = benchmark
         };
         return dto;
     }
@@ -43,7 +46,6 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     /// <param name="benchmark">Benchmark DTO object</param>
     public Task SetLabEnergyBenchmark(EnergyBenchmarkDTO benchmark)
     {
-        // TODO: Call Lab repo to set energy benchmark
-        throw new NotImplementedException();
+        return _labRepository.SetLabEnergyBenchmark(benchmark.Lab.LabId, benchmark.EnergyUsageBenchmark);
     }
 }
