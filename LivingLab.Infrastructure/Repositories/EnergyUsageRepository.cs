@@ -117,13 +117,16 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
 
     public Task<List<EnergyUsageLog>> GetUsageByUser(ApplicationUser? user)
     {
-        if(user == null) {
+        if (user == null)
+        {
             return IncludeReferences(
                     _context.EnergyUsageLogs
                     .Where(log => log.LoggedBy != null)
                 )
                 .ToListAsync();
-        } else {
+        }
+        else
+        {
             return IncludeReferences(
                     _context.EnergyUsageLogs
                     .Where(log => log.LoggedBy != null && log.LoggedBy.Equals(user))
@@ -131,7 +134,8 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
                 .ToListAsync();
         }
     }
-    protected override IQueryable<EnergyUsageLog> IncludeReferences(IQueryable<EnergyUsageLog> logQuery) {
+    protected override IQueryable<EnergyUsageLog> IncludeReferences(IQueryable<EnergyUsageLog> logQuery)
+    {
         return base.IncludeReferences(logQuery)
             .Include(log => log.Device)
             .Include(log => log.Lab);
