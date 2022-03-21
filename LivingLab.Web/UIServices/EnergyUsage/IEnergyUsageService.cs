@@ -8,5 +8,6 @@ namespace LivingLab.Web.UIServices.EnergyUsage;
 public interface IEnergyUsageService
 {
     Task<List<EnergyUsageViewModel>> GetEnergyUsage(EnergyUsageFilterViewModel filter);
+    Task<EnergyBenchmarkViewModel> GetLabEnergyBenchmark(int labId);
     Task SetLabEnergyBenchmark(EnergyBenchmarkViewModel benchmark);
 }

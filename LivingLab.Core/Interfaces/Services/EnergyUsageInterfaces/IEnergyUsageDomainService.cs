@@ -1,3 +1,4 @@
+using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 
 namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
@@ -8,6 +9,7 @@ namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 public interface IEnergyUsageDomainService
 {
     Task<EnergyUsageDTO> GetEnergyUsage(EnergyUsageFilterDTO filter);
-    Task SetLabEnergyBenchmark(EnergyBenchmarkDTO benchmark);
+    Task<Lab> GetLabEnergyBenchmark(int labId);
+    Task SetLabEnergyBenchmark(Lab lab);
 }
  

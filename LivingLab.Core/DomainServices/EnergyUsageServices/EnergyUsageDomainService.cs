@@ -1,3 +1,4 @@
+using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
@@ -40,12 +41,17 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
         return dto;
     }
 
+    public Task<Lab> GetLabEnergyBenchmark(int labId)
+    {
+        return _labRepository.GetByIdAsync(labId);
+    }
+
     /// <summary>
     /// Call Lab repo to set the current lab total energy benchmark
     /// </summary>
     /// <param name="benchmark">Benchmark DTO object</param>
-    public Task SetLabEnergyBenchmark(EnergyBenchmarkDTO benchmark)
+    public Task SetLabEnergyBenchmark(Lab lab)
     {
-        return _labRepository.SetLabEnergyBenchmark(benchmark.Lab.LabId, benchmark.EnergyUsageBenchmark);
+        return _labRepository.SetLabEnergyBenchmark(lab.LabId, lab.EnergyUsageBenchmark!.Value);
     }
 }
