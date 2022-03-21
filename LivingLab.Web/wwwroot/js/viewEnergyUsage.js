@@ -88,7 +88,11 @@ function getDates() {
     const month = today.getMonth();
     const year = today.getFullYear();
     for (let i = 1; i <= new Date(year, month + 1, 0).getDate(); i++) {
-        dates.push(i);
+        const date = new Date(year, month, i).toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'short'
+        });
+        dates.push(date);
     }
     return dates;
 }
