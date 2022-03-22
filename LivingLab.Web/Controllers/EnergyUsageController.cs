@@ -36,7 +36,7 @@ public class EnergyUsageController : Controller
         try
         {
             var model = await _energyUsageService.GetEnergyUsage(filter);
-            return Json(model);
+            return model.Lab != null ? Json(model) : NotFound();
         }
         catch (Exception e)
         {

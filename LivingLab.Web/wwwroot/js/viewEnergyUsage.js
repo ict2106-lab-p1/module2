@@ -1,6 +1,8 @@
 let chart;
+
 $(document).ready(async function() {
-    const data = await getData();
+    const labId = $("#labId").val();
+    const data = await getData(labId);
     if (!data) return;
     
     initLineChart(data);
@@ -41,9 +43,10 @@ function initDatepicker() {
  */
 async function filter(e) {
     e.preventDefault();
+    const labId = $("#labId").val();
     const start = $('#start').val();
     const end = $('#end').val();
-    const data = await getData(start, end);
+    const data = await getData(labId, start, end);
     
     // Update the chart
     chart.destroy()
@@ -121,8 +124,9 @@ function getBenchmark(data) {
 /**
  * Ajax call to get data from the server.
  */
-async function getData(start = null, end = null) {
+async function getData(labId = 1, start = null, end = null) {
     const data = {
+        labId: labId,
         Start: start,
         End: end
     }
@@ -136,6 +140,12 @@ async function getData(start = null, end = null) {
         })
     } catch (error) {
         console.log(error)
+        Swal.fire({
+            title: "Error",
+            text: "Lab not found",
+            icon: "error",
+            confirmButtonText: "Ok"
+        })
     }
 }
 
