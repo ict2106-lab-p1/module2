@@ -6,7 +6,7 @@ namespace LivingLab.Web.Controllers.Api;
 /// Author: Team P1-1
 /// </remarks>
 [ApiController]
-[Route("api/[controller]")]
+[Route("Api/[controller]/[action]")]
 public abstract class BaseApiController : Controller
 {
 }
