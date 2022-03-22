@@ -29,7 +29,7 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     {
         // Grouping done here before SQLite doesn't support it
         var logs = _energyUsageRepository
-            .GetDeviceEnergyUsageByLabAndDate(filter.Lab.LabId, filter.Start, filter.End)
+            .GetDeviceEnergyUsageByLabAndDate(filter.LabId, filter.Start, filter.End)
             .Result
             .GroupBy(log => log.LoggedDate.Date)
             .Select(log => new EnergyUsageLog
@@ -41,7 +41,7 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
             })
             .OrderBy(log => log.LoggedDate).ToList();;
 
-        var lab = await _labRepository.GetByIdAsync(filter.Lab.LabId);
+        var lab = await _labRepository.GetByIdAsync(filter.LabId);
         
         var dto = new EnergyUsageDTO
         {

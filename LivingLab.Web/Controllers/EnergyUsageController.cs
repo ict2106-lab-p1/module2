@@ -29,10 +29,6 @@ public class EnergyUsageController : Controller
     {
         try
         {
-            if (filter.Lab == null)
-            {
-                filter.Lab = new EnergyUsageLabViewModel { LabId = 1 };
-            }
             var model = await _energyUsageService.GetEnergyUsage(filter);
             return Json(model);
         }

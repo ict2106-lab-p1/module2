@@ -18,13 +18,10 @@ function initDatepicker() {
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
     
-    $.datepicker.setDefaults({
-        maxDate: today,
-    })
-    
     $start.datepicker({
         defaultDate: firstDay,
         minDate: oneMonthAgo,
+        maxDate: today,
         onSelect: function(dateText) {
             $end.datepicker("option", "minDate", dateText);
         }
@@ -32,6 +29,7 @@ function initDatepicker() {
     
     $end.datepicker({
         defaultDate: today,
+        maxDate: today,
         onSelect: function(dateText) {
             $start.datepicker("option", "maxDate", dateText);
         }
