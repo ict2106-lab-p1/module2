@@ -19,12 +19,15 @@ public class EnergyUsageController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    [HttpGet]
+    [Route("/EnergyUsage/{labId?}")]
+    public IActionResult Index(int? labId = 1)
     {
+        ViewBag.LabId = labId;
         return View();
     }
 
-    [HttpGet, HttpPost]
+    [HttpPost]
     public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
         try
