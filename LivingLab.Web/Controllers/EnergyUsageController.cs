@@ -22,8 +22,7 @@ public class EnergyUsageController : Controller
         _logger = logger;
     }
 
-    [HttpGet]
-    [Route("EnergyUsage/Lab/{labId?}")]
+    [HttpGet("/EnergyUsage/Lab/{labId?}")]
     public IActionResult Index(int? labId = 1)
     {
         ViewBag.LabId = labId;
@@ -45,7 +44,7 @@ public class EnergyUsageController : Controller
         }
     }
 
-    [Route("EnergyUsage/Benchmark/Lab/{labId?}")]
+    [HttpGet("EnergyUsage/Benchmark/Lab/{labId?}")]
     public async Task<IActionResult> Benchmark(int? labId = 1)
     {
         try
