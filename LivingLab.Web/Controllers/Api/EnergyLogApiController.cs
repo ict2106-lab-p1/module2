@@ -21,12 +21,6 @@ public class EnergyLogApiController : BaseApiController
         _logger = logger;
     }
     
-    // GET: api/EnergyLogApi
-    public IActionResult Test()
-    {
-        return Json("Hello from EnergyLogApiController");
-    }
-    
     [HttpPost]
     public async Task<IActionResult> Log(EnergyUsageLogDTO usage)
     {
