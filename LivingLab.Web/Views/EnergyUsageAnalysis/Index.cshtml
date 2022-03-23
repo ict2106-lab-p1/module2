@@ -1,5 +1,21 @@
 @* @model List<LivingLab.Core.Models.DeviceEnergyUsageModel> *@
 
+<link rel="stylesheet" href="~/lib/jquery-ui-1.13.1/jquery-ui.min.css"/>
+@{
+    ViewData["Title"] = "View Energy Usage Analysis";
+}
+
+<h2 class="font-bold text-3xl text-slate-900">Lab @ViewBag.LabId Energy Usage</h2>
+
+<div class="w-full h-1/2 mt-6">
+    <div class="flex mb-5">
+        <input type="text" id="start" class="input input-bordered" placeholder="Start date"/>
+        <input type="text" id="end" class="input input-bordered ml-4" placeholder="End date"/>
+        <input type="button" id="filter" class="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded trigger-swal ml-4" value="Filter"/>
+    </div>
+    <canvas id="lineChart"></canvas>
+</div>
+
 <div class="flex">
     <div class="flex-grow">
         <p class="text-4xl pb-3 flex items-center font-black">
@@ -18,27 +34,27 @@
             <div class="overflow-hidden shadow-md sm:rounded-lg">
                 <table class="min-w-full">
                     <thead class="bg-gray-50 dark:bg-gray-700 text-center">
-                        <tr>
-                            <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
-                                Device Serial No.
-                            </th>
-                            <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
-                                Device Type
-                            </th>
-                            <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
-                                Total Energy Usage
-                            </th>
-                            <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
-                                Energy Usage Per Hour
-                            </th>
-                            <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
-                                Energy Usage Cost
-                            </th>
-                        </tr>
+                    <tr>
+                        <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
+                            Device Serial No.
+                        </th>
+                        <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
+                            Device Type
+                        </th>
+                        <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
+                            Total Energy Usage
+                        </th>
+                        <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
+                            Energy Usage Per Hour
+                        </th>
+                        <th scope="col" class="py-3 px-6 text-s font-medium tracking-wider text-gray-700 uppercase dark:text-gray-400">
+                            Energy Usage Cost
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in @ViewBag.Logs)
-                        {
+                    @foreach (var item in @ViewBag.Logs)
+                    {
                         <tr class="border-b odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600 text-center">
                             <td class="py-4 px-6 text-sm text-gray-900 whitespace-nowrap dark:text-white">
                                 @item.DeviceSerialNo
@@ -56,10 +72,19 @@
                                 $ @item.EnergyUsageCost
                             </td>
                         </tr>
-                        }
+                    }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+@* JOEY *@
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="~/lib/jquery-ui-1.13.1/jquery-ui.min.js"></script>
+    <script src="~/js/viewAllEnergyUsageTrend.js"></script>
+}
+

@@ -73,6 +73,24 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
     {
         throw new NotImplementedException();
     }
+    
+    // JOEY:
+
+    public async Task<List<EnergyUsageLog>> GetLabEnergyUsageByIdAndDate(int labId, DateTime? start, DateTime? end)
+    {
+        var now = DateTime.Now;
+        
+        start ??= new DateTime(now.Year, now.Month, 1);
+        end ??= now;
+        
+        var logsForLabInDateRange = await IncludeReferences(
+                _context.EnergyUsageLogs
+                    .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)
+                    .Where(log => log.Lab!.LabId == labId)
+                )
+            .ToListAsync();
+        return logsForLabInDateRange;
+    }
 
     public async Task<List<EnergyUsageLog>> GetUsageByDeviceId(int id)
     {

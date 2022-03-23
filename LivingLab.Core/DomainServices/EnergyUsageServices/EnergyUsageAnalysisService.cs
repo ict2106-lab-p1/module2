@@ -7,10 +7,12 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
+
 public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 {
     private readonly IEnergyUsageRepository _repository;
-
+    private readonly ILabRepository _labRepository;
+    
     private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
 
     private double cost = 0.2544;
@@ -147,9 +149,34 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     {
         throw new NotImplementedException();
     }
-    public List<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end) 
+    // public List<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end) 
+    // {
+    //     throw new NotImplementedException();
+    // }                
+    public async Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter) 
     {
-        throw new NotImplementedException();
+        // Grouping done here before SQLite doesn't support it
+        var logs = _repository
+            .GetLabEnergyUsageByIdAndDate(filter.LabId, filter.Start, filter.End)
+            .Result
+            .GroupBy(log => log.LoggedDate.Date)
+            .Select(log => new EnergyUsageLog
+            {
+                LoggedDate = log.Key,
+                EnergyUsage = log.Sum(l => l.EnergyUsage),
+                Device = log.First().Device,
+                Lab = log.First().Lab
+            })
+            .OrderBy(log => log.LoggedDate).ToList();;
+
+        var lab = await _labRepository.GetByIdAsync(filter.LabId);
+        
+        var dto = new MonthlyEnergyUsageDTO
+        {
+            Logs = logs,
+            // Lab = lab
+        };
+        return dto;
     }
     public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
     {
@@ -227,3 +254,4 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         return result;
     }
 }
+

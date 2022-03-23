@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Entities;
 using LivingLab.Web.Models.ViewModels;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.EnergyUsage;
 
 
@@ -23,8 +24,9 @@ public class EnergyUsageAnalysisController : Controller
         _logger = logger;
         _repository = repository;
         _analysisService = analysisService;
+        // Joey i think u need to add the necessary service and repo here
     }
-
+    
     public IActionResult Index()
     {
         // List<Log> Logs = logList();
@@ -114,10 +116,33 @@ public class EnergyUsageAnalysisController : Controller
         double Total = Math.Round((cost * (double)TotalEU * TotalEUTime),2);
         return Total;
     }
+    
+    // I think joey need use this 
+    // public IActionResult GetLabEnergyUsageDetailGraph(string listOfLabId, DateTime start, DateTime end)
+    // {
+    //     return View();
+    // }
+    // or this
+    // public IActionResult GetLabEnergyUsageByDate(DateTime start, DateTime end)
+    // {
+    //     return View();
+    // }
+    
+    // public IActionResult GetLabEnergyUsageByDate(EnergyUsageFilterDTO filter)
+    // {
+    //     return View();
+    // }
+    
+    public IActionResult ViewUsage(EnergyUsageTrendAllLabViewModel usage)
+    {
+        return View();
+    }
 
-
-
-
+    [HttpPost]
+    public IActionResult Filter(EnergyUsageFilterViewModel filter)
+    {
+        return Ok();
+    }
 } 
 
 

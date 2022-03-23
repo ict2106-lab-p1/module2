@@ -1,15 +1,21 @@
+using AutoMapper;
+
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
+
 namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
 public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService 
 {
+    private readonly IMapper _mapper;
     private readonly IEnergyUsageAnalysisService _analysis;
 
-    public EnergyUsageAnalysisUIService(IEnergyUsageAnalysisService analysis)
+    public EnergyUsageAnalysisUIService(IMapper mapper, IEnergyUsageAnalysisService analysis)
     {
+        _mapper = mapper;
         _analysis = analysis;
     }
     public byte[] Export()
@@ -25,15 +31,37 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
         throw new NotImplementedException();
     }
     // joey
-    public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end)
+    // may nee to change to ENergyUsageFilterDto
+    // public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end)
+    // {
+    //     throw new NotImplementedException();
+    // }
+    // public List<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end)
+    // {
+    //     throw new NotImplementedException();
+    // }
+    // public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
+    // {
+    //     throw new NotImplementedException();
+    // }
+    
+    public async Task<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end)
     {
         throw new NotImplementedException();
     }
-    public List<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end)
+
+    public Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end)
     {
         throw new NotImplementedException();
     }
-    public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
+
+    public async Task<EnergyUsageTrendAllLabViewModel> GetEnergyUsageTrendAllLab(EnergyUsageFilterViewModel filter)
+    {
+        var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
+        var logs = await _analysis.GetEnergyUsageTrendAllLab(energyUsageFilter);
+        return _mapper.Map<MonthlyEnergyUsageDTO, EnergyUsageTrendAllLabViewModel>(logs);
+    }
+    public async Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
     {
         throw new NotImplementedException();
     }
