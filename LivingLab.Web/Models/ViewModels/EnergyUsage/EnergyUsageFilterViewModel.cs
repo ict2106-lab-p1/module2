@@ -5,9 +5,8 @@ namespace LivingLab.Web.Models.ViewModels.EnergyUsage;
 /// </remarks>
 public class EnergyUsageFilterViewModel
 {
-    // JOEY: test with lab 1 first 
     public int LabId { get; set; } = 1;
     public double EnergyUsage { get; set; }
-    public DateTime Start { get; set; }
-    public DateTime End { get; set; }
+    public DateTime? Start { get; set; }
+    public DateTime? End { get; set; }
 }

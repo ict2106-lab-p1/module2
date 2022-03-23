@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LivingLab.Web.Models.ViewModels;
+namespace LivingLab.Web.Models.ViewModels.EnergyUsage;
 
 /// <remarks>
 /// Author: Team P1-1

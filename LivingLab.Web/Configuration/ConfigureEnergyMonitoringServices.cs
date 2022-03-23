@@ -1,3 +1,4 @@
+using LivingLab.Web.UIServices.EnergyLog;
 using LivingLab.Web.UIServices.EnergyUsage;
 using LivingLab.Web.UIServices.ManualLogs;
 
@@ -25,6 +26,7 @@ public static class ConfigureEnergyMonitoringServices
         services.AddTransient<IEnergyUsageAnalysisUIService, EnergyUsageAnalysisUIService>();
         services.AddTransient<IEnergyUsageComparisonService, EnergyUsageComparisonService>();
         services.AddTransient<IEnergyUsageService, EnergyUsageService>();
+        services.AddTransient<IEnergyLogService, EnergyLogService>();
 
         return services;
     }

@@ -5,6 +5,7 @@ using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 
 using LivingLab.Web.Models.ViewModels;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
 namespace LivingLab.Web.UIServices.ManualLogs;
 
