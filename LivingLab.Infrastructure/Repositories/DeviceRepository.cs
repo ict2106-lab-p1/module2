@@ -15,6 +15,13 @@ public class DeviceRepository : Repository<Device>, IDeviceRepository
     {
         _context = context;
     }
+
+    // Added by Han Yi (P1-1)
+    public async Task<Device> GetDeviceBySerialNo(string serialNo)
+    {
+        return await _context.Devices.FirstOrDefaultAsync(d => d.SerialNo == serialNo);
+    }
+    
     public async Task<List<ViewDeviceTypeDTO>> GetViewDeviceType()
     {
         var deviceGroup = await _context.Devices.GroupBy(t => t.Type).Select(t => new { Key = t.Key, Count = t.Count() }).ToListAsync();

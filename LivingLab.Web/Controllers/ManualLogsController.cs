@@ -1,6 +1,7 @@
 using System.Diagnostics;
 
 using LivingLab.Web.Models.ViewModels;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.ManualLogs;
 
 using Microsoft.AspNetCore.Mvc;
