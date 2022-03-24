@@ -59,6 +59,22 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         return logsForTypeInDateRange;
     }
 
+    public async Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByLabAndDate(int labId, DateTime? start, DateTime? end)
+    {
+        var now = DateTime.Now;
+        
+        start ??= new DateTime(now.Year, now.Month, 1);
+        end ??= now;
+        
+        var logsForLabInDateRange = await IncludeReferences(
+                _context.EnergyUsageLogs
+                    .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)
+                    .Where(log => log.Lab!.LabId == labId)
+            )
+            .ToListAsync();
+        return logsForLabInDateRange;
+    }
+
     public Task<List<EnergyUsageLog>> GetDistinctDeviceEnergyUsage()
     {
         throw new NotImplementedException();
@@ -117,13 +133,16 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
 
     public Task<List<EnergyUsageLog>> GetUsageByUser(ApplicationUser? user)
     {
-        if(user == null) {
+        if (user == null)
+        {
             return IncludeReferences(
                     _context.EnergyUsageLogs
                     .Where(log => log.LoggedBy != null)
                 )
                 .ToListAsync();
-        } else {
+        }
+        else
+        {
             return IncludeReferences(
                     _context.EnergyUsageLogs
                     .Where(log => log.LoggedBy != null && log.LoggedBy.Equals(user))
@@ -131,7 +150,8 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
                 .ToListAsync();
         }
     }
-    protected override IQueryable<EnergyUsageLog> IncludeReferences(IQueryable<EnergyUsageLog> logQuery) {
+    protected override IQueryable<EnergyUsageLog> IncludeReferences(IQueryable<EnergyUsageLog> logQuery)
+    {
         return base.IncludeReferences(logQuery)
             .Include(log => log.Device)
             .Include(log => log.Lab);
