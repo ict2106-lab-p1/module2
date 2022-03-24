@@ -17,9 +17,10 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 
     private double cost = 0.2544;
 
-    public EnergyUsageAnalysisService(IEnergyUsageRepository repository)
+    public EnergyUsageAnalysisService(IEnergyUsageRepository repository, ILabRepository labRepository)
     {
         _repository = repository;
+        _labRepository = labRepository;
     }
 
     public byte[] Export() 
@@ -174,10 +175,26 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         var dto = new MonthlyEnergyUsageDTO
         {
             Logs = logs,
-            // Lab = lab
+            Lab = lab
         };
         return dto;
     }
+
+
+    public Task<Lab> GetLabEnergyBenchmark(int labId)
+    {
+        return _labRepository.GetByIdAsync(labId);
+    }
+
+    /// <summary>
+    /// Call Lab repo to set the current lab total energy benchmark
+    /// </summary>
+    /// <param name="benchmark">Benchmark DTO object</param>
+    public Task SetLabEnergyBenchmark(Lab lab)
+    {
+        return _labRepository.SetLabEnergyBenchmark(lab.LabId, lab.EnergyUsageBenchmark!.Value);
+    }
+
     public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
     {
         throw new NotImplementedException();

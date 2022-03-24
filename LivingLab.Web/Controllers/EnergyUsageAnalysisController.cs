@@ -26,14 +26,14 @@ public class EnergyUsageAnalysisController : Controller
         _analysisService = analysisService;
         // Joey i think u need to add the necessary service and repo here
     }
-    
-    public IActionResult Index()
+    public IActionResult Index(int? labId = 1)
     {
         // List<Log> Logs = logList();
         List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
         ViewBag.Logs = Logs;
+        ViewBag.LabId = labId;
         // GetAll();
-        return View(Logs);
+        return View();
     }
     
     [HttpGet]
@@ -133,16 +133,58 @@ public class EnergyUsageAnalysisController : Controller
     //     return View();
     // }
     
-    public IActionResult ViewUsage(EnergyUsageTrendAllLabViewModel usage)
+    // public IActionResult ViewUsage(EnergyUsageTrendAllLabViewModel usage)
+    // {
+    //     return View();
+    // }
+
+    [HttpPost]
+    public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
-        return View();
+        try
+        {
+            var model = await _analysisService.GetEnergyUsageTrendAllLab(filter);
+            return model.Lab != null ? Json(model) : NotFound();
+        }
+        catch (Exception e)
+        {
+            _logger.Log(LogLevel.Error, e.Message);
+            return NotFound();
+        }
+    }
+
+    // [HttpGet("EnergyUsageAnalysis/Benchmark/Lab/{labId?}")]
+    public async Task<IActionResult> Benchmark(int? labId = 1)
+    {
+        try
+        {
+            var benchmark = await _analysisService.GetLabEnergyBenchmark(labId!.Value);
+            return benchmark != null ? View(benchmark) : NotFound();
+        }
+        catch (Exception e)
+        {
+            _logger.Log(LogLevel.Error, e.Message);
+            return Error();
+        }
+        
     }
 
     [HttpPost]
-    public IActionResult Filter(EnergyUsageFilterViewModel filter)
+    public async Task<IActionResult> SetBenchmark(EnergyBenchmarkViewModel benchmark)
     {
-        return Ok();
+        try
+        {
+            await _analysisService.SetLabEnergyBenchmark(benchmark);
+            return RedirectToAction(nameof(Index), new {labId = benchmark.LabId});
+        }
+        catch (Exception e)
+        {
+            _logger.Log(LogLevel.Error, e.Message);
+            return RedirectToAction(nameof(Benchmark));
+        }
     }
+    
+
 } 
 
 

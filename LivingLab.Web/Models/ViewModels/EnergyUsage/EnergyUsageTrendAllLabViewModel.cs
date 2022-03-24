@@ -6,5 +6,5 @@ public class EnergyUsageTrendAllLabViewModel
     // public LabViewModel Lab { get; set; }
     
     public List<EnergyUsageLogViewModel> Logs { get; set; }
-    public LabViewModel Lab { get; set; }
+    public EnergyUsageLabViewModel Lab { get; set; }
 }

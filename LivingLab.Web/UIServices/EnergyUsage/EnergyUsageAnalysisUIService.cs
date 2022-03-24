@@ -1,5 +1,6 @@
 using AutoMapper;
 
+using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
@@ -64,6 +65,19 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
     public async Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
     {
         throw new NotImplementedException();
+    }
+    
+    // JOEY ADDED
+    public async Task<EnergyBenchmarkViewModel> GetLabEnergyBenchmark(int labId)
+    {
+        var data = await _analysis.GetLabEnergyBenchmark(labId);
+        return _mapper.Map<Lab, EnergyBenchmarkViewModel>(data);
+    }
+
+    public Task SetLabEnergyBenchmark(EnergyBenchmarkViewModel benchmark)
+    {
+        var lab = _mapper.Map<EnergyBenchmarkViewModel, Lab>(benchmark);
+        return _analysis.SetLabEnergyBenchmark(lab);
     }
 
     // weijie
