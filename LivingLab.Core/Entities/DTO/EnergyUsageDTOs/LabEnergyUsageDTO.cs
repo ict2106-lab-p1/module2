@@ -13,4 +13,5 @@ public class LabEnergyUsageDTO
     public double EnergyUsageIntensity {get; set;}
 
     public int EnergyUsagePerHour { get; set;}
+
 }

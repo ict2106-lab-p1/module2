@@ -21,4 +21,7 @@ public interface IEnergyUsageRepository : IRepository<EnergyUsageLog>
     Task<List<EnergyUsageLog>> GetDistinctDeviceEnergyUsage();
     Task<List<EnergyUsageLog>> GetDistinctLabEnergyUsage();
     Task<List<EnergyUsageLog>> GetAllDeviceByLab();
+
+    //Task<List<EnergyUsageLog>> GetAllLabLocation();
+    //Task<List<EnergyUsageLog>> GetAllDeviceByLab();
 }

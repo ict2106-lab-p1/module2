@@ -226,4 +226,6 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 
         return result;
     }
+
+    
 }

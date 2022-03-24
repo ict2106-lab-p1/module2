@@ -20,40 +20,48 @@
     </select>
     <br />
     <br />
-    <br />
     <div class="flex flex-col" style="white-space: nowrap;">
         <table>
             <tr>
-                <td>
-                    <h6 id="opt1"></h6>
-                    <select id="option1" onchange="removeChosenType()"></select>
+                <td class="column-2">
+                    <h6 id="opt1"></h6> <select id="option1" onchange="removeChosenType()"></select>
+                   
                 </td>
-                <td>
-                    <h6 id="opt2"></h6>
-                    <select id="option2" onchange="removeChosenType()"></select>
+                <td class="column-2">
+                    <h6 id="opt2"></h6> <select id="option2" onchange="removeChosenType()"></select>
+                    
                 </td>
-                <td>
-                    <h6 id="opt3"></h6>
-                    <select id="option3" onchange="removeChosenType()"></select>
+                <td class="column-2">
+                    <h6 id="opt3"></h6> <select id="option3" onchange="removeChosenType()"></select>
+                   
                 </td>
-                <td>
-                    <h6 id="opt4"></h6>
-                    <select id="option4" onchange="removeChosenType()"></select>
+                <td class="column-2">
+                    <h6 id="opt4"></h6><select id="option4" onchange="removeChosenType()"></select>
+                    
                 </td>
-                <td>
+                <td class="column-2">
                     <input type="button" class="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" onclick="compareData()" value="Compare" />
                 </td>
             </tr>
+            <tr>
+                <td class="column-2">Start Date:
+                    <br/>
+                    <input type="date" id="startDate"></td>
+                <td class="column-2">End Date:
+                    <br/><input type="date" id="endDate"></td>
+            </tr>
         </table>
     </div>
-
-    <div id="table"></div>
+    
+    <br/>
+    <br/>
+    <div id="datatable"></div>
 
     <br />
     <br />
     <br />
 
-    <div>
+    <div id="displayGraph" class="chart-container" style="position: relative;">
         <canvas id="graph" style="padding: 0;margin: auto;display: block; "> </canvas>
     </div>
    

@@ -104,6 +104,17 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         return logsForLab;
     }
 
+
+    //Hong Ying
+    //public async Task<List<EnergyUsageLog>> GetAllLabLocation()
+    //{
+    //    var labLocation = await IncludeReferences(
+    //            _context.EnergyUsageLogs
+    //        )
+    //        .ToListAsync();
+    //    return labLocation;
+    //}
+
     public Task<List<EnergyUsageLog>> GetUsageByUser(ApplicationUser? user)
     {
         if(user == null) {
