@@ -16,6 +16,7 @@ public class DeviceRepository : Repository<Device>, IDeviceRepository
         _context = context;
     }
 
+    // Added by Han Yi (P1-1)
     public async Task<Device> GetDeviceBySerialNo(string serialNo)
     {
         return await _context.Devices.FirstOrDefaultAsync(d => d.SerialNo == serialNo);
