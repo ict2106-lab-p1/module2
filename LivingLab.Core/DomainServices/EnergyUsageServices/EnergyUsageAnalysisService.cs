@@ -46,6 +46,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
                 DeviceUsageTime.Add(0);
                 DeviceType.Add(item.Device.Name);
             }
+            Console.WriteLine("serial no = "+item.Interval);
         }
 
         // add to total EU of a device if logs are from same device
@@ -89,58 +90,69 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         // missing of lab area, commenting this part to ensure no error
 
 
-        // List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
-        // List<string> uniqueLab = new List<string>();
-        // List<int> LabEU = new List<int>();
-        // List<int> EnergyUsageTime = new List<int>();
-        // List<int> LabEUPerHour = new List<int>();
-        // List<double> LabEUCost = new List<double>();
-        // List<double> LabEUIntensity = new List<double>();
-        // List<int> LabArea = new List<int>();
+        List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
+        List<LabEnergyUsageDTO> LabEUList = new List<LabEnergyUsageDTO>();
+        List<string> uniqueLab = new List<string>();
+        List<int> LabEU = new List<int>();
+        List<int> EnergyUsageTime = new List<int>();
+        List<int> LabEUPerHour = new List<int>();
+        List<double> LabEUCost = new List<double>();
+        List<double> LabEUIntensity = new List<double>();
+        List<int> LabArea = new List<int>();
 
-        // /*
-        // * get the unique lab into a list
-        // */
-        // foreach (var item in result)
-        // {
-        //     if (!uniqueLab.Contains(item.Lab.LabLocation))
-        //     {
-        //         uniqueLab.Add(item.Lab.LabLocation);
-        //         LabEU.Add(0);
-        //         EnergyUsageTime.Add(0);
-        //         // LabArea.Add(item.Lab.Capacity)
-        //     }
-        // }
+        /*
+        * get the unique lab into a list
+        */
+        foreach (var item in result)
+        {
+            if (!uniqueLab.Contains(item.Lab.LabLocation))
+            {
+                uniqueLab.Add(item.Lab.LabLocation);
+                LabEU.Add(0);
+                EnergyUsageTime.Add(0);
+                LabArea.Add(item.Lab.Capacity??0);     
+            }
+        }
 
-        // /*
-        // * get the unique lab into a list
-        // */
-        // foreach (var item in result)
-        // {
-        //     for (int i = 0; i < uniqueLab.Count; i++)
-        //     {
-        //         if (item.Lab.LabLocation == uniqueLab[i])
-        //         {
-        //             LabEU[i] += (int)item.EnergyUsage;
-        //             EnergyUsageTime[i] += item.Interval.Minutes;
-        //         }
-        //     }
-        // }
+        /*
+        * get the unique lab into a list
+        */
+        foreach (var item in result)
+        {
+            for (int i = 0; i < uniqueLab.Count; i++)
+            {
+                if (item.Lab.LabLocation == uniqueLab[i])
+                {
+                    LabEU[i] += (int)item.EnergyUsage;
+                    EnergyUsageTime[i] += item.Interval.Minutes;
+                }
+            }
+        }
 
-        // /*
-        // * get the unique lab into a list
-        // */
-        // for (int i = 0; i < uniqueLab.Count; i++)
-        // {
-        //     LabEUPerHour.Add(_calculator.CalculateEnergyUsagePerHour(LabEU[i],EnergyUsageTime[i]));
-        //     LabEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,LabEU[i],EnergyUsageTime[i]));
-        //     // LabEUIntensity.Add(_calculator.CalculateEnergyIntensity())
-        // }
-        
+        /*
+        * get the unique lab into a list
+        */
+        for (int i = 0; i < uniqueLab.Count; i++)
+        {
+            LabEUPerHour.Add(_calculator.CalculateEnergyUsagePerHour(LabEU[i],EnergyUsageTime[i]));
+            LabEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,LabEU[i],EnergyUsageTime[i]));
+            LabEUIntensity.Add(_calculator.CalculateEnergyIntensity(LabArea[i],LabEU[i]));
+        }
 
-        
-        throw new NotImplementedException();
+                // append the list of data to DeviceEnergyUsageDTO
+        for (int i = 0; i < uniqueLab.Count; i++)
+        {
+            LabEUList.Add(new LabEnergyUsageDTO{
+                LabLocation = uniqueLab[i],
+                TotalEnergyUsage = LabEU[i],
+                EnergyUsageCost = LabEUCost[i],
+                EnergyUsageIntensity = LabEUIntensity[i],
+                EnergyUsagePerHour = LabEUPerHour[i]
+                });
 
+        }
+        Console.WriteLine(LabEUList[0].EnergyUsageCost);
+        return LabEUList;
     }
     // joey
     public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end) 
@@ -166,64 +178,4 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         throw new NotImplementedException();
     }
 
-    public List<EnergyUsageLog> test(DateTime start, DateTime end) 
-    {
-
-        List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
-        // Console.WriteLine(result);
-
-        // List<string> uniqueDevice = new List<string>();
-        // List<int> DeviceEU = new List<int>();
-        // List<int> DeviceUsageTime = new List<int>();
-        // List<string> DeviceType = new List<string>();
-        // List<int> DeviceEUPerHour = new List<int>();
-        // List<double> DeviceEUCost = new List<double>();
-        // List<DeviceEnergyUsageDTO> DeviceEUList = new List<DeviceEnergyUsageDTO>();
-        // foreach (var item in result)
-        // {
-        //     if (uniqueDevice.Contains(item.Device.SerialNo))
-        //     {
-        //         uniqueDevice.Add(item.Device.SerialNo);
-        //         DeviceEU.Add(0);
-        //         DeviceUsageTime.Add(0);
-        //         DeviceType.Add(item.Device.Name);
-        //     }
-        // }
-        // foreach (var item in result)
-        // {
-        //     for (int i = 0; i < uniqueDevice.Count; i++)
-        //     {
-        //         if (item.Device.SerialNo == uniqueDevice[i])
-        //         {
-        //             DeviceEU[i] += (int)item.EnergyUsage;
-        //             DeviceUsageTime[i] += item.Interval.Minutes;
-        //         }
-        //     }
-            
-        // }
-
-        // for (int i = 0; i < uniqueDevice.Count; i++)
-        // {
-        //     DeviceEUPerHour.Add(_calculator.CalculateEnergyUsagePerHour(DeviceEU[i],DeviceUsageTime[i]));
-        //     DeviceEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,DeviceEU[i],DeviceUsageTime[i]));
-        // }
-
-        // for (int i = 0; i < uniqueDevice.Count; i++)
-        // {
-        //     DeviceEUList.Add(new DeviceEnergyUsageDTO{
-        //         DeviceSerialNo = uniqueDevice[i],
-        //         DeviceType = DeviceType[i],
-        //         TotalEnergyUsage = DeviceEU[i],
-        //         EnergyUsageCost = DeviceEUCost[i],
-        //         EnergyUsagePerHour = DeviceEUPerHour[i]
-        //         });
-
-        // }
-
-
-
-
-
-        return result;
-    }
 }

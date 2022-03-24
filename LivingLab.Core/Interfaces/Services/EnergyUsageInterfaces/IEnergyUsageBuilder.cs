@@ -1,14 +1,16 @@
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
-using LivingLab.Core.Entities;
 namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public interface IEnergyUsageAnalysisService 
+public interface IEnergyUsageBuilder
 {
-    public byte[] Export();
-    public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end);
-    public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end);
+    public List<string> GetDistinctParts();
+    public List<string> GetTotalEU();
+    public List<string> GetEUPerHour();
+    public List<string> GetEUCost();
+    public List<string> GetEUIntensity();
+    public List<T> BuildProduct<T>();
 
     // joey
     public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end);

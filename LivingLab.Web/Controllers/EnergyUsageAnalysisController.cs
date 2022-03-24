@@ -7,6 +7,7 @@ using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Entities;
 using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.UIServices.EnergyUsage;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
 
 namespace LivingLab.Web.Controllers;
@@ -27,11 +28,20 @@ public class EnergyUsageAnalysisController : Controller
 
     public IActionResult Index()
     {
-        // List<Log> Logs = logList();
-        List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
-        ViewBag.Logs = Logs;
-        // GetAll();
-        return View(Logs);
+        // // List<Log> Logs = logList();
+        // List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
+        // ViewBag.Logs = Logs;
+        // // GetAll();
+        // return View(Logs);
+        DateTime start = new DateTime(2015, 12, 25);
+        DateTime end = new DateTime(2022, 12, 25);
+        var deviceEUList = _analysisService.GetDeviceEnergyUsageByDate(start,end);
+        var labEUList = _analysisService.GetLabEnergyUsageByDate(start,end);
+        var viewModel = new EnergyUsageAnalysisViewModel {
+            DeviceEUList = deviceEUList,
+            LabEUList = labEUList
+        };
+        return View(viewModel);
     }
     
     [HttpGet]

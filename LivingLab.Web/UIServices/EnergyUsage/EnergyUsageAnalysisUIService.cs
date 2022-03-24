@@ -22,7 +22,7 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
     }
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end)
     {
-        throw new NotImplementedException();
+        return _analysis.GetLabEnergyUsageByDate(start,end);
     }
     // joey
     public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end)
