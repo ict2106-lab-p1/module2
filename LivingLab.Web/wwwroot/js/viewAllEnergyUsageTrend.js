@@ -133,7 +133,7 @@ async function getData(labId = 1, start = null, end = null) {
 
     try {
         return await $.ajax({
-            url: "/EnergyUsageAnalysis",
+            url: "/EnergyUsageAnalysis/ViewUsage",
             type: "POST",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
