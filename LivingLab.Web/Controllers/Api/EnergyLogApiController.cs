@@ -8,7 +8,6 @@ namespace LivingLab.Web.Controllers.Api;
 /// <remarks>
 /// Author: Team P1-1
 /// </remarks>
-
 [Route("api/energylog/[action]")]
 public class EnergyLogApiController : BaseApiController
 {
@@ -26,9 +25,8 @@ public class EnergyLogApiController : BaseApiController
     {
         try
         {
-            _logger.Log(LogLevel.Information, $"Received energy usage log from: {usage.DeviceSerialNo}");
             await _energyLogService.Log(usage);
-            return Ok("Successfully logged energy usage");
+            return Ok($"Successfully logged energy usage for {usage.DeviceSerialNo}");
         }
         catch (Exception e)
         {
