@@ -9,6 +9,7 @@ $(document).ready(async function() {
     initLineChart(data);
     initDatepicker();
     $("#filter").click(filter);
+    $("#resetZoom").click(resetZoom);
 })
 
 /**
@@ -111,8 +112,39 @@ function getLineChart(data, start = null, end = null) {
                 borderColor: 'rgb(255, 99, 132)',
                 tension: 0.1
             }]
+        },
+        options: {
+            plugins: {
+                zoom: getZoomOptions()
+            }
         }
     })
+}
+
+/**
+ * Get zoom options for the chart.
+ * @returns zoom options
+ */
+function getZoomOptions() {
+    return {
+        pan: {
+            enabled: true,
+            mode: 'xy',
+        },
+        zoom: {
+            wheel: {
+                enabled: true
+            },
+            pinch: {
+                enabled: true
+            },
+            mode: 'x'
+        }
+    }
+}
+
+function resetZoom(e) {
+    chart.resetZoom();
 }
 
 /**
