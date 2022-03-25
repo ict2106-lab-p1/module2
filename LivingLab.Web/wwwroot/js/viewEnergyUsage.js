@@ -51,7 +51,7 @@ async function filter(e) {
     
     // Update the chart
     chart.destroy()
-    chart = getLineChart(data);
+    chart = getLineChart(data, start, end);
     initMedian(data);
 }
 
@@ -86,16 +86,18 @@ function initLineChart(data) {
 
 /**
  * Get the line chart.
- * 
+ *
  * @param {Object} data
+ * @param {String} start
+ * @param {String} end
  * @returns {Chart} Chart
  */
-function getLineChart(data) {
+function getLineChart(data, start = null, end = null) {
     const ctx = $("#lineChart");
     return new Chart(ctx, {
         type: "line",
         data: {
-            labels: getDates(),
+            labels: getDates(start, end),
             datasets: [{
                 label: "Actual Usage",
                 data: getLogs(data),
@@ -171,19 +173,34 @@ async function getData(labId = 1, start = null, end = null) {
 }
 
 /**
- * Get all dates for current month
+ * Get all dates within a date range.
+ * If start and end are not provided, return all dates for the current month.
+ * 
+ * @param {String} start
+ * @param {String} end
  */
-function getDates() {
+function getDates(start = null, end = null) {
     const dates = [];
-    const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    for (let i = 1; i <= new Date(year, month + 1, 0).getDate(); i++) {
-        const date = new Date(year, month, i).toLocaleDateString('en-US', {
-            day: 'numeric',
-            month: 'short'
-        });
-        dates.push(date);
+    if (!start && !end) {
+        const today = new Date();
+        const month = today.getMonth();
+        const year = today.getFullYear();
+        for (let i = 1; i <= new Date(year, month + 1, 0).getDate(); i++) {
+            const date = new Date(year, month, i).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short'
+            });
+            dates.push(date);
+        }
+    } else {
+        for (let i = new Date(start); i <= new Date(end); i.setDate(i.getDate() + 1)) {
+            const date = i.toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'short'
+            });
+            dates.push(date);
+        }
     }
+    
     return dates;
 }
