@@ -5,6 +5,7 @@ $(document).ready(async function() {
     const data = await getData(labId);
     if (!data) return;
     
+    initMedian(data);
     initLineChart(data);
     initDatepicker();
     $("#filter").click(filter);
@@ -51,6 +52,26 @@ async function filter(e) {
     // Update the chart
     chart.destroy()
     chart = getLineChart(data);
+    initMedian(data);
+}
+
+/**
+ * Display count up animation on the median value.
+ * @param {Object} data 
+ */
+function initMedian(data) {
+    const median = data.median;
+    const $median = $("#median");
+    $({ countNum: 0}).animate({ countNum: median }, {
+        duration: 1500,
+        easing: 'linear',
+        step: function() {
+            $median.text(Math.floor(this.countNum));
+        },
+        complete: function() {
+            $median.text(median);
+        }
+    });
 }
 
 /**
@@ -148,7 +169,6 @@ async function getData(labId = 1, start = null, end = null) {
         })
     }
 }
-
 
 /**
  * Get all dates for current month
