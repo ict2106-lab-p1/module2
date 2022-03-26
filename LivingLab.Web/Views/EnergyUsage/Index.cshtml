@@ -1,11 +1,32 @@
-@using LivingLab.Web.Models.ViewModels.LabProfile
+@model List<LivingLab.Web.Models.ViewModels.LabProfile.LabProfileViewModel>
+
 @{
     ViewData["Title"] = "View Energy Usage";
 }
 
 <h2 class="font-bold text-3xl text-slate-900">All Labs Energy Usage</h2>
 
-@foreach (var lab in ViewBag.Labs as List<LabProfileViewModel>)
-{
-    <p>@lab.LabId</p>
+<div class="w-1/2">
+    @foreach (var lab in Model!)
+    {
+        <div class="labDiv mt-10 bg-white p-5 shadow-lg rounded gap-4">
+            <input type="hidden" class="labId" value="@lab.LabId"/>
+            <div class="flex justify-between mb-5">
+                <p class="text-lg font-bold">@lab.LabLocation</p>
+                <div class="flex">
+                    <a class="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded trigger-swal ml-4" 
+                       asp-action="Lab" asp-route-LabId="@lab.LabId">View Usage</a>
+                    <a class="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded trigger-swal ml-4" 
+                                           asp-action="Benchmark" asp-route-LabId="@lab.LabId">Set Benchmark</a>
+                </div>
+            </div>
+            <canvas class="lineChart"></canvas>
+        </div>
+    }
+</div>
+
+@section Scripts
+{ 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="~/js/viewAllLabEnergyUsage.js"></script>
 }

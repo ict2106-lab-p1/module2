@@ -28,8 +28,7 @@ public class EnergyUsageController : Controller
     public async Task<IActionResult> Index()
     {
         var labs = await _labProfileService.GetAllLabAccounts();
-        ViewBag.Labs = labs.labList;
-        return View();
+        return View(labs.labList);
     }
     
     public IActionResult Lab(int? LabId = 1)
