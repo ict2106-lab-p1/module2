@@ -52,6 +52,7 @@ public class EnergyUsageLogCsvParser : IEnergyUsageLogCsvParser
         {
             list.Add(new EnergyUsageCsvDTO
             {
+                LabLocation = item.Result.LabLocation,
                 DeviceType = item.Result.DeviceType,
                 DeviceSerialNo = item.Result.DeviceSerialNo,
                 Interval = item.Result.Interval,
