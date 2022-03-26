@@ -22,10 +22,14 @@ public class EnergyUsageController : Controller
         _logger = logger;
     }
 
-    [HttpGet("/EnergyUsage/Lab/{labId?}")]
-    public IActionResult Index(int? labId = 1)
+    public IActionResult Index()
     {
-        ViewBag.LabId = labId;
+        return View();
+    }
+    
+    public IActionResult Lab(int? LabId = 1)
+    {
+        ViewBag.LabId = LabId;
         return View();
     }
 
