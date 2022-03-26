@@ -32,6 +32,8 @@ public class EnergyUsageController : Controller
         ViewBag.LabId = LabId;
         return View();
     }
+    
+    
 
     [HttpPost]
     public async Task<IActionResult> GetLabUsage([FromBody] EnergyUsageFilterViewModel filter)
