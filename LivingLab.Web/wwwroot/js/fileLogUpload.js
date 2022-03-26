@@ -34,6 +34,7 @@ $(document).ready(function (){
     $("#btnAdd").click(appendRow);
     $(this).on('click', '.delete', deleteRow);
     $(".btnSave").click(save);
+    $("#btn-submit").click(submit);
 })
 
 /**
@@ -72,6 +73,41 @@ function appendRow() {
  */
 function deleteRow() {
     $(this).closest("div.log-div").remove();
+}
+
+/**
+ * Save the data to the database.
+ */
+function submit(e) {
+    e.preventDefault()
+    const file = $("#fileUpload")[0].files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    
+    $.ajax({
+        url: "/ManualLogs/Upload",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(count) {
+            Swal.fire({
+                title: "Success!",
+                text: `${count} logs saved successfully!`,
+                icon: "success",
+                confirmButtonColor: '#363740'
+            }).then(function() {
+                window.location.href = "/ManualLogs/FileUpload";
+            })
+        },
+        error: function(response) {
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong!",
+                icon: "error"
+            })
+        }
+    });
 }
 
 /**
