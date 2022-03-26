@@ -23,10 +23,12 @@ public class ManualLogService : IManualLogService
         _manualLogDomainService = manualLogDomainService;
     }
     
-    public List<LogItemViewModel> UploadLogs(IFormFile file)
+    public async Task<int> UploadLogs(IFormFile file)
     {
-        var logs = _manualLogDomainService.UploadLogs(file);
-        return _mapper.Map<List<EnergyUsageCsvDTO>, List<LogItemViewModel>>(logs);
+        var logs =  _manualLogDomainService.UploadLogs(file);
+        var logsVM =  _mapper.Map<List<EnergyUsageCsvDTO>, List<LogItemViewModel>>(logs);
+        await SaveLogs(logsVM);
+        return logsVM.Count;
     }
 
     public async Task SaveLogs(List<LogItemViewModel> logs)
