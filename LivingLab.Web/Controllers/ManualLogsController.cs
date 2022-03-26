@@ -48,7 +48,7 @@ public class ManualLogsController : Controller
         catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return View(nameof(FileUpload));
+            return BadRequest(e.Message);
         }
     }
 
