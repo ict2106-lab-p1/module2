@@ -28,4 +28,19 @@ public class EnergyLogDomainService : IEnergyLogDomainService
         log.Lab = lab;
         return _energyUsageRepository.AddAsync(log);
     }
+
+    public Task CheckThreshold(int deviceId)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Notify()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void LogNotification()
+    {
+        throw new NotImplementedException();
+    }
 }

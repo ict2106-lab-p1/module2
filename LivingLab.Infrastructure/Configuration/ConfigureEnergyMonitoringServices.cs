@@ -33,7 +33,6 @@ public static class ConfigureEnergyMonitoringServices
 
         // Services
         services.AddTransient<IEnergyUsageLogCsvParser, EnergyUsageLogCsvParser>();
-        services.AddTransient<IEnergyUsageLogDomainService, EnergyUsageLogDomainService>();
         services.AddTransient<IManualLogDomainService, ManualLogDomainService>();
         services.AddTransient<INotificationDomainService, NotificationDomainService>();
         services.AddTransient<IEnergyLogDomainService, EnergyLogDomainService>();
