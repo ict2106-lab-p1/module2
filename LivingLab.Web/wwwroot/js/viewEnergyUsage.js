@@ -10,6 +10,7 @@ $(document).ready(async function() {
     initLineChart(data);
     initDatepicker();
     $("#filter").click(filter);
+    $("#resetFilter").click(resetFilter);
     $("#resetZoom").click(resetZoom);
 })
 
@@ -55,6 +56,19 @@ async function filter(e) {
     chart.destroy()
     chart = getLineChart(data, start, end);
     initMedian(data);
+}
+
+/**
+ * Reset the filter to the default values.
+ * 
+ * Set start and end date to default and 
+ * trigger the filter button.
+ */
+function resetFilter(e) {
+    e.preventDefault();
+    $("#start").val('');
+    $("#end").val('');
+    $("#filter").click();
 }
 
 /**
