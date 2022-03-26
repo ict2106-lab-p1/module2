@@ -52,7 +52,9 @@ public static class DataSeeder
             );
 
         modelBuilder.Entity<Lab>().HasData(
-            new { LabId = 1, LabLocation = "NYP-SR7C", LabInCharge = "DefaultAdmin1", LabStatus = "Available", Capacity = 20 }
+            new { LabId = 1, LabLocation = "NYP-SR7A", LabInCharge = "DefaultAdmin1", LabStatus = "Available", Capacity = 25 },
+            new { LabId = 2, LabLocation = "NYP-SR7B", LabInCharge = "DefaultAdmin1", LabStatus = "Available", Capacity = 30 },
+            new { LabId = 3, LabLocation = "NYP-SR7C", LabInCharge = "DefaultAdmin1", LabStatus = "Available", Capacity = 20 }
         );
 
         modelBuilder.Entity<LabAccess>().HasData(

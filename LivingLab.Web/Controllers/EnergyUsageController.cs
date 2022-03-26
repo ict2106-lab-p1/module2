@@ -3,6 +3,7 @@ using System.Diagnostics;
 using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.EnergyUsage;
+using LivingLab.Web.UIServices.LabProfile;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,16 +15,20 @@ namespace LivingLab.Web.Controllers;
 public class EnergyUsageController : Controller
 {
     private readonly IEnergyUsageService _energyUsageService;
+    private readonly ILabProfileService _labProfileService;
     private readonly ILogger<EnergyUsageController> _logger;
     
-    public EnergyUsageController(IEnergyUsageService energyUsageService, ILogger<EnergyUsageController> logger)
+    public EnergyUsageController(IEnergyUsageService energyUsageService, ILabProfileService labProfileService, ILogger<EnergyUsageController> logger)
     {
         _energyUsageService = energyUsageService;
+        _labProfileService = labProfileService;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        var labs = await _labProfileService.GetAllLabAccounts();
+        ViewBag.Labs = labs.labList;
         return View();
     }
     
@@ -34,7 +39,6 @@ public class EnergyUsageController : Controller
     }
     
     
-
     [HttpPost]
     public async Task<IActionResult> GetLabUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
