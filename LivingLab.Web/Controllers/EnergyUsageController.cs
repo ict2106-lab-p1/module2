@@ -15,19 +15,17 @@ namespace LivingLab.Web.Controllers;
 public class EnergyUsageController : Controller
 {
     private readonly IEnergyUsageService _energyUsageService;
-    private readonly ILabProfileService _labProfileService;
     private readonly ILogger<EnergyUsageController> _logger;
     
-    public EnergyUsageController(IEnergyUsageService energyUsageService, ILabProfileService labProfileService, ILogger<EnergyUsageController> logger)
+    public EnergyUsageController(IEnergyUsageService energyUsageService, ILogger<EnergyUsageController> logger)
     {
         _energyUsageService = energyUsageService;
-        _labProfileService = labProfileService;
         _logger = logger;
     }
 
     public async Task<IActionResult> Index()
     {
-        var labs = await _labProfileService.GetAllLabAccounts();
+        var labs = await _energyUsageService.GetAllLabs();
         return View(labs.labList);
     }
     
