@@ -90,6 +90,11 @@ function initMedian(data) {
     });
 }
 
+/**
+ * Display the lab location.
+ * 
+ * @param {Object} data
+ */
 function initLabLocation(data) {
     const $labLocation = $("#labLocation");
     $labLocation.text(data.lab.labLocation);
