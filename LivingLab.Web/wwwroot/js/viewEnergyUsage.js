@@ -213,7 +213,7 @@ async function getData(labId = 1, start = null, end = null) {
     
     try {
         return await $.ajax({
-            url: "/EnergyUsage/ViewUsage",
+            url: "/EnergyUsage/GetLabUsage",
             type: "POST",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",

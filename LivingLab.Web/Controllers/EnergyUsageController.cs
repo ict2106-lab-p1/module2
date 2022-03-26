@@ -34,7 +34,7 @@ public class EnergyUsageController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
+    public async Task<IActionResult> GetLabUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
         try
         {
