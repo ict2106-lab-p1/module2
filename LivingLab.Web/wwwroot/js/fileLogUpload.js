@@ -48,7 +48,6 @@ $(document).ready(function (){
  */
 function fileChange(e) {
     const fileName = e.target.files[0].name;
-    $("#attachmentSvg").hide();
     $("#attachmentText").text(fileName);
     $("#btn-submit").show();
 }
@@ -80,6 +79,8 @@ function deleteRow() {
  */
 function submit(e) {
     e.preventDefault()
+    const $uploadBtn = $(this);
+    $uploadBtn.hide();
     const file = $("#fileUpload")[0].files[0];
     const formData = new FormData();
     formData.append("file", file);
@@ -106,6 +107,7 @@ function submit(e) {
                 text: "Something went wrong!",
                 icon: "error"
             })
+            $uploadBtn.show();
         }
     });
 }
