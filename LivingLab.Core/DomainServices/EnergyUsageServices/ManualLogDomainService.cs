@@ -29,9 +29,6 @@ public class ManualLogDomainService : IManualLogDomainService
 
     public Task SaveLogs(List<EnergyUsageLog> data)
     {
-        // var loggedUser = await _userManager.GetUserAsync(User);
-        var loggedUser = DummyUser.INSTANCE;
         return  _repository.BulkInsertAsync(data);
-        // await _repository.BulkInsertAsyncByUser(data, loggedUser);
     }
 }
