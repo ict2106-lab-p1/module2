@@ -14,7 +14,9 @@
             <input id="benchmarkInput" class="input input-bordered" type="number" asp-for="EnergyUsageBenchmark" value="@Model.EnergyUsageBenchmark"/>
         </div>
     
-        <div class="flex justify-between mt-5">
+        <div class="flex space-x-2 mt-5">
+            <a class="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded trigger-swal" 
+                                   asp-action="Index">Back</a>
             <input type="submit" id="btnSave" value="Save" class="bg-dark hover:bg-slate-700 text-white font-bold py-2 px-4 rounded trigger-swal align-end">
         </div>
     </form>
