@@ -30,11 +30,27 @@ const template = `<div class="log-div mt-5 flex flex-col bg-white p-5 shadow-lg 
  * When DOM is ready for JS code to execute.
  */
 $(document).ready(function (){
+    $("#fileUpload").change(fileChange)
     $("#btnAdd").click(appendRow);
     $(this).on('click', '.delete', deleteRow);
     $(".btnSave").click(save);
-
 })
+
+/**
+ * File upload on change event.
+ * 
+ * 1. Hide svg icon
+ * 2. Replace file upload text with file name
+ * 3. Show upload button
+ * 
+ * @param e
+ */
+function fileChange(e) {
+    const fileName = e.target.files[0].name;
+    $("#attachmentSvg").hide();
+    $("#attachmentText").text(fileName);
+    $("#btn-submit").show();
+}
 
 /**
  * Appends a new div for input.
