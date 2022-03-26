@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="~/lib/jquery-ui-1.13.1/jquery-ui.min.css"/>
 }
 
-<h2 class="font-bold text-3xl text-slate-900">Lab @ViewBag.LabId Energy Usage</h2>
+<h2 class="font-bold text-3xl text-slate-900">Lab <span id="labLocation"></span> Energy Usage</h2>
 
-<div class="w-full h-1/2 mt-6">
+<div class="w-2/3 h-1/2 mt-6">
     <input type="hidden" id="labId" value="@ViewBag.LabId"/>
     <div class="flex justify-between mb-5">
         <div class="flex items-end">

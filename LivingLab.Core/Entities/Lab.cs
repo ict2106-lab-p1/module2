@@ -21,8 +21,8 @@ public class Lab
 
     // [Required]
     // public int? Capacity { get; set; }
-    //
-    // public int? Area { get; set; }
+    
+    public int? Area { get; set; }
     
     public Double? EnergyUsageBenchmark { get; set; }
 

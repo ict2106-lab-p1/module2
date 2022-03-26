@@ -5,6 +5,7 @@ $(document).ready(async function() {
     const data = await getData(labId);
     if (!data) return;
     
+    initLabLocation(data);
     initMedian(data);
     initLineChart(data);
     initDatepicker();
@@ -73,6 +74,11 @@ function initMedian(data) {
             $median.text(median);
         }
     });
+}
+
+function initLabLocation(data) {
+    const $labLocation = $("#labLocation");
+    $labLocation.text(data.lab.labLocation);
 }
 
 /**
