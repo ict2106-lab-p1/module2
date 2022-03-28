@@ -7,8 +7,8 @@ namespace LivingLab.Web.Models.DTOs;
 /// </remarks>
 public class EnergyUsageLogDTO
 {
-    [JsonProperty("lab_id")]
-    public int LabId { get; set; }
+    [JsonProperty("lab_location")]
+    public string LabLocation { get; set; }
     [JsonProperty("energy_usage")]
     public double EnergyUsage { get; set; }
     [JsonProperty("interval")]

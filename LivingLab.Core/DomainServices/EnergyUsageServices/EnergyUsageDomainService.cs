@@ -10,10 +10,10 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// </remarks>
 public class EnergyUsageDomainService : IEnergyUsageDomainService
 {
-    private readonly ILabRepository _labRepository;
+    private readonly ILabProfileRepository _labRepository;
     private readonly IEnergyUsageRepository _energyUsageRepository;
     
-    public EnergyUsageDomainService(ILabRepository labRepository, IEnergyUsageRepository energyUsageRepository)
+    public EnergyUsageDomainService(ILabProfileRepository labRepository, IEnergyUsageRepository energyUsageRepository)
     {
         _labRepository = labRepository;
         _energyUsageRepository = energyUsageRepository;
