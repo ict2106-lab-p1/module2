@@ -43,13 +43,9 @@ public class EnergyUsageService : IEnergyUsageService
         var lab = _mapper.Map<EnergyBenchmarkViewModel, Lab>(benchmark);
         return _energyUsageDomainService.SetLabEnergyBenchmark(lab);
     }
-
-    /// <summary>
-    /// Adapter pattern to get lab profiles from LabProfileService
-    /// </summary>
-    /// <returns>ViewLabProfileViewModel</returns>
+    
     public Task<ViewLabProfileViewModel> GetAllLabs()
     {
-        return _labProfileService.GetAllLabAccounts();
+        return _labProfileService.GetAllLabAccounts(); 
     }
 }
