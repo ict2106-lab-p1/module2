@@ -7,6 +7,8 @@ namespace LivingLab.Web.Models.ViewModels.EnergyUsage;
 /// </remarks>
 public class LogItemViewModel
 {
+    public string LabLocation { get; set; }
+    
     public string? DeviceType { get; set; }
     
     [Display(Name = "Serial No.")]

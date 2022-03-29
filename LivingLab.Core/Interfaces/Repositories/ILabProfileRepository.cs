@@ -6,7 +6,10 @@ namespace LivingLab.Core.Interfaces.Repositories;
 /// </remarks>
 public interface ILabProfileRepository : IRepository<Lab>
 {
-    Task<List<Lab>?> GetAllLabProfile();
-    Task<Lab?> AddLabProfile(Lab entry);
-    Task<int> DeleteLabProfile(int labId);
+    Task<List<Lab>> GetAllLabs();
+    Task<Lab> GetLabDetails(int id);
+    Task SetLabEnergyBenchmark(int labId, double energyBenchmark);
+    Task<double> GetLabEnergyBenchmark(int labId);
+
+    Task<Lab> GetLabByLocation(string location);
 }
