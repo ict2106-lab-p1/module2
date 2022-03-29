@@ -1,7 +1,7 @@
 using System.Text;
 
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
-using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
+using LivingLab.Core.Interfaces.Services.CsvParser;
 
 
 using Microsoft.AspNetCore.Http;

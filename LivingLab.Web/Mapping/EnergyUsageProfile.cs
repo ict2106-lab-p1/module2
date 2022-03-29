@@ -24,7 +24,7 @@ public class EnergyUsageProfile : Profile
 
         CreateMap<EnergyUsageLog, EnergyUsageLogDTO>().ReverseMap()
             .ForMember(dest => dest.Lab,
-                opt => opt.MapFrom(src => new Lab { LabId = src.LabId }))
+                opt => opt.MapFrom(src => new Lab { LabLocation = src.LabLocation }))
             .ForMember(dest => dest.Device,
                 opt => opt.MapFrom(src => new Device { SerialNo = src.DeviceSerialNo }))
             .ForMember(dest => dest.Interval,
