@@ -23,6 +23,6 @@ public interface IEnergyUsageRepository : IRepository<EnergyUsageLog>
     Task<List<EnergyUsageLog>> GetDistinctLabEnergyUsage();
     Task<List<EnergyUsageLog>> GetAllDeviceByLab();
 
-    //Task<List<EnergyUsageLog>> GetAllLabLocation();
+    Task<List<EnergyUsageLog>> GetLabEnergyUsageByLabNameAndDate(string labName, DateTime start, DateTime end);
     //Task<List<EnergyUsageLog>> GetAllDeviceByLab();
 }

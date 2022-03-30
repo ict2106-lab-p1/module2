@@ -18,11 +18,15 @@ public class EnergyUsageComparisonController : Controller
 {
     private readonly ILogger<EnergyUsageComparisonController> _logger;
     private readonly IEnergyUsageRepository _repository;
-    private readonly IEnergyUsageComparisonService _comparisonService;
-    public EnergyUsageComparisonController(ILogger<EnergyUsageComparisonController> logger, IEnergyUsageRepository repository, IEnergyUsageComparisonService comparisonService)
+    private readonly ILabRepository _abRepository;
+    private readonly IDeviceRepository _deviceRepository;
+    private readonly IEnergyUsageComparisonUIService _comparisonService;
+    public EnergyUsageComparisonController(ILogger<EnergyUsageComparisonController> logger, IEnergyUsageRepository repository, IDeviceRepository deviceRepository, ILabRepository labRepository, IEnergyUsageComparisonUIService comparisonService)
     {
         _logger = logger;
         _repository = repository;
+        _abRepository = labRepository;
+        _deviceRepository = deviceRepository;   
         _comparisonService = comparisonService;
     }
 
@@ -31,129 +35,17 @@ public class EnergyUsageComparisonController : Controller
         return View();
     }
 
-    //need to implement the return type and implementation 
-    public IActionResult GetLabEnergyUsageDetailTable(string listOfLabId, DateTime start, DateTime end)
-    {
-        return View();
-    }
-
-    public IActionResult GetLabEnergyUsageDetailGraph(string listOfLabId, DateTime start, DateTime end)
-    {
-        return View();
-    }
-
-    public IActionResult GetDeviceEnergy(string listOfDeviceType, DateTime start, DateTime end)
-    {
-        return View();
-    }
-
-    public IActionResult GetLabLocationOrDeviceType(string type)
-    {
-        return View();
-    }
-    // end of skeleton code
-
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
-
-
-    [HttpGet]
-    public string[] GetType(string compareType)
-    {
-        if (compareType == "DeviceType")
-        {
-            //need to get from db
-
-            //List<string> names = _comparisonService.GetAllLabLocation();
-
-
-            string[] array = { "Light", "Robot", "Microprocessor", "VR Device" };
-            return array;
-            //List<LabEnergyUsageDTO> names = _comparisonService.GetAllLabLocation();
-
-            //return names;
-        }
-        else
-        {
-            //need to get from db
-            //List<strinList<string> names = _comparisonService.GetAllLabLocation();
-
-
-            //List<LabEnergyUsageDTO> names = _comparisonService.GetAllLabLocation();
-
-            //return names; 
-            string[] array = { "SR5A", "SR7H", "LT3A", "SR6G" };
-            return array;
-        }
-
-    }
-
-
-    //need to add benchmark for the lab graph
     [HttpPost]
-    public JsonResult GetGraph(string startDate, string endDate, string compareFactor)
+    public List<Dictionary<string, object>> GetLabEnergyUsageDetailTable(string listOfLabName, string start, string end)
     {
-        string start = Regex.Replace(startDate, @"[^^a-zA-Z0-9 -]+", String.Empty);
-        string end = Regex.Replace(endDate, @"[^^a-zA-Z0-9 -]+", String.Empty);
+        string startDate = Regex.Replace(start, @"[^^a-zA-Z0-9 -]+", String.Empty);
+        string endDate = Regex.Replace(end, @"[^^a-zA-Z0-9 -]+", String.Empty);
+
+        DateTime sDate = Convert.ToDateTime(startDate);
+        DateTime eDate = Convert.ToDateTime(endDate);
 
         string compareType = "Lab";
-        string[] compareFactorArray = compareFactor.Split(",");
-
-        List<object> iData = new List<object>();
-        //Creating sample data  
-        DataTable dt = new DataTable();
-        dt.Columns.Add(compareType, System.Type.GetType("System.String"));
-        dt.Columns.Add("Energy Usage", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("Energy Intensity", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("Benchmark", System.Type.GetType("System.Int32"));//for energy usage
-
-        DataRow dr = dt.NewRow();
-
-        for (int i = 0; i < compareFactorArray.Length; i++)
-        {
-            compareFactorArray[i] = Regex.Replace(compareFactorArray[i], @"[^^a-zA-Z0-9 -]+", String.Empty);
-            if (i == 0)
-            {
-                dr[compareType] = compareFactorArray[i];
-                dr["Energy Usage"] = 213; //need to get from db
-                dr["Energy Intensity"] = 123; //need to get from db
-                dr["Benchmark"] = 120;//need to get from db
-                dt.Rows.Add(dr);
-            }
-            else
-            {
-                dr = dt.NewRow();
-                dr[compareType] = compareFactorArray[i];
-                dr["Energy Usage"] = 200; //need to get from db
-                dr["Energy Intensity"] = 456; //need to get from db
-                dr["Benchmark"] = 120;//need to get from db
-                dt.Rows.Add(dr);
-            }
-        }
-
-        foreach (DataColumn dc in dt.Columns)
-        {
-            List<object> x = new List<object>();
-            x = (from DataRow drr in dt.Rows select drr[dc.ColumnName]).ToList();
-            iData.Add(x);
-        }
-
-        return Json(iData);
-    }
-
-
-    [HttpPost]
-    public List<Dictionary<string, object>> GetLabTable(string startDate, string endDate, string compareFactor)
-    {
-        string start = Regex.Replace(startDate, @"[^^a-zA-Z0-9 -]+", String.Empty);
-        string end = Regex.Replace(endDate, @"[^^a-zA-Z0-9 -]+", String.Empty);
-
-        string compareType = "Lab";
-        string[] compareFactorArray = compareFactor.Split(",");
+        string[] compareFactorArray = listOfLabName.Split(",");
 
         List<string> listNumber = new List<string>();
 
@@ -171,23 +63,155 @@ public class EnergyUsageComparisonController : Controller
         for (int i = 0; i < compareFactorArray.Length; i++)
         {
             compareFactorArray[i] = Regex.Replace(compareFactorArray[i], @"[^^a-zA-Z0-9 -]+", String.Empty);
+            List<EnergyComparisonLabTableDTO> data = _comparisonService.GetEnergyUsageByLabNameTable(compareFactorArray[i], sDate, eDate);
+
             if (i == 0)
             {
                 dr["labLocation"] = compareFactorArray[i];
-                dr["energyUsage"] = 213; //need to get from db
-                dr["energyUsageCost"] = 123; //need to get from db
-                dr["averageEnergyUsage"] = 120;//need to get from db
-                dr["energyIntensity"] = 120;//need to get from db
+                dr["energyUsage"] = data[0].TotalEnergyUsage;
+                dr["energyUsageCost"] = data[0].EnergyUsageCost;
+                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
+                dr["energyIntensity"] = 123;
+                //dr["energyIntensity"] = data[0].EnergyUsageIntensity;//need to get from db
                 dt.Rows.Add(dr);
             }
             else
             {
                 dr = dt.NewRow();
                 dr["labLocation"] = compareFactorArray[i];
-                dr["energyUsage"] = 200; //need to get from db
-                dr["energyUsageCost"] = 456; //need to get from db
-                dr["averageEnergyUsage"] = 120;//need to get from db
-                dr["energyIntensity"] = 120;//need to get from db
+                dr["energyUsage"] = data[0].TotalEnergyUsage;
+                dr["energyUsageCost"] = data[0].EnergyUsageCost;
+                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
+                dr["energyIntensity"] = 123;
+                //dr["energyIntensity"] = data[0].EnergyUsageIntensity;//need to get from db
+                dt.Rows.Add(dr);
+            }
+        }
+
+        foreach (DataRow dr1 in dt.Rows)
+        {
+            Dictionary<string, object> drow = new Dictionary<string, object>();
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                drow.Add(dt.Columns[i].ColumnName, dr1[i]);
+            }
+            iData.Add(drow);
+        }
+
+        return iData;
+    }
+
+    [HttpPost]
+    public JsonResult GetLabEnergyUsageDetailGraph(string listOfLabName, string start, string end)
+    {
+        string startDate = Regex.Replace(start, @"[^^a-zA-Z0-9 -]+", String.Empty);
+        string endDate = Regex.Replace(end, @"[^^a-zA-Z0-9 -]+", String.Empty);
+
+        DateTime sDate = Convert.ToDateTime(startDate);
+        DateTime eDate = Convert.ToDateTime(endDate);
+
+        string compareType = "Lab";
+        string[] compareFactorArray = listOfLabName.Split(",");
+
+        List<object> iData = new List<object>();
+        DataTable dt = new DataTable();
+        dt.Columns.Add(compareType, System.Type.GetType("System.String"));
+        dt.Columns.Add("Energy Usage", System.Type.GetType("System.Int32"));
+        dt.Columns.Add("Energy Intensity", System.Type.GetType("System.Int32"));
+        dt.Columns.Add("Benchmark", System.Type.GetType("System.Int32"));//for energy usage
+
+        DataRow dr = dt.NewRow();
+
+        for (int i = 0; i < compareFactorArray.Length; i++)
+        {
+            compareFactorArray[i] = Regex.Replace(compareFactorArray[i], @"[^^a-zA-Z0-9 -]+", String.Empty);
+        }
+
+        double benchmark = _comparisonService.GetEnergyUsageByLabNameBenchmark(compareFactorArray, sDate, eDate);
+
+        for (int i = 0; i < compareFactorArray.Length; i++)
+        {
+
+            List<EnergyComparisonGraphDTO> data = _comparisonService.GetEnergyUsageByLabNameGraph(compareFactorArray[i], sDate, eDate);
+
+
+            if (i == 0)
+            {
+                dr[compareType] = compareFactorArray[i];
+                dr["Energy Usage"] = data[0].TotalEnergyUsage;
+                dr["Energy Intensity"] = 12300;
+                //dr["Energy Intensity"] = data[0].EnergyUsageIntensity;//need to get from db
+                dr["Benchmark"] = benchmark;
+                dt.Rows.Add(dr);
+            }
+            else
+            {
+                dr = dt.NewRow();
+                dr[compareType] = compareFactorArray[i];
+                dr["Energy Usage"] = data[0].TotalEnergyUsage;
+                dr["Energy Intensity"] = 12300;
+                //dr["Energy Intensity"] = data[0].EnergyUsageIntensity; //need to get from db
+                dr["Benchmark"] = benchmark;
+                dt.Rows.Add(dr);
+            }
+        }
+
+        foreach (DataColumn dc in dt.Columns)
+        {
+            List<object> x = new List<object>();
+            x = (from DataRow drr in dt.Rows select drr[dc.ColumnName]).ToList();
+            iData.Add(x);
+        }
+
+        return Json(iData);
+    }
+
+    [HttpPost]
+    public List<Dictionary<string, object>> GetDeviceEnergy(string listOfDeviceType, string start, string end)
+    {
+
+        string startDate = Regex.Replace(start, @"[^^a-zA-Z0-9 -]+", String.Empty);
+        string endDate = Regex.Replace(end, @"[^^a-zA-Z0-9 -]+", String.Empty);
+
+        DateTime sDate = Convert.ToDateTime(startDate);
+        DateTime eDate = Convert.ToDateTime(endDate);
+
+        string compareType = "Device Type";
+        string[] compareFactorArray = listOfDeviceType.Split(",");
+
+        List<string> listNumber = new List<string>();
+
+        List<Dictionary<string, object>> iData = new List<Dictionary<string, object>>();
+        //Creating sample data  
+        DataTable dt = new DataTable();
+        dt.Columns.Add("deviceType", System.Type.GetType("System.String"));
+        dt.Columns.Add("energyUsage", System.Type.GetType("System.Int32"));
+        dt.Columns.Add("energyUsageCost", System.Type.GetType("System.Int32"));
+        dt.Columns.Add("averageEnergyUsage", System.Type.GetType("System.Int32"));
+
+        DataRow dr = dt.NewRow();
+
+        for (int i = 0; i < compareFactorArray.Length; i++)
+        {
+            compareFactorArray[i] = Regex.Replace(compareFactorArray[i], @"[^^a-zA-Z0-9 -]+", String.Empty);
+
+            List<EnergyComparisonDeviceTableDTO> data = _comparisonService.GetEnergyUsageByDeviceType(compareFactorArray[i], sDate, eDate);
+
+            if (i == 0)
+            {
+                dr["deviceType"] = compareFactorArray[i];
+                dr["energyUsage"] = data[0].TotalEnergyUsage;
+                dr["energyUsageCost"] = data[0].EnergyUsageCost;
+                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
+                dt.Rows.Add(dr);
+            }
+            else
+            {
+                dr = dt.NewRow();
+                dr["deviceType"] = compareFactorArray[i];
+                dr["energyUsage"] = data[0].TotalEnergyUsage;
+                dr["energyUsageCost"] = data[0].EnergyUsageCost;
+                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
                 dt.Rows.Add(dr);
             }
         }
@@ -207,62 +231,28 @@ public class EnergyUsageComparisonController : Controller
         return iData;
     }
 
-    [HttpPost]
-    public List<Dictionary<string, object>> GetDeviceTable(string startDate, string endDate, string compareFactor)
+    [HttpGet]
+    public string[] GetLabLocationOrDeviceType(string type)
     {
-
-        string start = Regex.Replace(startDate, @"[^^a-zA-Z0-9 -]+", String.Empty);
-        string end = Regex.Replace(endDate, @"[^^a-zA-Z0-9 -]+", String.Empty);
-
-        string compareType = "Device Type";
-        string[] compareFactorArray = compareFactor.Split(",");
-
-        List<string> listNumber = new List<string>();
-
-        List<Dictionary<string, object>> iData = new List<Dictionary<string, object>>();
-        //Creating sample data  
-        DataTable dt = new DataTable();
-        dt.Columns.Add("deviceType", System.Type.GetType("System.String"));
-        dt.Columns.Add("energyUsage", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("energyUsageCost", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("averageEnergyUsage", System.Type.GetType("System.Int32"));
-
-        DataRow dr = dt.NewRow();
-
-        for (int i = 0; i < compareFactorArray.Length; i++)
+        if (type == "DeviceType")
         {
-            compareFactorArray[i] = Regex.Replace(compareFactorArray[i], @"[^^a-zA-Z0-9 -]+", String.Empty);
-            if (i == 0)
-            {
-                dr["deviceType"] = compareFactorArray[i];
-                dr["energyUsage"] = 213; //need to get from db
-                dr["energyUsageCost"] = 123; //need to get from db
-                dr["averageEnergyUsage"] = 120;//need to get from db
-                dt.Rows.Add(dr);
-            }
-            else
-            {
-                dr = dt.NewRow();
-                dr["deviceType"] = compareFactorArray[i];
-                dr["energyUsage"] = 200; //need to get from db
-                dr["energyUsageCost"] = 456; //need to get from db
-                dr["averageEnergyUsage"] = 120;//need to get from db
-                dt.Rows.Add(dr);
-            }
+            List<string> device = _comparisonService.GetAllDeviceType();
+            string[] array = device.ToArray();
+            return array;
         }
-
-        foreach (DataRow dr1 in dt.Rows)
+        else
         {
-            Dictionary<string, object> drow = new Dictionary<string, object>();
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                drow.Add(dt.Columns[i].ColumnName, dr1[i]);
-            }
-            iData.Add(drow);
+            List<string> location = _comparisonService.GetAllLabLocation();
+            string[] array = location.ToArray();
+            return array;
         }
+    }
+    // end of skeleton code
 
 
-
-        return iData;
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
