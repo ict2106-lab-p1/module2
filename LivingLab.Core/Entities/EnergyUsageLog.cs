@@ -18,6 +18,7 @@ public class EnergyUsageLog : BaseEntity
     public ApplicationUser? LoggedBy { get; set; }
     [Required]
     public Lab Lab { get; set; } = null!;
+ 
     [Required]
     public Device Device { get; set; } = null!;
 }

@@ -10,7 +10,6 @@ public class MonthlyEnergyUsageDTO
     //
     // public int TotalEnergyUsage { get; set;}
     
-    // following Energy Usage DTO
     public List<EnergyUsageLog> Logs { get; set; }
     public Lab Lab { get; set; }
 }
