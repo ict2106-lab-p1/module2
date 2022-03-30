@@ -46,7 +46,6 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
                 DeviceUsageTime.Add(0);
                 DeviceType.Add(item.Device.Name);
             }
-            Console.WriteLine("serial no = "+item.Interval);
         }
 
         // add to total EU of a device if logs are from same device
