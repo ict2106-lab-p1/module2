@@ -1,57 +1,4 @@
 $(document).ready(async function() {
-<<<<<<< HEAD:LivingLab.Web/wwwroot/js/viewAllEnergyUsageTrend.js
-    const labId = $("#labId").val();
-    const data = await getData(labId);
-    if (!data) return;
-
-    initLineChart(data);
-    initDatepicker();
-    $("#filter").click(filter);
-})
-
-/**
- * Initialize the datepicker
- */
-function initDatepicker() {
-    const $start = $('#start');
-    const $end = $('#end');
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-
-    $start.datepicker({
-        defaultDate: firstDay,
-        minDate: oneMonthAgo,
-        maxDate: today,
-        onSelect: function(dateText) {
-            $end.datepicker("option", "minDate", dateText);
-        }
-    })
-
-    $end.datepicker({
-        defaultDate: today,
-        maxDate: today,
-        onSelect: function(dateText) {
-            $start.datepicker("option", "maxDate", dateText);
-        }
-    });
-}
-
-/**
- * Filter the data.
- */
-async function filter(e) {
-    e.preventDefault();
-    const labId = $("#labId").val();
-    const start = $('#start').val();
-    const end = $('#end').val();
-    const data = await getData(labId, start, end);
-
-    // Update the chart
-    chart.destroy()
-    chart = getLineChart(data);
-}
-=======
     $(".labDiv").each(async function() {
         const labId = $(this).find(".labId").val();
         const canvas = $(this).find(".lineChart");
@@ -59,24 +6,11 @@ async function filter(e) {
         initLineChart(canvas, data);
     })
 })
->>>>>>> 34a2d1b02575aa419d773a4af2b8016b5d990b86:LivingLab.Web/wwwroot/js/viewAllLabEnergyUsage.js
 
 /**
  * Setup the line chart with
  * benchmark and actual usage.
  *
-<<<<<<< HEAD:LivingLab.Web/wwwroot/js/viewAllEnergyUsageTrend.js
- * @param {Object} data
- */
-function initLineChart(data) {
-    chart = getLineChart(data);
-}
-
-/**
- * Get the line chart.
- *
-=======
->>>>>>> 34a2d1b02575aa419d773a4af2b8016b5d990b86:LivingLab.Web/wwwroot/js/viewAllLabEnergyUsage.js
  * @param {Object} data
  */
 function initLineChart(ctx, data) {
@@ -140,11 +74,7 @@ async function getData(labId = 1) {
 
     try {
         return await $.ajax({
-<<<<<<< HEAD:LivingLab.Web/wwwroot/js/viewAllEnergyUsageTrend.js
-            url: "/EnergyUsageAnalysis/ViewUsage",
-=======
             url: "/EnergyUsage/GetLabUsage",
->>>>>>> 34a2d1b02575aa419d773a4af2b8016b5d990b86:LivingLab.Web/wwwroot/js/viewAllLabEnergyUsage.js
             type: "POST",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
@@ -178,4 +108,3 @@ function getDates() {
 
     return dates;
 }
-

@@ -1,7 +1,8 @@
-using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
+
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Entities;
 using LivingLab.Core.Interfaces.Repositories;
+using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 
 namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// <remarks>
@@ -11,13 +12,13 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 {
     private readonly IEnergyUsageRepository _repository;
-    private readonly ILabRepository _labRepository;
+    private readonly ILabProfileRepository _labRepository;
     
     private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
 
     private double cost = 0.2544;
 
-    public EnergyUsageAnalysisService(IEnergyUsageRepository repository, ILabRepository labRepository)
+    public EnergyUsageAnalysisService(IEnergyUsageRepository repository, ILabProfileRepository labRepository)
     {
         _repository = repository;
         _labRepository = labRepository;
@@ -154,9 +155,20 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     // {
     //     throw new NotImplementedException();
     // }                
-    public async Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter) 
+    public async Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter, int labId) 
     {
-        // Grouping done here before SQLite doesn't support it
+        throw new NotImplementedException();
+    }
+
+    public Task<Lab> GetLabEnergyBenchmark(int labId)
+    {
+        // add benchmark calculation
+        return _labRepository.GetByIdAsync(labId);
+    }
+
+    public async Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(EnergyUsageFilterDTO filter)
+    {
+        // Grouping done here because SQLite doesn't support it
         var logs = _repository
             .GetLabEnergyUsageByIdAndDate(filter.LabId, filter.Start, filter.End)
             .Result
@@ -172,33 +184,14 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 
         var lab = await _labRepository.GetByIdAsync(filter.LabId);
         
-        var dto = new MonthlyEnergyUsageDTO
+        var dto = new IndividualLabMonthlyEnergyUsageDTO
         {
             Logs = logs,
             Lab = lab
         };
         return dto;
     }
-
-
-    public Task<Lab> GetLabEnergyBenchmark(int labId)
-    {
-        return _labRepository.GetByIdAsync(labId);
-    }
-
-    /// <summary>
-    /// Call Lab repo to set the current lab total energy benchmark
-    /// </summary>
-    /// <param name="benchmark">Benchmark DTO object</param>
-    public Task SetLabEnergyBenchmark(Lab lab)
-    {
-        return _labRepository.SetLabEnergyBenchmark(lab.LabId, lab.EnergyUsageBenchmark!.Value);
-    }
-
-    public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
-    {
-        throw new NotImplementedException();
-    }
+    
     // weijie
     // not sure what will be your DTO looks like may have to create in LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
     public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, int labId)

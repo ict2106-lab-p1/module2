@@ -8,7 +8,7 @@ using LivingLab.Core.Entities;
 using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.EnergyUsage;
-
+using LivingLab.Web.UIServices.LabProfile;
 
 namespace LivingLab.Web.Controllers;
 /// <remarks>
@@ -24,17 +24,23 @@ public class EnergyUsageAnalysisController : Controller
         _logger = logger;
         _repository = repository;
         _analysisService = analysisService;
-        // Joey i think u need to add the necessary service and repo here
     }
-    public IActionResult Index(int? labId = 1)
+    public async Task<IActionResult> Index(int? LabId = 1)
     {
         // List<Log> Logs = logList();
         List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
         ViewBag.Logs = Logs;
-        ViewBag.LabId = labId;
-        // GetAll();
+        ViewBag.LabId = LabId;
+        //var labs = await _analysisService.GetAllLabs();
         return View();
+        // GetAll();
     }
+    
+    // public IActionResult Lab(int? LabId = 1)
+    // {
+    //     ViewBag.LabId = LabId;
+    //     return View();
+    // }
     
     [HttpGet]
     public IActionResult Export()
@@ -143,7 +149,7 @@ public class EnergyUsageAnalysisController : Controller
     {
         try
         {
-            var model = await _analysisService.GetEnergyUsageTrendAllLab(filter);
+            var model = await _analysisService.GetEnergyUsageTrendSelectedLab(filter);
             return model.Lab != null ? Json(model) : NotFound();
         }
         catch (Exception e)
@@ -168,23 +174,6 @@ public class EnergyUsageAnalysisController : Controller
         }
         
     }
-
-    [HttpPost]
-    public async Task<IActionResult> SetBenchmark(EnergyBenchmarkViewModel benchmark)
-    {
-        try
-        {
-            await _analysisService.SetLabEnergyBenchmark(benchmark);
-            return RedirectToAction(nameof(Index), new {labId = benchmark.LabId});
-        }
-        catch (Exception e)
-        {
-            _logger.Log(LogLevel.Error, e.Message);
-            return RedirectToAction(nameof(Benchmark));
-        }
-    }
-    
-
 } 
 
 

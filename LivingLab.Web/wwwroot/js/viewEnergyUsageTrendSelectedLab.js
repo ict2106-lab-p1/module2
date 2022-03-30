@@ -1,5 +1,6 @@
+let chart;
+
 $(document).ready(async function() {
-<<<<<<< HEAD:LivingLab.Web/wwwroot/js/viewAllEnergyUsageTrend.js
     const labId = $("#labId").val();
     const data = await getData(labId);
     if (!data) return;
@@ -51,21 +52,11 @@ async function filter(e) {
     chart.destroy()
     chart = getLineChart(data);
 }
-=======
-    $(".labDiv").each(async function() {
-        const labId = $(this).find(".labId").val();
-        const canvas = $(this).find(".lineChart");
-        const data = await getData(labId);
-        initLineChart(canvas, data);
-    })
-})
->>>>>>> 34a2d1b02575aa419d773a4af2b8016b5d990b86:LivingLab.Web/wwwroot/js/viewAllLabEnergyUsage.js
 
 /**
  * Setup the line chart with
  * benchmark and actual usage.
  *
-<<<<<<< HEAD:LivingLab.Web/wwwroot/js/viewAllEnergyUsageTrend.js
  * @param {Object} data
  */
 function initLineChart(data) {
@@ -75,12 +66,12 @@ function initLineChart(data) {
 /**
  * Get the line chart.
  *
-=======
->>>>>>> 34a2d1b02575aa419d773a4af2b8016b5d990b86:LivingLab.Web/wwwroot/js/viewAllLabEnergyUsage.js
  * @param {Object} data
+ * @returns {Chart} Chart
  */
-function initLineChart(ctx, data) {
-    new Chart(ctx, {
+function getLineChart(data) {
+    const ctx = $("#lineChart");
+    return new Chart(ctx, {
         type: "line",
         data: {
             labels: getDates(),
@@ -133,18 +124,16 @@ function getBenchmark(data) {
 /**
  * Ajax call to get data from the server.
  */
-async function getData(labId = 1) {
+async function getData(labId = 1, start = null, end = null) {
     const data = {
         labId: labId,
+        Start: start,
+        End: end
     }
 
     try {
         return await $.ajax({
-<<<<<<< HEAD:LivingLab.Web/wwwroot/js/viewAllEnergyUsageTrend.js
             url: "/EnergyUsageAnalysis/ViewUsage",
-=======
-            url: "/EnergyUsage/GetLabUsage",
->>>>>>> 34a2d1b02575aa419d773a4af2b8016b5d990b86:LivingLab.Web/wwwroot/js/viewAllLabEnergyUsage.js
             type: "POST",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
@@ -159,6 +148,7 @@ async function getData(labId = 1) {
         })
     }
 }
+
 
 /**
  * Get all dates for current month
@@ -175,7 +165,5 @@ function getDates() {
         });
         dates.push(date);
     }
-
     return dates;
 }
-

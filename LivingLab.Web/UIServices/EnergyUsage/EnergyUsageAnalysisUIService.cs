@@ -4,6 +4,8 @@ using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
+using LivingLab.Web.Models.ViewModels.LabProfile;
+using LivingLab.Web.UIServices.LabProfile;
 
 namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
@@ -13,11 +15,13 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
 {
     private readonly IMapper _mapper;
     private readonly IEnergyUsageAnalysisService _analysis;
+    private readonly ILabProfileService _labProfileService;
 
-    public EnergyUsageAnalysisUIService(IMapper mapper, IEnergyUsageAnalysisService analysis)
+    public EnergyUsageAnalysisUIService(IMapper mapper, IEnergyUsageAnalysisService analysis, ILabProfileService labProfileService)
     {
         _mapper = mapper;
         _analysis = analysis;
+        _labProfileService = labProfileService;
     }
     public byte[] Export()
     {
@@ -56,15 +60,16 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
         throw new NotImplementedException();
     }
 
-    public async Task<EnergyUsageTrendAllLabViewModel> GetEnergyUsageTrendAllLab(EnergyUsageFilterViewModel filter)
-    {
-        var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
-        var logs = await _analysis.GetEnergyUsageTrendAllLab(energyUsageFilter);
-        return _mapper.Map<MonthlyEnergyUsageDTO, EnergyUsageTrendAllLabViewModel>(logs);
-    }
-    public async Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
+    public async Task<EnergyUsageTrendAllLabViewModel> GetEnergyUsageTrendAllLab(EnergyUsageFilterViewModel filter, int labId)
     {
         throw new NotImplementedException();
+    }
+    public async Task<EnergyUsageTrendSelectedLabViewModel> GetEnergyUsageTrendSelectedLab(EnergyUsageFilterViewModel filter)
+    {
+        var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
+        var logs = await _analysis.GetEnergyUsageTrendSelectedLab(energyUsageFilter);
+        return _mapper.Map<IndividualLabMonthlyEnergyUsageDTO, EnergyUsageTrendSelectedLabViewModel>(logs);
+
     }
     
     // JOEY ADDED
@@ -73,11 +78,10 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
         var data = await _analysis.GetLabEnergyBenchmark(labId);
         return _mapper.Map<Lab, EnergyBenchmarkViewModel>(data);
     }
-
-    public Task SetLabEnergyBenchmark(EnergyBenchmarkViewModel benchmark)
+    
+    public Task<ViewLabProfileViewModel> GetAllLabs()
     {
-        var lab = _mapper.Map<EnergyBenchmarkViewModel, Lab>(benchmark);
-        return _analysis.SetLabEnergyBenchmark(lab);
+        return _labProfileService.GetAllLabAccounts(); 
     }
 
     // weijie

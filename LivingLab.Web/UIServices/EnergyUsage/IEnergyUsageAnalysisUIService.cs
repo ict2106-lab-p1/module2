@@ -1,5 +1,6 @@
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
+using LivingLab.Web.Models.ViewModels.LabProfile;
 
 namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
@@ -19,15 +20,14 @@ public interface IEnergyUsageAnalysisUIService
     // public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId);
     // VM
     public Task<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end);
-    
-    public Task<EnergyUsageTrendAllLabViewModel> GetEnergyUsageTrendAllLab(EnergyUsageFilterViewModel filter);
-    public Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId);
-
+    public Task<EnergyUsageTrendAllLabViewModel> GetEnergyUsageTrendAllLab(EnergyUsageFilterViewModel filter, int labId);
+    public Task<EnergyUsageTrendSelectedLabViewModel> GetEnergyUsageTrendSelectedLab(EnergyUsageFilterViewModel filter);
     
     // JOEY ADDED 
     public Task<EnergyBenchmarkViewModel> GetLabEnergyBenchmark(int labId);
-    public Task SetLabEnergyBenchmark(EnergyBenchmarkViewModel benchmark);
-    
+    public Task<ViewLabProfileViewModel> GetAllLabs();
+
+
     // weijie
     // not sure what will be your DTO looks like may have to create in LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
     public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, string deviceType);
