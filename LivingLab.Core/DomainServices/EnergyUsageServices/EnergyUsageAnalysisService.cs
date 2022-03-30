@@ -33,7 +33,6 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         List<int> DeviceEUWatt = new List<int>();
         List<int> DeviceUsageTime = new List<int>();
         List<string> DeviceType = new List<string>();
-        List<int> DeviceEUPerHour = new List<int>();
         List<double> DeviceEUCost = new List<double>();
         List<DeviceEnergyUsageDTO> DeviceEUList = new List<DeviceEnergyUsageDTO>();
 
@@ -93,9 +92,9 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
         List<LabEnergyUsageDTO> LabEUList = new List<LabEnergyUsageDTO>();
         List<string> uniqueLab = new List<string>();
-        List<int> LabEU = new List<int>();
+        List<int> LabEUJoules = new List<int>();
+        List<int> LabEUWatt = new List<int>();
         List<int> EnergyUsageTime = new List<int>();
-        List<int> LabEUPerHour = new List<int>();
         List<double> LabEUCost = new List<double>();
         List<double> LabEUIntensity = new List<double>();
         List<int> LabArea = new List<int>();
@@ -108,7 +107,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
             if (!uniqueLab.Contains(item.Lab.LabLocation))
             {
                 uniqueLab.Add(item.Lab.LabLocation);
-                LabEU.Add(0);
+                LabEUJoules.Add(0);
                 EnergyUsageTime.Add(0);
                 LabArea.Add(item.Lab.Capacity??0);     
             }
@@ -123,7 +122,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
             {
                 if (item.Lab.LabLocation == uniqueLab[i])
                 {
-                    LabEU[i] += (int)item.EnergyUsage;
+                    LabEUJoules[i] += (int)item.EnergyUsage;
                     EnergyUsageTime[i] += item.Interval.Minutes;
                 }
             }
@@ -134,9 +133,9 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         */
         for (int i = 0; i < uniqueLab.Count; i++)
         {
-            LabEUPerHour.Add(_calculator.CalculateEnergyUsagePerHour(LabEU[i],EnergyUsageTime[i]));
-            LabEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,LabEU[i],EnergyUsageTime[i]));
-            LabEUIntensity.Add(_calculator.CalculateEnergyIntensity(LabArea[i],LabEU[i]));
+            LabEUWatt.Add(_calculator.CalculateEnergyUsageInWatt(LabEUJoules[i],EnergyUsageTime[i]));
+            LabEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,LabEUWatt[i]));
+            LabEUIntensity.Add(_calculator.CalculateEnergyIntensity(LabArea[i],LabEUWatt[i]));
         }
 
                 // append the list of data to DeviceEnergyUsageDTO
@@ -144,10 +143,9 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         {
             LabEUList.Add(new LabEnergyUsageDTO{
                 LabLocation = uniqueLab[i],
-                TotalEnergyUsage = LabEU[i],
+                TotalEnergyUsage = LabEUWatt[i],
                 EnergyUsageCost = LabEUCost[i],
-                EnergyUsageIntensity = LabEUIntensity[i],
-                EnergyUsagePerHour = LabEUPerHour[i]
+                EnergyUsageIntensity = LabEUIntensity[i]
                 });
 
         }
