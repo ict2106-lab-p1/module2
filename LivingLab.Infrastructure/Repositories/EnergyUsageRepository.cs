@@ -91,7 +91,7 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
     
     // JOEY:
 
-    public async Task<List<EnergyUsageLog>> GetLabEnergyUsageByIdAndDate(int labId, DateTime? start, DateTime? end)
+    public async Task<List<EnergyUsageLog>> GetLabEnergyUsageByLocationAndDate(string labLocation, DateTime? start, DateTime? end)
     {
         var now = DateTime.Now;
         
@@ -101,7 +101,7 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         var logsForLabInDateRange = await IncludeReferences(
                 _context.EnergyUsageLogs
                     .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)
-                    .Where(log => log.Lab!.LabId == labId)
+                    .Where(log => log.Lab!.LabLocation == labLocation)
                 )
             .ToListAsync();
         return logsForLabInDateRange;

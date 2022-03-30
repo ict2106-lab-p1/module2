@@ -25,12 +25,12 @@ public class EnergyUsageAnalysisController : Controller
         _repository = repository;
         _analysisService = analysisService;
     }
-    public async Task<IActionResult> Index(int? LabId = 1)
+    public async Task<IActionResult> Index(string? LabLocation = "NYP-SR7C")
     {
         // List<Log> Logs = logList();
         List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
         ViewBag.Logs = Logs;
-        ViewBag.LabId = LabId;
+        ViewBag.LabLocation = LabLocation;
         //var labs = await _analysisService.GetAllLabs();
         return View();
         // GetAll();

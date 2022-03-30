@@ -1,8 +1,8 @@
 let chart;
 
 $(document).ready(async function() {
-    const labId = $("#labId").val();
-    const data = await getData(labId);
+    const labLocation = $("#labLocation").val();
+    const data = await getData(labLocation);
     if (!data) return;
 
     initLineChart(data);
@@ -20,7 +20,8 @@ function initDatepicker() {
     const today = new Date();
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-
+    // isit possible to get the min acrd to the db^ 
+    
     $start.datepicker({
         defaultDate: firstDay,
         minDate: oneMonthAgo,
@@ -44,10 +45,10 @@ function initDatepicker() {
  */
 async function filter(e) {
     e.preventDefault();
-    const labId = $("#selectLabId").val();
+    const labLocation = $("#selectLabLocation").val();
     const start = $('#start').val();
     const end = $('#end').val();
-    const data = await getData(labId, start, end);
+    const data = await getData(labLocation, start, end);
 
     // Update the chart
     chart.destroy()
@@ -125,9 +126,9 @@ function getBenchmark(data) {
 /**
  * Ajax call to get data from the server.
  */
-async function getData(labId = null, start = null, end = null) {
+async function getData(labLocation = null, start = null, end = null) {
     const data = {
-        labId: labId,
+        labLocation: labLocation,
         Start: start,
         End: end
     }
@@ -179,6 +180,6 @@ function resetFilter(e) {
     e.preventDefault();
     $("#start").val('');
     $("#end").val('');
-    $("#selectLabId").val('1');     // should be set to the default value
+    $("#selectLabLocation").val('');
     $("#filter").click();
 }

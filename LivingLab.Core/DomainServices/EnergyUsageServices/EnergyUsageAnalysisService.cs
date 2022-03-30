@@ -170,7 +170,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     {
         // Grouping done here because SQLite doesn't support it
         var logs = _repository
-            .GetLabEnergyUsageByIdAndDate(filter.LabId, filter.Start, filter.End)
+            .GetLabEnergyUsageByLocationAndDate(filter.LabLocation, filter.Start, filter.End)
             .Result
             .GroupBy(log => log.LoggedDate.Date)
             .Select(log => new EnergyUsageLog
