@@ -8,6 +8,7 @@ $(document).ready(async function() {
     initLineChart(data);
     initDatepicker();
     $("#filter").click(filter);
+    $("#resetFilter").click(resetFilter);
 })
 
 /**
@@ -43,7 +44,7 @@ function initDatepicker() {
  */
 async function filter(e) {
     e.preventDefault();
-    const labId = $("#labId").val();
+    const labId = $("#selectLabId").val();
     const start = $('#start').val();
     const end = $('#end').val();
     const data = await getData(labId, start, end);
@@ -124,7 +125,7 @@ function getBenchmark(data) {
 /**
  * Ajax call to get data from the server.
  */
-async function getData(labId = 1, start = null, end = null) {
+async function getData(labId = null, start = null, end = null) {
     const data = {
         labId: labId,
         Start: start,
@@ -166,4 +167,18 @@ function getDates() {
         dates.push(date);
     }
     return dates;
+}
+
+/**
+ * Reset the filter to the default values.
+ *
+ * Set start and end date to default and
+ * trigger the filter button.
+ */
+function resetFilter(e) {
+    e.preventDefault();
+    $("#start").val('');
+    $("#end").val('');
+    $("#selectLabId").val('1');     // should be set to the default value
+    $("#filter").click();
 }
