@@ -33,6 +33,7 @@ function initLineChart(ctx, data) {
             }]
         }
     })
+    hideSpinners();
 }
 
 /**
@@ -47,6 +48,15 @@ function getLogs(data) {
         logs.push(data.logs[i].energyUsage);
     }
     return logs;
+}
+
+/**
+ * Hide all spinners.
+ */
+function hideSpinners() {
+    $(".spinner").each(function() {
+        $(this).hide();
+    });
 }
 
 /**
