@@ -22,12 +22,6 @@ public class LabRepository : Repository<Lab>, ILabRepository
     //    return todo?.Title;
     //}
 
-    //public async Task<List<Device>> GetAllDevicesByType(string deviceType)
-    //{
-    //    List<Device> deviceList = await _context.Devices.Where(t => deviceType.Contains(t.Type)).ToListAsync();
-    //    return deviceList;
-    //}
-
 
     //Hong Ying
     public Task<List<Lab>> GetAllLabLocation()

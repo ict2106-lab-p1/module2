@@ -10,10 +10,10 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// </remarks>
 public class EnergyUsageDomainService : IEnergyUsageDomainService
 {
-    private readonly ILabRepository _labRepository;
+    private readonly ILabProfileRepository _labRepository;
     private readonly IEnergyUsageRepository _energyUsageRepository;
     
-    public EnergyUsageDomainService(ILabRepository labRepository, IEnergyUsageRepository energyUsageRepository)
+    public EnergyUsageDomainService(ILabProfileRepository labRepository, IEnergyUsageRepository energyUsageRepository)
     {
         _labRepository = labRepository;
         _energyUsageRepository = energyUsageRepository;
@@ -27,7 +27,7 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     /// <returns>EnergyUsageDTO</returns>
     public async Task<EnergyUsageDTO> GetEnergyUsage(EnergyUsageFilterDTO filter)
     {
-        // Grouping done here before SQLite doesn't support it
+        // Grouping done here because SQLite doesn't support it :(
         var logs = _energyUsageRepository
             .GetDeviceEnergyUsageByLabAndDate(filter.LabId, filter.Start, filter.End)
             .Result
@@ -46,7 +46,8 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
         var dto = new EnergyUsageDTO
         {
             Logs = logs,
-            Lab = lab
+            Lab = lab,
+            Median = GetMedian(logs)
         };
         return dto;
     }
@@ -63,5 +64,25 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     public Task SetLabEnergyBenchmark(Lab lab)
     {
         return _labRepository.SetLabEnergyBenchmark(lab.LabId, lab.EnergyUsageBenchmark!.Value);
+    }
+
+    /// <summary>
+    /// Find the median of the energy usage logs
+    /// </summary>
+    /// <param name="logs">Energy Usage Logs</param>
+    /// <returns>Median</returns>
+    private double GetMedian(List<EnergyUsageLog> logs)
+    {
+        if (logs.Count == 0) return 0;
+        
+        var sortedLogs = logs.OrderBy(log => log.EnergyUsage).ToList();
+        var count = sortedLogs.Count;
+        
+        var mid = count / 2;
+        if (count % 2 == 0)
+        {
+            return (sortedLogs.ElementAt(mid).EnergyUsage.Value + sortedLogs.ElementAt(mid - 1).EnergyUsage.Value) / 2;
+        }
+        return sortedLogs.ElementAt(mid).EnergyUsage.Value;
     }
 }
