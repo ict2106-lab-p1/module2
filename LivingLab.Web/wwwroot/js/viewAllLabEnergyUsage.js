@@ -1,77 +1,20 @@
-let chart;
-
 $(document).ready(async function() {
-    const labId = $("#labId").val();
-    const data = await getData(labId);
-    if (!data) return;
-    
-    initLineChart(data);
-    initDatepicker();
-    $("#filter").click(filter);
-})
-
-/**
- * Initialize the datepicker
- */
-function initDatepicker() {
-    const $start = $('#start');
-    const $end = $('#end');
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-    
-    $start.datepicker({
-        defaultDate: firstDay,
-        minDate: oneMonthAgo,
-        maxDate: today,
-        onSelect: function(dateText) {
-            $end.datepicker("option", "minDate", dateText);
-        }
+    $(".labDiv").each(async function() {
+        const labId = $(this).find(".labId").val();
+        const canvas = $(this).find(".lineChart");
+        const data = await getData(labId);
+        initLineChart(canvas, data);
     })
-    
-    $end.datepicker({
-        defaultDate: today,
-        maxDate: today,
-        onSelect: function(dateText) {
-            $start.datepicker("option", "maxDate", dateText);
-        }
-    });
-}
-
-/**
- * Filter the data.
- */
-async function filter(e) {
-    e.preventDefault();
-    const labId = $("#labId").val();
-    const start = $('#start').val();
-    const end = $('#end').val();
-    const data = await getData(labId, start, end);
-    
-    // Update the chart
-    chart.destroy()
-    chart = getLineChart(data);
-}
+})
 
 /**
  * Setup the line chart with
  * benchmark and actual usage.
- * 
+ *
  * @param {Object} data
  */
-function initLineChart(data) {
-    chart = getLineChart(data);
-}
-
-/**
- * Get the line chart.
- * 
- * @param {Object} data
- * @returns {Chart} Chart
- */
-function getLineChart(data) {
-    const ctx = $("#lineChart");
-    return new Chart(ctx, {
+function initLineChart(ctx, data) {
+    new Chart(ctx, {
         type: "line",
         data: {
             labels: getDates(),
@@ -90,11 +33,12 @@ function getLineChart(data) {
             }]
         }
     })
+    hideSpinners();
 }
 
 /**
  * Get actual usage logs from data.
- * 
+ *
  * @param {Object} data
  * @returns {Array} logs
  */
@@ -107,9 +51,18 @@ function getLogs(data) {
 }
 
 /**
+ * Hide all spinners.
+ */
+function hideSpinners() {
+    $(".spinner").each(function() {
+        $(this).hide();
+    });
+}
+
+/**
  * Temporary solution to set a straight line
  * for benchmark.
- * 
+ *
  * @param {Object} data
  * @returns {Array} benchmarks
  */
@@ -124,16 +77,14 @@ function getBenchmark(data) {
 /**
  * Ajax call to get data from the server.
  */
-async function getData(labId = 1, start = null, end = null) {
+async function getData(labId = 1) {
     const data = {
         labId: labId,
-        Start: start,
-        End: end
     }
     
     try {
         return await $.ajax({
-            url: "/EnergyUsage/ViewUsage",
+            url: "/EnergyUsage/GetLabUsage",
             type: "POST",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
@@ -148,7 +99,6 @@ async function getData(labId = 1, start = null, end = null) {
         })
     }
 }
-
 
 /**
  * Get all dates for current month
@@ -165,5 +115,6 @@ function getDates() {
         });
         dates.push(date);
     }
+
     return dates;
 }

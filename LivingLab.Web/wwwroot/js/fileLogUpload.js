@@ -30,11 +30,27 @@ const template = `<div class="log-div mt-5 flex flex-col bg-white p-5 shadow-lg 
  * When DOM is ready for JS code to execute.
  */
 $(document).ready(function (){
+    $("#fileUpload").change(fileChange)
     $("#btnAdd").click(appendRow);
     $(this).on('click', '.delete', deleteRow);
     $(".btnSave").click(save);
-
+    $("#btn-submit").click(submit);
 })
+
+/**
+ * File upload on change event.
+ * 
+ * 1. Hide svg icon
+ * 2. Replace file upload text with file name
+ * 3. Show upload button
+ * 
+ * @param e
+ */
+function fileChange(e) {
+    const fileName = e.target.files[0].name;
+    $("#attachmentText").text(fileName);
+    $("#btn-submit").show();
+}
 
 /**
  * Appends a new div for input.
@@ -56,6 +72,44 @@ function appendRow() {
  */
 function deleteRow() {
     $(this).closest("div.log-div").remove();
+}
+
+/**
+ * Save the data to the database.
+ */
+function submit(e) {
+    e.preventDefault()
+    const $uploadBtn = $(this);
+    $uploadBtn.hide();
+    const file = $("#fileUpload")[0].files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    
+    $.ajax({
+        url: "/ManualLogs/Upload",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(count) {
+            Swal.fire({
+                title: "Success!",
+                text: `${count} logs saved successfully!`,
+                icon: "success",
+                confirmButtonColor: '#363740'
+            }).then(function() {
+                window.location.href = "/ManualLogs/FileUpload";
+            })
+        },
+        error: function(response) {
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong!",
+                icon: "error"
+            })
+            $uploadBtn.show();
+        }
+    });
 }
 
 /**
