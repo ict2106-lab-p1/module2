@@ -35,7 +35,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         List<string> DeviceType = new List<string>();
         List<double> DeviceEUCost = new List<double>();
         List<DeviceEnergyUsageDTO> DeviceEUList = new List<DeviceEnergyUsageDTO>();
-
+        var count = 0;
         // get the unique devices in the log and ensure same number of element in each list
         foreach (var item in result)
         {
@@ -46,7 +46,9 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
                 DeviceUsageTime.Add(0);
                 DeviceType.Add(item.Device.Name);
             }
+            count++;
         }
+        Console.WriteLine("count = " + count);
 
         // add to total EU of a device if logs are from same device
         foreach (var item in result)
@@ -91,12 +93,11 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
         List<LabEnergyUsageDTO> LabEUList = new List<LabEnergyUsageDTO>();
         List<string> uniqueLab = new List<string>();
-        List<int> LabEUJoules = new List<int>();
         List<int> LabEUWatt = new List<int>();
-        List<int> EnergyUsageTime = new List<int>();
         List<double> LabEUCost = new List<double>();
         List<double> LabEUIntensity = new List<double>();
         List<int> LabArea = new List<int>();
+        List<EUWatt> EUWatt =  new List<EUWatt>();
 
         /*
         * get the unique lab into a list
@@ -106,49 +107,55 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
             if (!uniqueLab.Contains(item.Lab.LabLocation))
             {
                 uniqueLab.Add(item.Lab.LabLocation);
-                LabEUJoules.Add(0);
-                EnergyUsageTime.Add(0);
-                LabArea.Add(item.Lab.Capacity??0);     
+                LabArea.Add(item.Lab.Capacity??0);
+                LabEUWatt.Add(0);    
             }
+            EUWatt.Add(new EUWatt
+            {
+                id = item.Lab.LabLocation,
+                EU = _calculator.CalculateEnergyUsageInWatt((int) item.EnergyUsage,item.Interval.Minutes)
+            });
         }
-
+        Console.WriteLine("first section done");
         /*
         * get the unique lab into a list
         */
-        foreach (var item in result)
+        Console.WriteLine("EUWatt count = "+EUWatt.Count);
+        for (int i = 0; i < uniqueLab.Count; i++)
         {
-            for (int i = 0; i < uniqueLab.Count; i++)
+            for (int j = 0; j < EUWatt.Count; j++)
             {
-                if (item.Lab.LabLocation == uniqueLab[i])
+                if (EUWatt[j].id == uniqueLab[i])
                 {
-                    LabEUJoules[i] += (int)item.EnergyUsage;
-                    EnergyUsageTime[i] += item.Interval.Minutes;
+                    LabEUWatt[i] += EUWatt[j].EU;
                 }
             }
         }
-
+        Console.WriteLine("second section done");
+        
         /*
         * get the unique lab into a list
         */
         for (int i = 0; i < uniqueLab.Count; i++)
         {
-            LabEUWatt.Add(_calculator.CalculateEnergyUsageInWatt(LabEUJoules[i],EnergyUsageTime[i]));
             LabEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,LabEUWatt[i]));
             LabEUIntensity.Add(_calculator.CalculateEnergyIntensity(LabArea[i],LabEUWatt[i]));
         }
 
-                // append the list of data to DeviceEnergyUsageDTO
+        // append the list of data to DeviceEnergyUsageDTO
         for (int i = 0; i < uniqueLab.Count; i++)
         {
+            // 
+            // 
             LabEUList.Add(new LabEnergyUsageDTO{
                 LabLocation = uniqueLab[i],
-                TotalEnergyUsage = LabEUWatt[i],
+                TotalEnergyUsage = Math.Round((double)LabEUIntensity[i]/1000,2),
                 EnergyUsageCost = LabEUCost[i],
-                EnergyUsageIntensity = LabEUIntensity[i]
+                EnergyUsageIntensity = Math.Round((double)LabEUWatt[i]/1000,2)
                 });
 
         }
-        Console.WriteLine(LabEUList[0].EnergyUsageCost);
+        Console.WriteLine("Third section done");
         return LabEUList;
     }
     // joey
@@ -175,4 +182,9 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         throw new NotImplementedException();
     }
 
+}
+
+public class EUWatt{
+    public string id  {get; set;}
+    public int EU {get; set;}
 }
