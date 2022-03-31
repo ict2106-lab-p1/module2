@@ -9,7 +9,7 @@
 
 <h2 class="font-bold text-3xl text-slate-900">Lab <span id="labLocation"></span> Energy Usage</h2>
 
-<div class="w-2/3 h-1/2 mt-6">
+<div class="w-full h-1/2 mt-6">
     <input type="hidden" id="labId" value="@ViewBag.LabId"/>
     <div class="flex justify-between mb-5">
         <div class="flex items-end">
@@ -18,10 +18,10 @@
             <input type="button" id="filter" class="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded trigger-swal ml-4" value="Filter"/>
             <input type="button" id="resetFilter" class="bg-slate-900 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded trigger-swal ml-4" value="Reset"/>
         </div>
-        <div class="card w-80 bg-neutral text-neutral-content">
+        <div class="card w-72 bg-neutral text-neutral-content">
             <div class="card-body items-center text-center">
                 <h2 class="card-title">Median Energy Usage</h2>
-                <p id="median">0</p>
+                <p><span id="median">0</span> Joules</p>
             </div>
         </div>
     </div>
