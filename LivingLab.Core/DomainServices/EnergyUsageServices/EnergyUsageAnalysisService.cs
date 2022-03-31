@@ -2,6 +2,7 @@ using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Entities;
 using LivingLab.Core.Interfaces.Repositories;
+using System.Text;
 
 namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// <remarks>
@@ -20,16 +21,27 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         _repository = repository;
     }
 
-    public byte[] Export() 
+    public byte[] ExportDeviceEU(List<DeviceEnergyUsageDTO> DeviceEUList) 
     {
-        throw new NotImplementedException();
+        var builder = new StringBuilder();
+        var ColNames = "";
+        foreach(var propertyInfo in typeof(DeviceEnergyUsageDTO).GetProperties())
+        {
+            ColNames = ColNames + propertyInfo.Name + ",";
+        }
+        builder.AppendLine(ColNames);
+        foreach (var item in DeviceEUList)
+        {
+            builder.AppendLine($"{item.DeviceSerialNo},{item.DeviceType},{item.TotalEnergyUsage},{item.EnergyUsageCost}");
+        }
+        return Encoding.UTF8.GetBytes(builder.ToString());
     }
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end) 
     {
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
         //temporary list to store data
         List<string> uniqueDevice = new List<string>();
-        List<int> DeviceEUJoules = new List<int>();
+        List<EUWatt> EUWatt =  new List<EUWatt>();
         List<int> DeviceEUWatt = new List<int>();
         List<int> DeviceUsageTime = new List<int>();
         List<string> DeviceType = new List<string>();
@@ -42,32 +54,33 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
             if (!uniqueDevice.Contains(item.Device.SerialNo))
             {
                 uniqueDevice.Add(item.Device.SerialNo);
-                DeviceEUJoules.Add(0);
-                DeviceUsageTime.Add(0);
+                DeviceEUWatt.Add(0);
                 DeviceType.Add(item.Device.Name);
             }
-            count++;
+            EUWatt.Add(new EUWatt
+            {
+                id = item.Device.SerialNo,
+                EU = _calculator.CalculateEnergyUsageInWatt((int) item.EnergyUsage,item.Interval.Minutes)
+            });
         }
-        Console.WriteLine("count = " + count);
+        
+        // Console.WriteLine("count = " + count);
 
         // add to total EU of a device if logs are from same device
-        foreach (var item in result)
+        for (int i = 0; i < uniqueDevice.Count; i++)
         {
-            for (int i = 0; i < uniqueDevice.Count; i++)
+            for (int j = 0; j < EUWatt.Count; j++)
             {
-                if (item.Device.SerialNo == uniqueDevice[i])
+                if (EUWatt[j].id == uniqueDevice[i])
                 {
-                    DeviceEUJoules[i] += (int)item.EnergyUsage;
-                    DeviceUsageTime[i] += item.Interval.Minutes;
+                    DeviceEUWatt[i] += EUWatt[j].EU;
                 }
             }
-            
         }
 
         // calculate the cost and EU/hour
         for (int i = 0; i < uniqueDevice.Count; i++)
         {
-            DeviceEUWatt.Add(_calculator.CalculateEnergyUsageInWatt(DeviceEUJoules[i],DeviceUsageTime[i]));
             DeviceEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,DeviceEUWatt[i]));
         }
 
@@ -120,7 +133,6 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         /*
         * get the unique lab into a list
         */
-        Console.WriteLine("EUWatt count = "+EUWatt.Count);
         for (int i = 0; i < uniqueLab.Count; i++)
         {
             for (int j = 0; j < EUWatt.Count; j++)

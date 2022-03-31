@@ -12,9 +12,9 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
     {
         _analysis = analysis;
     }
-    public byte[] Export()
+    public byte[] Export(List<DeviceEnergyUsageDTO> content)
     {
-        throw new NotImplementedException();
+        return _analysis.ExportDeviceEU(content);
     }
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end)
     {
