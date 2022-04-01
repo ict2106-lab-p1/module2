@@ -15,17 +15,17 @@ public class ManualLogService : IManualLogService
 {
     private readonly IMapper _mapper;
     private readonly IManualLogDomainService _manualLogDomainService;
-    
+
     public ManualLogService(IMapper mapper, IManualLogDomainService manualLogDomainService)
     {
         _mapper = mapper;
         _manualLogDomainService = manualLogDomainService;
     }
-    
+
     public async Task<int> UploadLogs(IFormFile file)
     {
-        var logs =  _manualLogDomainService.UploadLogs(file);
-        var logsVM =  _mapper.Map<List<EnergyUsageCsvDTO>, List<LogItemViewModel>>(logs);
+        var logs = _manualLogDomainService.UploadLogs(file);
+        var logsVM = _mapper.Map<List<EnergyUsageCsvDTO>, List<LogItemViewModel>>(logs);
         await SaveLogs(logsVM);
         return logsVM.Count;
     }
