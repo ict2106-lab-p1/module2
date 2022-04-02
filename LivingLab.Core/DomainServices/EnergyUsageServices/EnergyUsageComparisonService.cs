@@ -2,6 +2,7 @@ using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Entities;
 using LivingLab.Core.Interfaces.Repositories;
+using System;
 
 namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// <remarks>
@@ -27,14 +28,10 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
         _abRepository = labRepository;
     }
 
-    //public List<LabEnergyUsageDTO> GetEnergyUsageByLabID(int labIds, DateTime start, DateTime end)
     public List<EnergyComparisonLabTableDTO> GetEnergyUsageByLabNameTable(string labName, DateTime start, DateTime end)
     {
-        //throw new NotImplementedException();
         List<EnergyUsageLog> result = _repository.GetLabEnergyUsageByLabNameAndDate(labName, start, end).Result;
         int LabEU = 0;
-        int LabUsageTime = 0;
-        int LabEUPerHour = 0;
         double LabEUCost = 0;
         double energyIntensity = 0;
         int LabArea = 0;
@@ -45,23 +42,20 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
 
         foreach (var item in result)
         {
-            LabEU += (int)item.EnergyUsage;
-            LabUsageTime += item.Interval.Minutes;
-            //not sure how to get the lab area
-            //LabArea = item.
+            LabEU += _calculator.CalculateEnergyUsageInWatt((int)item.EnergyUsage, item.Interval.Minutes);
+            LabArea = item.Lab.Area??0;
         }
 
-        LabEUPerHour = _calculator.CalculateEnergyUsagePerHour(LabEU, LabUsageTime);
-        LabEUCost = _calculator.CalculateEnergyUsageCost(cost, LabEU, LabUsageTime);
+        LabEUCost = _calculator.CalculateEnergyUsageCost(cost, LabEU);
         energyIntensity = _calculator.CalculateEnergyIntensity(LabArea, LabEU);
+
 
         LabEUList.Add(new EnergyComparisonLabTableDTO
         {
             LabLocation = labName,
-            TotalEnergyUsage = LabEU,
-            EnergyUsageCost = LabEUCost,
-            EnergyUsagePerHour = LabEUPerHour, 
-            EnergyUsageIntensity = energyIntensity
+            TotalEnergyUsage = Math.Round((double)LabEU / 1000, 2),
+            EnergyUsageCost = Math.Round((double)LabEUCost / 1000, 2),
+            EnergyUsageIntensity = Math.Round((double)energyIntensity / 1000, 2)
         });
 
         return LabEUList;
@@ -69,21 +63,18 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
 
     public List<EnergyComparisonGraphDTO> GetEnergyUsageByLabNameGraph(string labName, DateTime start, DateTime end)
     {
-        //throw new NotImplementedException();
         List<EnergyUsageLog> result = _repository.GetLabEnergyUsageByLabNameAndDate(labName, start, end).Result;
         int LabEU = 0;
         double energyIntensity = 0;
         int LabArea = 0;
 
-
         List<EnergyComparisonGraphDTO> LabEUList = new List<EnergyComparisonGraphDTO>();
-
+        List<EUWatt> EUWatt = new List<EUWatt>();
 
         foreach (var item in result)
         {
-            LabEU += (int)item.EnergyUsage;
-            //not sure how to get the lab area
-            //LabArea = item.
+            LabEU += _calculator.CalculateEnergyUsageInWatt((int)item.EnergyUsage, item.Interval.Minutes);
+            LabArea = item.Lab.Area ?? 0;
         }
 
         energyIntensity = _calculator.CalculateEnergyIntensity(LabArea, LabEU);
@@ -91,8 +82,8 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
         LabEUList.Add(new EnergyComparisonGraphDTO
         {
             LabLocation = labName,
-            TotalEnergyUsage = LabEU,
-            EnergyUsageIntensity = energyIntensity
+            TotalEnergyUsage = Math.Round((double)LabEU / 1000, 2),
+            EnergyUsageIntensity = Math.Round((double)energyIntensity / 1000, 2)
         });
 
         return LabEUList;
@@ -100,20 +91,20 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
 
     public double GetEnergyUsageByLabNameBenchmark(string[] labNames, DateTime start, DateTime end)
     {
-        //throw new NotImplementedException();
         double benchmark = 0;
         foreach(var i in labNames)
         {
             List<EnergyUsageLog> result = _repository.GetLabEnergyUsageByLabNameAndDate(i, start, end).Result;
-        
+            List<EUWatt> EUWatt = new List<EUWatt>();
+
             int LabEU = 0;
 
             foreach (var item in result)
             {
-                LabEU += (int)item.EnergyUsage;
+                LabEU += _calculator.CalculateEnergyUsageInWatt((int)item.EnergyUsage, item.Interval.Minutes);
             }
 
-            benchmark += LabEU;
+            benchmark += Math.Round((double)LabEU / 1000, 2);
 
         }
 
@@ -121,36 +112,31 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
         return benchmark;
     }
 
-    //public List<DeviceEnergyUsageDTO> GetEnergyUsageByDeviceType(List<string> deviceTYpe, DateTime start, DateTime end)
     public List<EnergyComparisonDeviceTableDTO> GetEnergyUsageByDeviceType(string deviceType, DateTime start, DateTime end)
     {
-        //throw new NotImplementedException();
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDeviceTypeAndDate(deviceType,start, end).Result;
         int DeviceEU = 0;
-        int DeviceUsageTime = 0;
-        int DeviceEUPerHour = 0;
         double DeviceEUCost = 0;
 
 
         List<EnergyComparisonDeviceTableDTO> DeviceEUList = new List<EnergyComparisonDeviceTableDTO>();
+        List<EUWatt> EUWatt = new List<EUWatt>();
 
-  
         foreach (var item in result)
         {
-            DeviceEU += (int)item.EnergyUsage;
-            DeviceUsageTime += item.Interval.Minutes;
+            DeviceEU +=  _calculator.CalculateEnergyUsageInWatt((int)item.EnergyUsage, item.Interval.Minutes);
         }
-        
-        DeviceEUPerHour = _calculator.CalculateEnergyUsagePerHour(DeviceEU, DeviceUsageTime);
-        DeviceEUCost = _calculator.CalculateEnergyUsageCost(cost, DeviceEU, DeviceUsageTime);
-       
+
+        DeviceEUCost = _calculator.CalculateEnergyUsageCost(cost, DeviceEU);
+
+        //append to list
         DeviceEUList.Add(new EnergyComparisonDeviceTableDTO
         {
             DeviceType = deviceType,
-            TotalEnergyUsage = DeviceEU,
-            EnergyUsageCost = DeviceEUCost,
-            EnergyUsagePerHour = DeviceEUPerHour
-        });
+            TotalEnergyUsage = Math.Round((double)DeviceEU / 1000, 2),
+            EnergyUsageCost = Math.Round((double)DeviceEUCost / 1000, 2)
+        }) ;
+        Console.WriteLine(DeviceEUList[0].TotalEnergyUsage);
 
         return DeviceEUList;
     }
@@ -177,26 +163,18 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
     {
         List<Lab> result = _abRepository.GetAllLabLocation().Result;
         List<string> labNames = new List<string>();
-        //List<LabEnergyUsageDTO> labList = new List<LabEnergyUsageDTO>();
 
         foreach (var item in result)
         {
             labNames.Add(item.LabLocation);
         }
 
-        //for (int i = 0; i < labNames.Count; i++)
-        //{
-        //    labList.Add(new LabEnergyUsageDTO
-        //    {
-        //        LabLocation = labNames[i]
-        //    });
-
-        //}
-
-        //return labList;
-
         return labNames;
-
-        //throw new NotImplementedException();
     }
+}
+
+public class EUWatt
+{
+    public string id { get; set; }
+    public int EU { get; set; }
 }

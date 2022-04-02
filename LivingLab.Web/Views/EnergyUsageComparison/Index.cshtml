@@ -13,16 +13,16 @@
 </div>
 <div>
     Compare by:
-    <select id="compare" onchange="selectComparisonType()">
+    <select id="compare" onchange="selectComparisonType()" class="column-2">
         <option value="DeviceType">Device Type</option>
         <option value="Lab">Lab</option>
 
     </select>
     <br />
     <br />
-    <div class="flex flex-col" style="white-space: nowrap;">
+        <div class="flex flex-col" style="white-space: nowrap;">
         <table>
-            <tr>
+            <tr> 
                 <td class="column-2">
                     <h6 id="opt1"></h6> <select id="option1" onchange="removeChosenType()"></select>
                    
@@ -61,10 +61,10 @@
     <br />
     <br />
 
-    <div id="displayGraph" class="chart-container" style="position: relative;">
-        @*<canvas id="graph" style="padding: 0;margin: auto;display: block; " class= "hidden"> </canvas>*@
+    <div id="displayGraph" class="chart-container">
     </div>
-   
+ </div>  
+
 <div class="fixed hidden inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="errormodal-backdrop"></div>
     <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="errormodal">
         <div class="relative w-auto my-6 mx-auto max-w-3xl">
@@ -86,10 +86,6 @@
             </div>
         </div>
     </div>
-
-</div>
-
-
 
 
 @section Scripts

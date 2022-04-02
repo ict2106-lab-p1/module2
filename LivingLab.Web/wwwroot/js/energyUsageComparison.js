@@ -1,11 +1,12 @@
-﻿
-var allArray = [];
+﻿var allArray = [];
 function selectComparisonType() {
 
     $('#displayGraph').empty();
     $('#datatable').empty();
     document.getElementById("startDate").value = "";
     document.getElementById("endDate").value = "";
+
+    console.log($('#displayGraph'))
 
 
     var type = $("#compare :selected").val();
@@ -60,7 +61,8 @@ $("#startDate, #endDate").change(function () {
     var endDate = document.getElementById("endDate").value;
 
     if ((Date.parse(endDate) <= Date.parse(startDate))) {
-        alert("End date should be greater than Start date");
+        toggleModal()
+        $('#errorMessage').text("End date should be greater than Start date");
         document.getElementById("endDate").value = "";
     }
 });
@@ -83,19 +85,19 @@ function removeChosenType() {
     var selected = $("#" + ddlSelevted + " :selected").val();
     var selectedArray = [];
     console.log(ddlSelevted.substring(ddlSelevted.length - 1, ddlSelevted.length));
-    //if (selected != "") {
-        for (var x = 1; x <= 4; x++) {
-            if (x != ddlSelevted.substring(ddlSelevted.length - 1, ddlSelevted.length)) {
-                if (selected != "") {
-                    $("#option" + x + " option[value = '" + selected + "']").hide();
-                }
-            }
-            var checkAllOptionSelected = $("#option" + x + " :selected").val();
-            if (checkAllOptionSelected != "") {
-                selectedArray.push(checkAllOptionSelected);
+    
+    for (var x = 1; x <= 4; x++) {
+        if (x != ddlSelevted.substring(ddlSelevted.length - 1, ddlSelevted.length)) {
+            if (selected != "") {
+                $("#option" + x + " option[value = '" + selected + "']").hide();
             }
         }
-    //}
+        var checkAllOptionSelected = $("#option" + x + " :selected").val();
+        if (checkAllOptionSelected != "") {
+            selectedArray.push(checkAllOptionSelected);
+        }
+    }
+    
     var difference = allArray.filter(x => !selectedArray.includes(x));
     for (var j = 0; j < difference.length; j++) {
         for (var x = 1; x <= 4; x++) {
@@ -113,15 +115,6 @@ function toggleModal() {
 }
 
 function compareData() {
-
-    if ($('#datatable').is(':empty')) {
-       
-    } else {
-        $("#tableDetails").html("");
-        
-        $("#graph").html("");
-
-    }
 
     var startDate = $('#startDate').val();
     var endDate = $('#endDate').val();
@@ -154,8 +147,9 @@ function compareData() {
         }
         else {
             if (type != "DeviceType") {
-                $('#displayGraph').append('<canvas id="graph"><canvas>');
-
+                $('#displayGraph').empty();
+                $('#displayGraph').append('<canvas id="graph" style="padding: 0;margin: auto;display: block;"><canvas>');
+                
                 $.ajax({
                     url: "/EnergyUsageComparison/GetLabEnergyUsageDetailGraph",
                     type: "POST",
@@ -205,7 +199,7 @@ function compareData() {
 
                                     if (yAxe.min != 0) return;
 
-                                    ctxPlugin.strokeStyle = "light green";
+                                    ctxPlugin.strokeStyle = "green";
                                     ctxPlugin.aLabels = "Benchmark";
                                     ctxPlugin.beginPath();
                                     lineAt = (lineAt - yAxe.min) * (100 / yAxe.max);
@@ -226,8 +220,7 @@ function compareData() {
                                 legend: { position: 'bottom' },
                                 scales: {
                                     xAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' } }],
-                                    yAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' }, ticks: { stepSize: 1000, beginAtZero: false } }]
-                                    //yAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' }, ticks: { stepSize: 50, beginAtZero: true } }]
+                                    yAxes: [{ gridLines: { display: false }, display: true, scaleLabel: { display: false, labelString: '' }, ticks: { stepSize: 5, beginAtZero: true } }]
                                 },
                                 tooltips: {
                                     mode: 'index',
@@ -259,14 +252,13 @@ function compareData() {
                                     { title: "Lab Location", data: "labLocation" },
                                     { title: "Energy Usage (kW)", data: "energyUsage" },
                                     { title: "Energy Usage Cost (SGD)", data: "energyUsageCost" },
-                                    { title: "Average Energy Usage (kW/hr).", data: "averageEnergyUsage" },
                                     { title: "Energy Intensity (kW/SQM)", data: "energyIntensity" }
                                 ],
                                 lengthChange: false,
                                 paging: false,
                                 columnDefs: [
                                     {
-                                        "targets": [0, 1, 2, 3, 4], // your case first column
+                                        "targets": [0, 1, 2, 3],
                                         "className": "text-center",
                                         "width": "4%"
                                     }]
@@ -296,14 +288,13 @@ function compareData() {
                                 columns: [
                                     { title: "Device Type", data: "deviceType" },
                                     { title: "Energy Usage (kW)", data: "energyUsage" },
-                                    { title: "Energy Usage Cost (SGD)", data: "energyUsageCost" },
-                                    { title: "Average Energy Usage (kW/hr).", data: "averageEnergyUsage" }
+                                    { title: "Energy Usage Cost (SGD)", data: "energyUsageCost" }
                                 ],
                                 lengthChange: false,
                                 paging: false,
                                 columnDefs: [
                                     {
-                                        "targets": [0, 1, 2, 3], // your case first column
+                                        "targets": [0, 1, 2],
                                         "className": "text-center",
                                         "width": "4%"
                                     }]

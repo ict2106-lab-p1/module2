@@ -53,10 +53,9 @@ public class EnergyUsageComparisonController : Controller
         //Creating sample data  
         DataTable dt = new DataTable();
         dt.Columns.Add("labLocation", System.Type.GetType("System.String"));
-        dt.Columns.Add("energyUsage", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("energyUsageCost", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("averageEnergyUsage", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("energyIntensity", System.Type.GetType("System.Int32"));
+        dt.Columns.Add("energyUsage", System.Type.GetType("System.Double"));
+        dt.Columns.Add("energyUsageCost", System.Type.GetType("System.Double"));
+        dt.Columns.Add("energyIntensity", System.Type.GetType("System.Double"));
 
         DataRow dr = dt.NewRow();
 
@@ -70,9 +69,7 @@ public class EnergyUsageComparisonController : Controller
                 dr["labLocation"] = compareFactorArray[i];
                 dr["energyUsage"] = data[0].TotalEnergyUsage;
                 dr["energyUsageCost"] = data[0].EnergyUsageCost;
-                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
-                dr["energyIntensity"] = 123;
-                //dr["energyIntensity"] = data[0].EnergyUsageIntensity;//need to get from db
+                dr["energyIntensity"] = data[0].EnergyUsageIntensity;
                 dt.Rows.Add(dr);
             }
             else
@@ -81,9 +78,7 @@ public class EnergyUsageComparisonController : Controller
                 dr["labLocation"] = compareFactorArray[i];
                 dr["energyUsage"] = data[0].TotalEnergyUsage;
                 dr["energyUsageCost"] = data[0].EnergyUsageCost;
-                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
-                dr["energyIntensity"] = 123;
-                //dr["energyIntensity"] = data[0].EnergyUsageIntensity;//need to get from db
+                dr["energyIntensity"] = data[0].EnergyUsageIntensity;
                 dt.Rows.Add(dr);
             }
         }
@@ -116,8 +111,8 @@ public class EnergyUsageComparisonController : Controller
         List<object> iData = new List<object>();
         DataTable dt = new DataTable();
         dt.Columns.Add(compareType, System.Type.GetType("System.String"));
-        dt.Columns.Add("Energy Usage", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("Energy Intensity", System.Type.GetType("System.Int32"));
+        dt.Columns.Add("Energy Usage", System.Type.GetType("System.Double"));
+        dt.Columns.Add("Energy Intensity", System.Type.GetType("System.Double"));
         dt.Columns.Add("Benchmark", System.Type.GetType("System.Int32"));//for energy usage
 
         DataRow dr = dt.NewRow();
@@ -139,8 +134,7 @@ public class EnergyUsageComparisonController : Controller
             {
                 dr[compareType] = compareFactorArray[i];
                 dr["Energy Usage"] = data[0].TotalEnergyUsage;
-                dr["Energy Intensity"] = 12300;
-                //dr["Energy Intensity"] = data[0].EnergyUsageIntensity;//need to get from db
+                dr["Energy Intensity"] = data[0].EnergyUsageIntensity;
                 dr["Benchmark"] = benchmark;
                 dt.Rows.Add(dr);
             }
@@ -149,8 +143,7 @@ public class EnergyUsageComparisonController : Controller
                 dr = dt.NewRow();
                 dr[compareType] = compareFactorArray[i];
                 dr["Energy Usage"] = data[0].TotalEnergyUsage;
-                dr["Energy Intensity"] = 12300;
-                //dr["Energy Intensity"] = data[0].EnergyUsageIntensity; //need to get from db
+                dr["Energy Intensity"] = data[0].EnergyUsageIntensity;
                 dr["Benchmark"] = benchmark;
                 dt.Rows.Add(dr);
             }
@@ -185,9 +178,8 @@ public class EnergyUsageComparisonController : Controller
         //Creating sample data  
         DataTable dt = new DataTable();
         dt.Columns.Add("deviceType", System.Type.GetType("System.String"));
-        dt.Columns.Add("energyUsage", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("energyUsageCost", System.Type.GetType("System.Int32"));
-        dt.Columns.Add("averageEnergyUsage", System.Type.GetType("System.Int32"));
+        dt.Columns.Add("energyUsage", System.Type.GetType("System.Double"));
+        dt.Columns.Add("energyUsageCost", System.Type.GetType("System.Double"));
 
         DataRow dr = dt.NewRow();
 
@@ -202,7 +194,6 @@ public class EnergyUsageComparisonController : Controller
                 dr["deviceType"] = compareFactorArray[i];
                 dr["energyUsage"] = data[0].TotalEnergyUsage;
                 dr["energyUsageCost"] = data[0].EnergyUsageCost;
-                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
                 dt.Rows.Add(dr);
             }
             else
@@ -211,7 +202,6 @@ public class EnergyUsageComparisonController : Controller
                 dr["deviceType"] = compareFactorArray[i];
                 dr["energyUsage"] = data[0].TotalEnergyUsage;
                 dr["energyUsageCost"] = data[0].EnergyUsageCost;
-                dr["averageEnergyUsage"] = data[0].EnergyUsagePerHour;
                 dt.Rows.Add(dr);
             }
         }
@@ -247,8 +237,6 @@ public class EnergyUsageComparisonController : Controller
             return array;
         }
     }
-    // end of skeleton code
-
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

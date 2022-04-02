@@ -168,37 +168,4 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         await Task.WhenAll(deviceLoadTask, labLoadTask);
     }
 
-
-    public List<EnergyComparisonDeviceTableDTO> GetEnergyComparisonDeviceTable(string[] deviceType, string start, string end)
-    {
-        //Where(n => n.AddDate.Date >= stdate.Date && n.AddDate.Date <= etdate)
-        DateTime sDate = Convert.ToDateTime(start);
-        DateTime eDate = Convert.ToDateTime(end);
-        //List<EnergyUsageLog> result = _context.EnergyUsageLogs.Where(log => log.Device!.Type == "deviceType").Where(log => log.LoggedDate >= sDate && log.LoggedDate <= eDate).ToList();
-        List<EnergyUsageLog> result = _context.EnergyUsageLogs.Where(log => deviceType.Contains(log.Device.Type)).Where(log => log.LoggedDate >= sDate && log.LoggedDate <= eDate).ToList();
-        List<string> deviceDetails = new List<string>();
-        List<EnergyComparisonDeviceTableDTO> deviceList = new List<EnergyComparisonDeviceTableDTO>();
-
-        foreach (var item in result)
-        {
-            //deviceDetails.Add(item.);
-
-        }
-
-        //for (int i = 0; i < deviceDetails.Count; i++)
-        //{
-        //    deviceList.Add(new EnergyComparisonDeviceTableDTO
-        //    {
-        //        LabLocation = deviceDetails[i]
-        //    });
-
-        //}
-
-        //return labList;
-
-        return deviceList;
-
-        //throw new NotImplementedException();
-    }
-
 }
