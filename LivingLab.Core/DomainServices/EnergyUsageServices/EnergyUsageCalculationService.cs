@@ -7,17 +7,25 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// </remarks>
 public class EnergyUsageCalculationService : IEnergyUsageCalculationService 
 {
-    public double CalculateEnergyUsagePerHour(double totalEU, int totalEUTime) 
+    public int CalculateEnergyUsageInWatt(int totalEU, int totalEUTime) 
     {
-        throw new NotImplementedException();
+        double EU = totalEU / (totalEUTime/60);
+        return (int) EU;
     }
-    public double CalculateEnergyUsageCost(double cost, double totalEU, double totalEUTime) 
+    public int CalculateEnergyUsagePerHour(double totalEU, int totalEUTime) 
     {
-        throw new NotImplementedException();
+        double hour = (double)totalEUTime / (double)60;
+        double EUPerHour = totalEU / hour;
+        return (int)EUPerHour;
+    }
+    public double CalculateEnergyUsageCost(double cost, double totalEU) 
+    {
+        double total = Math.Round((cost * (double)totalEU /1000),2);
+        return total;
     }
     public double CalculateEnergyIntensity(int area, int totalEU) 
     {
-        throw new NotImplementedException();
+        return (double)totalEU / (double)area;
     }
     public double CalculateDeviceEUInLab(List<EnergyUsageLog> logs) 
     {

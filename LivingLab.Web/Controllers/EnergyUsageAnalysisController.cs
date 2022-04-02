@@ -17,8 +17,8 @@ public class EnergyUsageAnalysisController : Controller
 {
     private readonly ILogger<EnergyUsageAnalysisController> _logger;
     private readonly IEnergyUsageRepository _repository;
-    private readonly IEnergyUsageAnalysisService _analysisService;
-    public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository, IEnergyUsageAnalysisService analysisService)
+    private readonly IEnergyUsageAnalysisUIService _analysisService;
+    public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository, IEnergyUsageAnalysisUIService analysisService)
     {
         _logger = logger;
         _repository = repository;
@@ -28,7 +28,7 @@ public class EnergyUsageAnalysisController : Controller
     public IActionResult Index()
     {
         // List<Log> Logs = logList();
-        List<DeviceEnergyUsageDTO> Logs = DeviceEUList();
+        List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
         ViewBag.Logs = Logs;
         // GetAll();
         return View(Logs);
@@ -51,11 +51,18 @@ public class EnergyUsageAnalysisController : Controller
     public List<DeviceEnergyUsageDTO> DeviceEUList() 
     {
         var Logs = new List<DeviceEnergyUsageDTO>(){
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsagePerHour=112,EnergyUsageCost=23.21},
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsagePerHour=23,EnergyUsageCost=12.21},
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Robot-73",DeviceType="Robot",TotalEnergyUsage=671,EnergyUsagePerHour=211,EnergyUsageCost=72.45}
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsageCost=23.21},
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsageCost=12.21},
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Robot-73",DeviceType="Robot",TotalEnergyUsage=671,EnergyUsageCost=72.45}
         };
         return Logs;
+    }
+
+    public List<DeviceEnergyUsageDTO> DeviceEUList1() 
+    {
+        DateTime start = new DateTime(2015, 12, 25);
+        DateTime end = new DateTime(2022, 12, 25);
+        return _analysisService.GetDeviceEnergyUsageByDate(start,end);
     }
 
     [HttpGet]

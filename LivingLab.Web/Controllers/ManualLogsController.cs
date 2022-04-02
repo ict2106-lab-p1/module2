@@ -1,6 +1,7 @@
 using System.Diagnostics;
 
 using LivingLab.Web.Models.ViewModels;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.ManualLogs;
 
 using Microsoft.AspNetCore.Mvc;
@@ -37,25 +38,27 @@ public class ManualLogsController : Controller
     }
 
     [HttpPost]
-    public IActionResult Upload(IFormFile file)
+    public async Task<IActionResult> Upload(IFormFile file)
     {
         try
         {
-            var viewModel = _manualLogService.UploadLogs(file);
-            return View(nameof(FileUpload), viewModel);
+            var count = await _manualLogService.UploadLogs(file);
+            return Ok(count);
         }
         catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return View(nameof(FileUpload));
+            return BadRequest(e.Message);
         }
     }
 
     [HttpPost]
-    public async Task<IActionResult> Save(List<LogItemViewModel> logs)
+    public async Task<IActionResult> Save([FromBody] List<LogItemViewModel> logs)
     {
         try
         {
+            if (logs.Count == 0) return Error();
+            
             await _manualLogService.SaveLogs(logs);
             return Ok();
         }

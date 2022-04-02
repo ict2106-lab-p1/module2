@@ -29,6 +29,28 @@ public class EnergyUsageComparisonController : Controller
     {
         return View();
     }
+
+    //need to implement the return type and implementation 
+    // public IActionResult GetLabEnergyUsageDetailTable(string listOfLabId, DateTime start, DateTime end)
+    // {
+    //     return View();
+    // }
+    //
+    // public IActionResult GetLabEnergyUsageDetailGraph(string listOfLabId, DateTime start, DateTime end)
+    // {
+    //     return View();
+    // }
+    //
+    // public IActionResult GetDeviceEnergy(string listOfDeviceType, DateTime start, DateTime end)
+    // {
+    //     return View();
+    // }
+    //
+    // public IActionResult GetLabLocationOrDeviceType(string type)
+    // {
+    //     return View();
+    // }
+    // end of skeleton code
     
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
