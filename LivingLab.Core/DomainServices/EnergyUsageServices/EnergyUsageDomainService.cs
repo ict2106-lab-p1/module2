@@ -12,13 +12,12 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
 {
     private readonly ILabProfileRepository _labRepository;
     private readonly IEnergyUsageRepository _energyUsageRepository;
-    
     public EnergyUsageDomainService(ILabProfileRepository labRepository, IEnergyUsageRepository energyUsageRepository)
     {
         _labRepository = labRepository;
         _energyUsageRepository = energyUsageRepository;
     }
-    
+
     /// <summary>
     /// 1. Call Energy Usage repo to get filtered energy usage data
     /// 2. Map logs to DTO
@@ -28,7 +27,7 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     public async Task<EnergyUsageDTO> GetEnergyUsage(EnergyUsageFilterDTO filter)
     {
         // Grouping done here because SQLite doesn't support it :(
-        var logs =  (await _energyUsageRepository
+        var logs = (await _energyUsageRepository
             .GetDeviceEnergyUsageByLabAndDate(filter.LabId, filter.Start, filter.End))
             .GroupBy(log => log.LoggedDate.Date)
             .Select(log => new EnergyUsageLog
@@ -38,10 +37,10 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
                 Device = log.First().Device,
                 Lab = log.First().Lab
             })
-            .OrderBy(log => log.LoggedDate).ToList();;
+            .OrderBy(log => log.LoggedDate).ToList(); ;
 
         var lab = await _labRepository.GetByIdAsync(filter.LabId);
-        
+
         var dto = new EnergyUsageDTO
         {
             Logs = logs,
@@ -73,10 +72,10 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     private double GetMedian(List<EnergyUsageLog> logs)
     {
         if (logs.Count == 0) return 0;
-        
+
         var sortedLogs = logs.OrderBy(log => log.EnergyUsage).ToList();
         var count = sortedLogs.Count;
-        
+
         var mid = count / 2;
         if (count % 2 == 0)
         {

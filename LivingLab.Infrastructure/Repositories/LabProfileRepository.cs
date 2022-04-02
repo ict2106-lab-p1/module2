@@ -18,7 +18,7 @@ public class LabProfileRepository : Repository<Lab>, ILabProfileRepository
         _context = context;
     }
 
-  
+
     public async Task<List<Lab>> GetAllLabs()
     {
         var labGroup = await _context.LabProfile.ToListAsync();
@@ -36,10 +36,10 @@ public class LabProfileRepository : Repository<Lab>, ILabProfileRepository
         var lab = _context.Labs.FirstOrDefault(l => l.LabId == labId);
         if (lab != null)
         {
-            lab.EnergyUsageBenchmark = energyBenchmark;        
+            lab.EnergyUsageBenchmark = energyBenchmark;
             _context.Labs.Update(lab);
         }
-        return _context.SaveChangesAsync();    
+        return _context.SaveChangesAsync();
     }
 
     // Added by P1-1

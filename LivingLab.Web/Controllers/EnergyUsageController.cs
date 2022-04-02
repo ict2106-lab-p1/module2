@@ -16,7 +16,7 @@ public class EnergyUsageController : Controller
 {
     private readonly IEnergyUsageService _energyUsageService;
     private readonly ILogger<EnergyUsageController> _logger;
-    
+
     public EnergyUsageController(IEnergyUsageService energyUsageService, ILogger<EnergyUsageController> logger)
     {
         _energyUsageService = energyUsageService;
@@ -28,14 +28,14 @@ public class EnergyUsageController : Controller
         var labs = await _energyUsageService.GetAllLabs();
         return View(labs.labList);
     }
-    
+
     public IActionResult Lab(int? LabId = 1)
     {
         ViewBag.LabId = LabId;
         return View();
     }
-    
-    
+
+
     [HttpPost]
     public async Task<IActionResult> GetLabUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
@@ -64,7 +64,7 @@ public class EnergyUsageController : Controller
             _logger.Log(LogLevel.Error, e.Message);
             return Error();
         }
-        
+
     }
 
     [HttpPost]
@@ -72,8 +72,8 @@ public class EnergyUsageController : Controller
     {
         try
         {
-           await _energyUsageService.SetLabEnergyBenchmark(benchmark);
-           return RedirectToAction(nameof(Index), new {labId = benchmark.LabId});
+            await _energyUsageService.SetLabEnergyBenchmark(benchmark);
+            return RedirectToAction(nameof(Index), new { labId = benchmark.LabId });
         }
         catch (Exception e)
         {
@@ -81,7 +81,7 @@ public class EnergyUsageController : Controller
             return RedirectToAction(nameof(Benchmark));
         }
     }
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

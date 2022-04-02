@@ -12,14 +12,14 @@ public class EnergyLogDomainService : IEnergyLogDomainService
     private readonly IEnergyUsageRepository _energyUsageRepository;
     private readonly IDeviceRepository _deviceRepository;
     private readonly ILabProfileRepository _labRepository;
-    
+
     public EnergyLogDomainService(IEnergyUsageRepository energyUsageRepository, IDeviceRepository deviceRepository, ILabProfileRepository labRepository)
     {
         _energyUsageRepository = energyUsageRepository;
         _deviceRepository = deviceRepository;
         _labRepository = labRepository;
-    } 
-    
+    }
+
     public async Task<EnergyUsageLog> Log(EnergyUsageLog log)
     {
         var device = _deviceRepository.GetDeviceBySerialNo(log.Device.SerialNo).Result;
@@ -35,11 +35,6 @@ public class EnergyLogDomainService : IEnergyLogDomainService
     }
 
     private void Notify()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void LogNotification()
     {
         throw new NotImplementedException();
     }
