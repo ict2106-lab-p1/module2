@@ -2,6 +2,7 @@ using System.Diagnostics;
 
 using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
+using LivingLab.Web.UIServices.LabProfile;
 using LivingLab.Web.UIServices.ManualLogs;
 
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,14 @@ namespace LivingLab.Web.Controllers;
 public class ManualLogsController : Controller
 {
     private readonly IManualLogService _manualLogService;
+    private readonly ILabProfileService _labProfileService;
     private readonly ILogger<ManualLogsController> _logger;
 
-    public ManualLogsController(IManualLogService manualLogService, ILogger<ManualLogsController> logger)
+    public ManualLogsController(IManualLogService manualLogService, ILabProfileService labProfileService,
+        ILogger<ManualLogsController> logger)
     {
         _manualLogService = manualLogService;
+        _labProfileService = labProfileService;
         _logger = logger;
     }
 
@@ -32,9 +36,10 @@ public class ManualLogsController : Controller
         return View();
     }
 
-    public IActionResult ManualLogUpload()
+    public async Task<IActionResult> ManualLogUpload()
     {
-        return View();
+        var labs = await _labProfileService.GetAllLabAccounts();
+        return View(labs);
     }
 
     [HttpPost]
