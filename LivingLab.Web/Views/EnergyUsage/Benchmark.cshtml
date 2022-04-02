@@ -8,27 +8,27 @@
 
 <div class="flex w-full justify-between">
     <form class="mt-5 w-full" asp-action="SetBenchmark">
-        <input type="hidden" name="LabId" value="@Model.LabId"/>
+        <input type="hidden" name="LabId" value="@Model.LabId" />
         <div class="flex w-2/3 justify-between">
             <div class="w-80 flex flex-col bg-white p-5 shadow-lg rounded gap-4">
-                <h3 class="text-center text-gray-600 m-auto lg:m-0">@Html.DisplayNameFor(m => m.EnergyUsageBenchmark)</h3>
-                <input id="benchmarkInput" class="input input-bordered" type="number" asp-for="EnergyUsageBenchmark" value="@Model.EnergyUsageBenchmark"/>
+                <h3 class="text-center text-gray-600 m-auto lg:m-0">@Html.DisplayNameFor(m => m.EnergyUsageBenchmark)
+                </h3>
+                <input id="benchmarkInput" class="input input-bordered" type="number" asp-for="EnergyUsageBenchmark"
+                    value="@Model.EnergyUsageBenchmark" />
             </div>
             <div class="card w-80 h-1/2 bg-neutral text-neutral-content bg-primary">
-                    <div class="card-body items-center text-center">
-                        <h2 class="card-title">Lab Details</h2>
-                        <p>Capacity: @Model.Capacity pax</p>
-                        <p>Size: 1000 sq/m</p>
-                    </div>
+                <div class="card-body items-center text-center">
+                    <h2 class="card-title">Lab Details</h2>
+                    <p>Capacity: @Model.Capacity pax</p>
+                    <p>Size: 1000 sq/m</p>
                 </div>
+            </div>
         </div>
-    
+
         <div class="flex space-x-2 mt-5">
-            <a class="btn btn-outline btn-primary" 
-                                   asp-action="Index">Back</a>
+            <a class="btn btn-outline btn-primary" asp-action="Index">Back</a>
             <input type="submit" id="btnSave" value="Save" class="btn btn-primary text-white">
         </div>
     </form>
-    
-    
+
 </div>

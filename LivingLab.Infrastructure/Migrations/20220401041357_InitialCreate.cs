@@ -225,10 +225,10 @@ namespace LivingLab.Infrastructure.Migrations
                 {
                     LabId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    LabLocation = table.Column<string>(type: "TEXT", nullable: false),
-                    LabStatus = table.Column<string>(type: "TEXT", nullable: false),
+                    LabLocation = table.Column<string>(type: "TEXT", nullable: true),
+                    LabStatus = table.Column<string>(type: "TEXT", nullable: true),
                     LabInCharge = table.Column<string>(type: "TEXT", nullable: true),
-                    Capacity = table.Column<int>(type: "INTEGER", nullable: false),
+                    Capacity = table.Column<int>(type: "INTEGER", nullable: true),
                     Area = table.Column<int>(type: "INTEGER", nullable: true),
                     EnergyUsageBenchmark = table.Column<double>(type: "REAL", nullable: true)
                 },

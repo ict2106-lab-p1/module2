@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LivingLab.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220331031032_InitialCreate")]
+    [Migration("20220401041357_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -770,7 +770,6 @@ namespace LivingLab.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("Capacity")
-                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<double?>("EnergyUsageBenchmark")
@@ -780,11 +779,9 @@ namespace LivingLab.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LabLocation")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LabStatus")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("LabId");

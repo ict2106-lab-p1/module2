@@ -768,7 +768,6 @@ namespace LivingLab.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("Capacity")
-                        .IsRequired()
                         .HasColumnType("INTEGER");
 
                     b.Property<double?>("EnergyUsageBenchmark")
@@ -778,11 +777,9 @@ namespace LivingLab.Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LabLocation")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LabStatus")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("LabId");

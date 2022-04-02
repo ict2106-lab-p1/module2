@@ -29,7 +29,7 @@ public class EnergyUsageProfile : Profile
                 opt => opt.MapFrom(src => new Device { SerialNo = src.DeviceSerialNo }))
             .ForMember(dest => dest.Interval,
                 opt => opt.MapFrom(src => TimeSpan.FromMinutes(src.Interval)));
-        
+
         CreateMap<EnergyUsageLog, LogItemViewModel>().ReverseMap()
             .ForMember(dest => dest.Lab,
                 opt => opt.MapFrom(src => new Lab { LabLocation = src.LabLocation }))
@@ -38,7 +38,7 @@ public class EnergyUsageProfile : Profile
             .ForMember(dest => dest.Interval,
                 opt => opt.MapFrom(src => TimeSpan.FromMinutes(src.Interval)));
     }
-    
+
     class TimeSpanConverter : ITypeConverter<TimeSpan, double>
     {
         public double Convert(TimeSpan source, double destination, ResolutionContext context)

@@ -17,14 +17,13 @@ public class EnergyUsageService : IEnergyUsageService
     private readonly IMapper _mapper;
     private readonly IEnergyUsageDomainService _energyUsageDomainService;
     private readonly ILabProfileService _labProfileService;
-    
     public EnergyUsageService(IMapper mapper, IEnergyUsageDomainService energyUsageDomainService, ILabProfileService labProfileService)
     {
         _mapper = mapper;
         _energyUsageDomainService = energyUsageDomainService;
         _labProfileService = labProfileService;
     }
-    
+
     public async Task<EnergyUsageViewModel> GetEnergyUsage(EnergyUsageFilterViewModel filter)
     {
         var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
@@ -43,9 +42,9 @@ public class EnergyUsageService : IEnergyUsageService
         var lab = _mapper.Map<EnergyBenchmarkViewModel, Lab>(benchmark);
         return _energyUsageDomainService.SetLabEnergyBenchmark(lab);
     }
-    
+
     public Task<ViewLabProfileViewModel> GetAllLabs()
     {
-        return _labProfileService.GetAllLabAccounts(); 
+        return _labProfileService.GetAllLabAccounts();
     }
 }
