@@ -11,7 +11,6 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 {
     private readonly IEnergyUsageRepository _repository;
-
     private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
 
     private double cost = 0.2544;
@@ -19,6 +18,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     public EnergyUsageAnalysisService(IEnergyUsageRepository repository)
     {
         _repository = repository;
+        
     }
 
     public byte[] ExportDeviceEU(List<DeviceEnergyUsageDTO> DeviceEUList) 
@@ -39,6 +39,22 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end) 
     {
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
+
+        //builder
+        DeviceDirector director = new DeviceDirector();
+        var builder = new DeviceEnergyUsageBuilder(result);
+        director.Builder = builder;
+        // builder.BuildDistinctIdentifier();
+        // builder.BuildEUInWatt();
+        // builder.BuildEUCost();
+        // builder.BuildEUList();
+        // builder.GetProduct();
+        director.BuildDeviceEU();
+        var test = builder.GetProduct();
+        Console.WriteLine("hello......." + test[0].DeviceSerialNo);
+
+        //end of builder
+
         //temporary list to store data
         List<string> uniqueDevice = new List<string>();
         List<EUWatt> EUWatt =  new List<EUWatt>();
