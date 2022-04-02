@@ -13,6 +13,6 @@ public class EnergyBenchmarkViewModel
     public string LabLocation { get; set; }
     public int Capacity { get; set; }
     
-    [Display(Name = "Energy Usage Benchmark (joules/day)")]
+    [Display(Name = "Energy Usage Benchmark (watts/day)")]
     public double EnergyUsageBenchmark { get; set; }
 }

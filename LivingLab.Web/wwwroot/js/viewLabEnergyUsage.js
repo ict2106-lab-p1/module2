@@ -107,6 +107,7 @@ function initLabLocation(data) {
  * @param {Object} data
  */
 function initLineChart(data) {
+    hideSpinner();
     chart = getLineChart(data);
 }
 
@@ -170,6 +171,13 @@ function getZoomOptions() {
 
 function resetZoom(e) {
     chart.resetZoom();
+}
+
+/**
+ * Hide all spinners.
+ */
+function hideSpinner() {
+    $("#spinner").hide();
 }
 
 /**

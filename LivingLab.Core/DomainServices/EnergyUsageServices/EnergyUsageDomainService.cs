@@ -28,9 +28,8 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     public async Task<EnergyUsageDTO> GetEnergyUsage(EnergyUsageFilterDTO filter)
     {
         // Grouping done here because SQLite doesn't support it :(
-        var logs = _energyUsageRepository
-            .GetDeviceEnergyUsageByLabAndDate(filter.LabId, filter.Start, filter.End)
-            .Result
+        var logs =  (await _energyUsageRepository
+            .GetDeviceEnergyUsageByLabAndDate(filter.LabId, filter.Start, filter.End))
             .GroupBy(log => log.LoggedDate.Date)
             .Select(log => new EnergyUsageLog
             {
