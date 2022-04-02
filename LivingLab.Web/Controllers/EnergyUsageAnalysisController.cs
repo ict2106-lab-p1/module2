@@ -9,6 +9,8 @@ using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.EnergyUsage;
 using LivingLab.Web.UIServices.LabProfile;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
+
 
 namespace LivingLab.Web.Controllers;
 /// <remarks>
@@ -19,6 +21,7 @@ public class EnergyUsageAnalysisController : Controller
     private readonly ILogger<EnergyUsageAnalysisController> _logger;
     private readonly IEnergyUsageRepository _repository;
     private readonly IEnergyUsageAnalysisUIService _analysisService;
+    
     public EnergyUsageAnalysisController(ILogger<EnergyUsageAnalysisController> logger, IEnergyUsageRepository repository, IEnergyUsageAnalysisUIService analysisService)
     {
         _logger = logger;
@@ -31,22 +34,13 @@ public class EnergyUsageAnalysisController : Controller
         List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
         ViewBag.Logs = Logs;
         ViewBag.LabLocation = LabLocation;
-        //var labs = await _analysisService.GetAllLabs();
-        return View();
-        // GetAll();
+        return View(data());
     }
-    
-    // public IActionResult Lab(int? LabId = 1)
-    // {
-    //     ViewBag.LabId = LabId;
-    //     return View();
-    // }
     
     [HttpGet]
     public IActionResult Export()
     {
-        List<DeviceEnergyUsageDTO> Logs = DeviceEUList();
-        byte [] content =  _analysisService.Export();
+        byte [] content =  _analysisService.Export(data().DeviceEUList);
         return File(content, "text/csv", "Device Energy Usage.csv");
     }
 
@@ -59,9 +53,9 @@ public class EnergyUsageAnalysisController : Controller
     public List<DeviceEnergyUsageDTO> DeviceEUList() 
     {
         var Logs = new List<DeviceEnergyUsageDTO>(){
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsagePerHour=112,EnergyUsageCost=23.21},
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsagePerHour=23,EnergyUsageCost=12.21},
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Robot-73",DeviceType="Robot",TotalEnergyUsage=671,EnergyUsagePerHour=211,EnergyUsageCost=72.45}
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsageCost=23.21},
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsageCost=12.21},
+            new DeviceEnergyUsageDTO{DeviceSerialNo="Robot-73",DeviceType="Robot",TotalEnergyUsage=671,EnergyUsageCost=72.45}
         };
         return Logs;
     }
@@ -158,6 +152,19 @@ public class EnergyUsageAnalysisController : Controller
             return NotFound();
         }
     }
+    
+    public EnergyUsageAnalysisViewModel data() {
+        DateTime start = new DateTime(2015, 12, 25);
+        DateTime end = new DateTime(2022, 12, 25);
+        var deviceEUList = _analysisService.GetDeviceEnergyUsageByDate(start,end);
+        var labEUList = _analysisService.GetLabEnergyUsageByDate(start,end);
+        var viewModel = new EnergyUsageAnalysisViewModel {
+            DeviceEUList = deviceEUList,
+            LabEUList = labEUList
+        };
+        return viewModel;
+    }
+
 
     // [HttpGet("EnergyUsageAnalysis/Benchmark/Lab/{labId?}")]
     public async Task<IActionResult> Benchmark(int? labId = 1)

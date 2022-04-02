@@ -1,4 +1,5 @@
 using LivingLab.Core.Entities;
+using LivingLab.Core.Entities.DTO;
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
@@ -12,13 +13,12 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
 {
     private readonly ILabProfileRepository _labRepository;
     private readonly IEnergyUsageRepository _energyUsageRepository;
-    
     public EnergyUsageDomainService(ILabProfileRepository labRepository, IEnergyUsageRepository energyUsageRepository)
     {
         _labRepository = labRepository;
         _energyUsageRepository = energyUsageRepository;
     }
-    
+
     /// <summary>
     /// 1. Call Energy Usage repo to get filtered energy usage data
     /// 2. Map logs to DTO
@@ -28,9 +28,8 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     public async Task<EnergyUsageDTO> GetEnergyUsage(EnergyUsageFilterDTO filter)
     {
         // Grouping done here because SQLite doesn't support it :(
-        var logs = _energyUsageRepository
-            .GetDeviceEnergyUsageByLabAndDate(filter.LabId, filter.Start, filter.End)
-            .Result
+        var logs = (await _energyUsageRepository
+            .GetDeviceEnergyUsageByLabAndDate(filter.LabId, filter.Start, filter.End))
             .GroupBy(log => log.LoggedDate.Date)
             .Select(log => new EnergyUsageLog
             {
@@ -39,10 +38,10 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
                 Device = log.First().Device,
                 Lab = log.First().Lab
             })
-            .OrderBy(log => log.LoggedDate).ToList();;
+            .OrderBy(log => log.LoggedDate).ToList(); ;
 
         var lab = await _labRepository.GetByIdAsync(filter.LabId);
-        
+
         var dto = new EnergyUsageDTO
         {
             Logs = logs,
@@ -52,9 +51,17 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
         return dto;
     }
 
-    public Task<Lab> GetLabEnergyBenchmark(int labId)
+    public async Task<LabDetailsDTO> GetLabEnergyBenchmark(int labId)
     {
-        return _labRepository.GetByIdAsync(labId);
+        var lab = await _labRepository.GetLabDetails(labId);
+        return new LabDetailsDTO
+        {
+            LabId = lab.LabId,
+            LabLocation = lab.LabLocation,
+            Capacity = lab.Capacity.GetValueOrDefault(),
+            EnergyUsageBenchmark = lab.EnergyUsageBenchmark.GetValueOrDefault(),
+            NoOfDevices = lab.Devices.Count
+        };
     }
 
     /// <summary>
@@ -74,10 +81,10 @@ public class EnergyUsageDomainService : IEnergyUsageDomainService
     private double GetMedian(List<EnergyUsageLog> logs)
     {
         if (logs.Count == 0) return 0;
-        
+
         var sortedLogs = logs.OrderBy(log => log.EnergyUsage).ToList();
         var count = sortedLogs.Count;
-        
+
         var mid = count / 2;
         if (count % 2 == 0)
         {

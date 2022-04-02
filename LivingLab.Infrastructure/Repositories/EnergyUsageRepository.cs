@@ -62,7 +62,7 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
     {
         var now = DateTime.Now;
         
-        start ??= new DateTime(now.Year, now.Month, 1);
+        start ??= now.AddDays(-30);
         end ??= now;
         
         var logsForLabInDateRange = await IncludeReferences(

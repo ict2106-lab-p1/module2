@@ -23,9 +23,9 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
         _analysis = analysis;
         _labProfileService = labProfileService;
     }
-    public byte[] Export()
+    public byte[] Export(List<DeviceEnergyUsageDTO> content)
     {
-        throw new NotImplementedException();
+        return _analysis.ExportDeviceEU(content);
     }
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end)
     {
@@ -33,7 +33,7 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
     }
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end)
     {
-        throw new NotImplementedException();
+        return _analysis.GetLabEnergyUsageByDate(start,end);
     }
     // joey
     // may nee to change to ENergyUsageFilterDto
