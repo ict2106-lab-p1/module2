@@ -159,7 +159,9 @@ function getZoomOptions() {
         },
         zoom: {
             wheel: {
-                enabled: true
+                enabled: true,
+                modifierKey: 'ctrl',
+                speed: 0.02 ,
             },
             pinch: {
                 enabled: true
