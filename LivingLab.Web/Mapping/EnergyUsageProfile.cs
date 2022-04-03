@@ -2,7 +2,8 @@ using AutoMapper;
 
 using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO;
-using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
+using LivingLab.Core.Entities.DTO.EnergyUsage;
+using LivingLab.Core.Entities.DTO.Lab;
 using LivingLab.Web.Models.DTOs;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
@@ -44,7 +45,6 @@ public class EnergyUsageProfile : Profile
             .ForMember(dest => dest.Interval,
                 opt => opt.MapFrom(src => TimeSpan.FromMinutes(src.Interval)));
     }
-
     class TimeSpanConverter : ITypeConverter<TimeSpan, double>
     {
         public double Convert(TimeSpan source, double destination, ResolutionContext context)

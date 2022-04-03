@@ -1,6 +1,6 @@
+using LivingLab.Core.DomainServices.Account;
 using LivingLab.Core.Entities.Identity;
-using LivingLab.Core.Interfaces.Notifications;
-using LivingLab.Core.Interfaces.Services;
+using LivingLab.Core.Notifications;
 using LivingLab.Web.Models.ViewModels.Login;
 using LivingLab.Web.UIServices.NotificationManagement;
 
