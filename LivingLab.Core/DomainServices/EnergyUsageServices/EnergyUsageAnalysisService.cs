@@ -1,24 +1,30 @@
-using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
+
 using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Entities;
 using LivingLab.Core.Interfaces.Repositories;
+using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 using System.Text;
+
+using Microsoft.AspNetCore.Mvc;
 
 namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
+
 public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 {
     private readonly IEnergyUsageRepository _repository;
+    private readonly ILabProfileRepository _labRepository;
+    
     private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
 
     private double cost = 0.2544;
 
-    public EnergyUsageAnalysisService(IEnergyUsageRepository repository)
+    public EnergyUsageAnalysisService(IEnergyUsageRepository repository, ILabProfileRepository labRepository)
     {
         _repository = repository;
-        
+        _labRepository = labRepository;
     }
 
     public byte[] ExportDeviceEU(List<DeviceEnergyUsageDTO> DeviceEUList) 
@@ -125,14 +131,65 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     {
         throw new NotImplementedException();
     }
-    public List<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end) 
+               
+    public async Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter) 
     {
-        throw new NotImplementedException();
+        // Grouping done here because SQLite doesn't support it
+        var logs = _repository
+            .GetLabEnergyUsageByDate(filter.Start, filter.End)
+            .Result
+            .GroupBy(log => log.LoggedDate.Date)
+            .Select(log => new EnergyUsageLog
+            {
+                LoggedDate = log.Key,
+                EnergyUsage = log.Sum(l => l.EnergyUsage),
+                Device = log.First().Device,
+                Lab = log.First().Lab
+            })
+            .OrderBy(log => log.LoggedDate).ToList();
+
+        // get by date
+        var lab = await _labRepository.GetByIdAsync(filter.LabId);
+        
+        var dto = new MonthlyEnergyUsageDTO
+        {
+            Logs = logs,
+            Lab = lab
+        };
+        return dto;
     }
-    public List<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(DateTime start, DateTime end, int labId)
+
+    public Task<Lab> GetLabEnergyBenchmark(int labId)
     {
-        throw new NotImplementedException();
+        // add benchmark calculation
+        return _labRepository.GetByIdAsync(labId);
     }
+
+    public async Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab([FromBody] EnergyUsageFilterDTO filter)
+    {
+        // Grouping done here because SQLite doesn't support it
+        var logs = (await _repository
+            .GetLabEnergyUsageByLocationAndDate(filter.LabLocation, filter.Start, filter.End))
+            .GroupBy(log => log.LoggedDate.Date)
+            .Select(log => new EnergyUsageLog
+            {
+                LoggedDate = log.Key,
+                EnergyUsage = log.Sum(l => l.EnergyUsage),
+                Device = log.First().Device,
+                Lab = log.First().Lab
+            })
+            .OrderBy(log => log.LoggedDate).ToList();
+
+        var lab = await _labRepository.GetByIdAsync(filter.LabId);
+
+        var dto = new IndividualLabMonthlyEnergyUsageDTO
+        {
+            Logs = logs,
+            Lab = lab
+        };
+        return dto;
+    }
+    
     // weijie
     // not sure what will be your DTO looks like may have to create in LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
     public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, int labId)
@@ -143,7 +200,6 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     {
         throw new NotImplementedException();
     }
-
 }
 
 public class EUWatt{
