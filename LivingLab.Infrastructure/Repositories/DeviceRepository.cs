@@ -125,4 +125,13 @@ public class DeviceRepository : Repository<Device>, IDeviceRepository
         Console.WriteLine("Delete Succ");
         return deleteDevice;
     }
+
+    //Hong Ying
+    public Task<List<Device>> GetAllDeviceType()
+    {
+        return IncludeReferences(
+                _context.Devices
+            )
+            .ToListAsync();
+    }
 }
