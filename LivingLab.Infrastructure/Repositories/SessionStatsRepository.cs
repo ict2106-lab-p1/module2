@@ -20,6 +20,9 @@ public class SessionStatsRepository : Repository<SessionStats>, ISessionStatsRep
         List<SessionStats> sessionStats = await _context.SessionStats.ToListAsync();
         return sessionStats;
     }
-    
-    
+
+    public Task LogFileUpload(int labId, double fileSize)
+    {
+        throw new NotImplementedException();
+    }
 }
