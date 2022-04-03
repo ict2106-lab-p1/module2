@@ -7,11 +7,12 @@ namespace LivingLab.Core.DomainServices.EnergyUsageServices;
 /// </remarks>
 public class EnergyUsageCalculationService : IEnergyUsageCalculationService 
 {
-    public int CalculateEnergyUsageInWatt(int totalEU, int totalEUTime) 
+    public int CalculateEnergyUsageInWatt(int totalEU, int totalEUTime)
     {
         double EU = totalEU / (totalEUTime*60);
         return (int) EU;
     }
+
     public int CalculateEnergyUsagePerHour(double totalEU, int totalEUTime) 
     {
         double hour = (double)totalEUTime / (double)60;

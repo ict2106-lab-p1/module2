@@ -36,7 +36,19 @@ public class EnergyUsageAnalysisController : Controller
         ViewBag.LabLocation = LabLocation;
         return View(data());
     }
-    
+
+    public IActionResult DMoreData()
+    {
+        ViewBag.Logs = "-";
+        return View();
+    }
+
+    public IActionResult LMoreData()
+    {
+        ViewBag.Logs = "-";
+        return View();
+    }
+
     [HttpGet]
     public IActionResult Export()
     {

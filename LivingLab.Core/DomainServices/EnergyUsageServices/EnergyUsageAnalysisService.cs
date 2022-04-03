@@ -45,63 +45,14 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end) 
     {
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
-        //temporary list to store data
-        List<string> uniqueDevice = new List<string>();
-        List<EUWatt> EUWatt =  new List<EUWatt>();
-        List<int> DeviceEUWatt = new List<int>();
-        List<int> DeviceUsageTime = new List<int>();
-        List<string> DeviceType = new List<string>();
-        List<double> DeviceEUCost = new List<double>();
-        List<DeviceEnergyUsageDTO> DeviceEUList = new List<DeviceEnergyUsageDTO>();
-        var count = 0;
-        // get the unique devices in the log and ensure same number of element in each list
-        foreach (var item in result)
-        {
-            if (!uniqueDevice.Contains(item.Device.SerialNo))
-            {
-                uniqueDevice.Add(item.Device.SerialNo);
-                DeviceEUWatt.Add(0);
-                DeviceType.Add(item.Device.Name);
-            }
-            EUWatt.Add(new EUWatt
-            {
-                id = item.Device.SerialNo,
-                EU = _calculator.CalculateEnergyUsageInWatt((int) item.EnergyUsage,item.Interval.Minutes)
-            });
-        }
-        
 
-        // add to total EU of a device if logs are from same device
-        for (int i = 0; i < uniqueDevice.Count; i++)
-        {
-            for (int j = 0; j < EUWatt.Count; j++)
-            {
-                if (EUWatt[j].id == uniqueDevice[i])
-                {
-                    DeviceEUWatt[i] += EUWatt[j].EU;
-                }
-            }
-        }
+        //builder
+        DeviceDirector director = new DeviceDirector();
+        var builder = new DeviceEnergyUsageBuilder(result);
+        director.Builder = builder;
+        director.BuildDeviceEU();
+        return builder.GetProduct();
 
-        // calculate the cost and EU/hour
-        for (int i = 0; i < uniqueDevice.Count; i++)
-        {
-            DeviceEUCost.Add(_calculator.CalculateEnergyUsageCost(cost,DeviceEUWatt[i]));
-        }
-
-        // append the list of data to DeviceEnergyUsageDTO
-        for (int i = 0; i < uniqueDevice.Count; i++)
-        {
-            DeviceEUList.Add(new DeviceEnergyUsageDTO{
-                DeviceSerialNo = uniqueDevice[i],
-                DeviceType = DeviceType[i],
-                TotalEnergyUsage = DeviceEUWatt[i],
-                EnergyUsageCost = DeviceEUCost[i]
-                });
-
-        }
-
-        return DeviceEUList;
     }
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end) 
     {
