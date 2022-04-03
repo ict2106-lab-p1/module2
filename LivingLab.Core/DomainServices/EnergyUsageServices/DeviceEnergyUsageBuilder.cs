@@ -17,7 +17,6 @@ public class DeviceEnergyUsageBuilder: IEnergyUsageBuilder
     private List<string> _deviceType = new List<string>();
     private List<EUWatt> _totalEU = new List<EUWatt>();
     private List<double> _totalCost = new List<double>();
-    private EUWatt test = new EUWatt();
     private double _cost = 0.2544;
 
     private DeviceEU _deviceEUList = new DeviceEU();
@@ -43,9 +42,11 @@ public class DeviceEnergyUsageBuilder: IEnergyUsageBuilder
     {
         foreach (var item in _logs)
         {
-            test.id = item.Device.SerialNo;
-            test.EU = this._calculator.CalculateEnergyUsageInWatt((int) item.EnergyUsage,item.Interval.Minutes);
-            this._totalEU.Add(test);
+            _totalEU.Add(new EUWatt
+            {
+                id = item.Device.SerialNo,
+                EU = _calculator.CalculateEnergyUsageInWatt((int) item.EnergyUsage,item.Interval.Minutes)
+            });
         }
 
         for (int i = 0; i < this._unqiueList.Count; i++)
