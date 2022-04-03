@@ -37,7 +37,19 @@ public class EnergyUsageAnalysisController : Controller
 
         return View(data());
     }
-    
+
+    public IActionResult DMoreData()
+    {
+        ViewBag.Logs = "-";
+        return View();
+    }
+
+    public IActionResult LMoreData()
+    {
+        ViewBag.Logs = "-";
+        return View();
+    }
+
     [HttpGet]
     public IActionResult Export()
     {
