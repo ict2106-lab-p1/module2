@@ -1,5 +1,7 @@
 using LivingLab.Core.DomainServices;
 using LivingLab.Core.Entities.Identity;
+using LivingLab.Core.Factory;
+using LivingLab.Core.Interfaces.Notifications;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Interfaces.Services;
 using LivingLab.Infrastructure.Data;
@@ -41,11 +43,15 @@ public static class ConfigureServiceContainer
     {
         services.AddEnergyMonitoringServices();
         services.AddManagementServices();
-
-        services.AddTransient<ITodoRepository, TodoRepository>();
+       
         services.AddTransient<ITodoDomainService, TodoDomainService>();
+        services.AddTransient<ITodoRepository, TodoRepository>();
+
         // Shared Email Service Provider
-        services.AddTransient<IEmailSender, EmailSender>();
+        services.AddTransient<IEmailNotifier, EmailNotifier>();
+        // Shared Sms Service Provider
+        services.AddTransient<ISmsNotifier, SmsNotifier>();
+        services.AddScoped<NotifierFactory>();
 
         return services;
     }

@@ -37,8 +37,7 @@ public class NotificationsController : Controller
     public async Task<IActionResult> UpdateNotificationPreference(NotificationPrefViewModel notiPrefViewModel)
     {
         var user = await _userManager.GetUserAsync(User);
-        // TODO use new parameterized method
-        await _notificationManager.SetNotificationPref();
+        await _notificationManager.SetNotificationPref(user, notiPrefViewModel.PreferredNotification);
         return View("Index", notiPrefViewModel);
     }
 }

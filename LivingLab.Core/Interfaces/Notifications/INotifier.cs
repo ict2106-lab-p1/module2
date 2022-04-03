@@ -1,3 +1,5 @@
+using LivingLab.Core.Entities.Identity;
+
 namespace LivingLab.Core.Interfaces.Notifications;
 
 /// <remarks>
@@ -5,5 +7,5 @@ namespace LivingLab.Core.Interfaces.Notifications;
 /// </remarks>
 public interface INotifier
 {
-    void Notify(string message);
+    Task Notify(string message);
 }

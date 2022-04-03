@@ -27,6 +27,7 @@ public static class ConfigureEnergyMonitoringServices
         services.AddTransient<IEnergyUsageAnalysisUIService, EnergyUsageAnalysisUIService>();
         services.AddTransient<IEnergyUsageComparisonUIService, EnergyUsageComparisonUIService>();
         services.AddTransient<IEnergyUsageService, EnergyUsageService>();
+        services.AddTransient<IEnergyLogService, EnergyLogService>();
 
         return services;
     }

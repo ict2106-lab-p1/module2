@@ -9,6 +9,6 @@ namespace LivingLab.Core.Interfaces.Services;
 public interface INotificationDomainService
 {
     [Obsolete("Old interface method that's not possible to implement. Use the newer parameterized version instead.")]
-    Task SetNotificationPref();
+    Task<List<ApplicationUser>> GetAllTechniciansWithNotiPref(NotificationType preference);
     Task SetNotificationPref(ApplicationUser currentUser, NotificationType preference);
 }

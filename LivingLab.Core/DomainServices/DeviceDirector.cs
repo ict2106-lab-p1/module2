@@ -1,10 +1,6 @@
 using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
-using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
-using LivingLab.Core.Entities;
-using LivingLab.Core.Interfaces.Repositories;
-using System.Text;
 
-namespace LivingLab.Core.DomainServices.EnergyUsageServices;
+namespace LivingLab.Core.DomainServices;
 
 public class DeviceDirector
 {

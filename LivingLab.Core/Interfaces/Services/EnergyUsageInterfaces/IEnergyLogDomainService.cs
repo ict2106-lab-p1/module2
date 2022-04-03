@@ -8,5 +8,5 @@ namespace LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
 public interface IEnergyLogDomainService
 {
     Task<EnergyUsageLog> Log(EnergyUsageLog log);
-    Task CheckThreshold(int deviceId);
+    bool ExceedThreshold(int deviceId, double currentEnergyUsage);
 }
