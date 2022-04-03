@@ -11,11 +11,14 @@ using LivingLab.Web.UIServices.EnergyUsage;
 using LivingLab.Web.UIServices.LabProfile;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace LivingLab.Web.Controllers;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
+[Authorize(Roles = "Admin")]
 public class EnergyUsageAnalysisController : Controller
 {
     private readonly ILogger<EnergyUsageAnalysisController> _logger;
