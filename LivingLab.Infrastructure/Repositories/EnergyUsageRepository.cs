@@ -1,4 +1,5 @@
 using LivingLab.Core.Entities;
+using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
 using LivingLab.Core.Entities.Identity;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Infrastructure.Data;
@@ -53,6 +54,18 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
                 _context.EnergyUsageLogs
                 .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)
                 .Where(log => log.Device!.Type == deviceType)
+            )
+            .ToListAsync();
+        return logsForTypeInDateRange;
+    }
+
+
+    public async Task<List<EnergyUsageLog>> GetLabEnergyUsageByLabNameAndDate(string labName, DateTime start, DateTime end)
+    {
+        var logsForTypeInDateRange = await IncludeReferences(
+                _context.EnergyUsageLogs
+                .Where(log => log.LoggedDate >= start && log.LoggedDate <= end)
+                .Where(log => log.Lab.LabLocation == labName)
             )
             .ToListAsync();
         return logsForTypeInDateRange;
@@ -119,6 +132,8 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         return logsForLab;
     }
 
+
+    
     public Task<List<EnergyUsageLog>> GetUsageByUser(ApplicationUser? user)
     {
         if (user == null)
@@ -152,4 +167,5 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         var labLoadTask = _context.Entry(log).Reference(l => l.Lab).LoadAsync();
         await Task.WhenAll(deviceLoadTask, labLoadTask);
     }
+
 }
