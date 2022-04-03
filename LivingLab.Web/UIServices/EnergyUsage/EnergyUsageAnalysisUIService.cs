@@ -1,8 +1,8 @@
 using AutoMapper;
 
+using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageAnalysis;
 using LivingLab.Core.Entities;
-using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
-using LivingLab.Core.Interfaces.Services.EnergyUsageInterfaces;
+using LivingLab.Core.Entities.DTO.EnergyUsage;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.Models.ViewModels.LabProfile;
 using LivingLab.Web.UIServices.LabProfile;
@@ -87,7 +87,7 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
         return _mapper.Map<Lab, EnergyBenchmarkViewModel>(data);
     }
     
-    public Task<ViewLabProfileViewModel> GetAllLabs()
+    public Task<List<LabInformationModel>?> GetAllLabs()
     {
         return _labProfileService.GetAllLabAccounts(); 
     }
