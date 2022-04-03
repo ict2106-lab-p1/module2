@@ -1,3 +1,5 @@
+using LivingLab.Core.Entities.Identity;
+
 namespace LivingLab.Core.Interfaces.Notifications;
 
 /// <remarks>
@@ -5,5 +7,6 @@ namespace LivingLab.Core.Interfaces.Notifications;
 /// </remarks>
 public interface ISmsNotifier : INotifier
 {
-
+    Task SendSmsAsync(string phone, string msgBody);
+    Task<List<ApplicationUser>> GetPhoneNumber();
 }
