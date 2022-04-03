@@ -13,7 +13,7 @@ namespace LivingLab.Web.Controllers;
 /// <remarks>
 /// Author: Team P1-1
 /// </remarks>
-[Authorize(Roles = "Admin")]
+// [Authorize(Roles = "Admin")]
 public class EnergyUsageController : Controller
 {
     private readonly IEnergyUsageService _energyUsageService;
@@ -39,7 +39,7 @@ public class EnergyUsageController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> GetLabUsage([FromBody] EnergyUsageFilterViewModel filter)
+    public async Task<IActionResult> GetLabUsage(EnergyUsageFilterViewModel filter)
     {
         try
         {

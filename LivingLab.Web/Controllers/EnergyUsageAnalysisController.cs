@@ -31,8 +31,8 @@ public class EnergyUsageAnalysisController : Controller
     public async Task<IActionResult> Index(string? LabLocation = "NYP-SR7C")
     {
         // List<Log> Logs = logList();
-        List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
-        ViewBag.Logs = Logs;
+        // List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
+        // ViewBag.Logs = Logs;
         ViewBag.LabLocation = LabLocation;
         return View(data());
     }
@@ -116,35 +116,35 @@ public class EnergyUsageAnalysisController : Controller
         double Total = Math.Round((cost * (double)TotalEU * TotalEUTime),2);
         return Total;
     }
+    //
+    // [HttpPost]
+    // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
+    // {
+    //     try
+    //     {
+    //         var model = await _analysisService.GetEnergyUsageTrendSelectedLab(filter);
+    //         return model.Lab != null ? Json(model) : NotFound();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         _logger.Log(LogLevel.Error, e.Message);
+    //         return NotFound();
+    //     }
+    // }
     
-    // I think joey need use this 
-    // public IActionResult GetLabEnergyUsageDetailGraph(string listOfLabId, DateTime start, DateTime end)
-    // {
-    //     return View();
-    // }
-    // or this
-    // public IActionResult GetLabEnergyUsageByDate(DateTime start, DateTime end)
-    // {
-    //     return View();
-    // }
-    
-    // public IActionResult GetLabEnergyUsageByDate(EnergyUsageFilterDTO filter)
-    // {
-    //     return View();
-    // }
-    
-    // public IActionResult ViewUsage(EnergyUsageTrendAllLabViewModel usage)
-    // {
-    //     return View();
-    // }
-
     [HttpPost]
     public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
         try
         {
             var model = await _analysisService.GetEnergyUsageTrendSelectedLab(filter);
-            return model.Lab != null ? Json(model) : NotFound();
+            var modelAll = await _analysisService.GetEnergyUsageTrendAllLab(filter);
+            EnergyUsageAnalysisGraphViewModel combinedGraphModels = new EnergyUsageAnalysisGraphViewModel()
+            {
+                SelectedLabEnergyUsage = model,
+                AllLabEnergyUsage = modelAll
+            };
+            return Json(combinedGraphModels);
         }
         catch (Exception e)
         {
@@ -152,6 +152,21 @@ public class EnergyUsageAnalysisController : Controller
             return NotFound();
         }
     }
+
+    // [HttpPost]
+    // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
+    // {
+    //     try
+    //     {
+    //         var modelAll = await _analysisService.GetEnergyUsageTrendAllLab(filter);
+    //         return modelAll.Lab != null ? Json(modelAll) : NotFound();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         _logger.Log(LogLevel.Error, e.Message);
+    //         return NotFound();
+    //     }
+    // }
     
     public EnergyUsageAnalysisViewModel data() {
         DateTime start = new DateTime(2015, 12, 25);
@@ -179,7 +194,6 @@ public class EnergyUsageAnalysisController : Controller
             _logger.Log(LogLevel.Error, e.Message);
             return Error();
         }
-        
     }
 } 
 

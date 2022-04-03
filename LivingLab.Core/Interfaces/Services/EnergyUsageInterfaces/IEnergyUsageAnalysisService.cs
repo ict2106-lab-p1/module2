@@ -14,7 +14,7 @@ public interface IEnergyUsageAnalysisService
      public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end);
     // public List<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(DateTime start, DateTime end);
     Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(EnergyUsageFilterDTO filter);
-    Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter, int labId);
+    Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter);
     
     // JOEY ADDED
     Task<Lab> GetLabEnergyBenchmark(int labId);

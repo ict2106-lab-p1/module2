@@ -72,6 +72,14 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
 
     }
     
+    public async Task<EnergyUsageTrendAllLabViewModel> GetEnergyUsageTrendAllLab(EnergyUsageFilterViewModel filter)
+    {
+        var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
+        var logs = await _analysis.GetEnergyUsageTrendAllLab(energyUsageFilter);
+        return _mapper.Map<MonthlyEnergyUsageDTO, EnergyUsageTrendAllLabViewModel>(logs);
+
+    }
+    
     // JOEY ADDED
     public async Task<EnergyBenchmarkViewModel> GetLabEnergyBenchmark(int labId)
     {

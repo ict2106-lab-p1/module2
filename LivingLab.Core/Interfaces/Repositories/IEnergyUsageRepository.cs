@@ -25,5 +25,7 @@ public interface IEnergyUsageRepository : IRepository<EnergyUsageLog>
     
     // JOEY: All lab EU trend
     Task<List<EnergyUsageLog>> GetLabEnergyUsageByLocationAndDate(string labLocation, DateTime? start, DateTime? end);
+    Task<List<EnergyUsageLog>> GetLabEnergyUsageByDate(DateTime? start, DateTime? end);
+
 
 }
