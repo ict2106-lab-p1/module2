@@ -10,7 +10,7 @@ public class LogItemViewModel
     public string LabLocation { get; set; }
     
     public string? DeviceType { get; set; }
-    
+
     [Display(Name = "Serial No.")]
     public string? DeviceSerialNo { get; set; }
 

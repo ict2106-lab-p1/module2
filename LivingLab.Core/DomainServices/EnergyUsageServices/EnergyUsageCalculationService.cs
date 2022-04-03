@@ -9,8 +9,8 @@ public class EnergyUsageCalculationService : IEnergyUsageCalculationService
 {
     public int CalculateEnergyUsageInWatt(int totalEU, int totalEUTime)
     {
-        double EU = totalEU / (totalEUTime * 60);
-        return (int)EU;
+        double EU = totalEU / (totalEUTime*60);
+        return (int) EU;
     }
 
     public int CalculateEnergyUsagePerHour(double totalEU, int totalEUTime) 
@@ -26,7 +26,7 @@ public class EnergyUsageCalculationService : IEnergyUsageCalculationService
     }
     public double CalculateEnergyIntensity(int area, int totalEU) 
     {
-        return (double)totalEU / (double)area;
+        return Math.Round(((double)totalEU / (double)area),2);
     }
     public double CalculateDeviceEUInLab(List<EnergyUsageLog> logs) 
     {

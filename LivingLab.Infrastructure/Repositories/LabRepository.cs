@@ -16,27 +16,18 @@ public class LabRepository : Repository<Lab>, ILabRepository
         _context = context;
     }
 
-    //public async Task<string?> GetTodoTitle(int id)
-    //{
-    //    var todo = await _context.Todos.FirstOrDefaultAsync(t => t.ID == id);
-    //    return todo?.Title;
-    //}
-
-
     //Hong Ying
     public Task<List<Lab>> GetAllLabLocation()
     {
-        // List<string> labLocation = await _context.Labs;
-        //return labLocation;
-
-        //var logsForLab = await IncludeReferences(
-        //        _context.Labs
-        //    )
-        //    .ToListAsync();
         return IncludeReferences(
                 _context.Labs
             )
             .ToListAsync();
+    }
+    public async Task<List<Lab>> GetAllLabs()
+    {
+        var labs = await _context.Labs.ToListAsync();
+        return labs;
     }
 
     #region Added by P1-1

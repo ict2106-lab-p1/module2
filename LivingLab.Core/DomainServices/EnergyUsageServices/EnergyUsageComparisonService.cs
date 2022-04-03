@@ -69,7 +69,7 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
         int LabArea = 0;
 
         List<EnergyComparisonGraphDTO> LabEUList = new List<EnergyComparisonGraphDTO>();
-        List<EUWatt> EUWatt = new List<EUWatt>();
+        //List<EUWatt> EUWatt = new List<EUWatt>();
 
         foreach (var item in result)
         {
@@ -95,7 +95,7 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
         foreach(var i in labNames)
         {
             List<EnergyUsageLog> result = _repository.GetLabEnergyUsageByLabNameAndDate(i, start, end).Result;
-            List<EUWatt> EUWatt = new List<EUWatt>();
+            //List<EUWatt> EUWatt = new List<EUWatt>();
 
             int LabEU = 0;
 
@@ -120,7 +120,7 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
 
 
         List<EnergyComparisonDeviceTableDTO> DeviceEUList = new List<EnergyComparisonDeviceTableDTO>();
-        List<EUWatt> EUWatt = new List<EUWatt>();
+        //List<EUWatt> EUWatt = new List<EUWatt>();
 
         foreach (var item in result)
         {
@@ -171,10 +171,4 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
 
         return labNames;
     }
-}
-
-public class EUWatt
-{
-    public string id { get; set; }
-    public int EU { get; set; }
 }
