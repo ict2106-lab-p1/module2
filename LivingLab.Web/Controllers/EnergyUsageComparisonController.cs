@@ -10,10 +10,13 @@ using LivingLab.Web.UIServices.EnergyUsage;
 using System.Data;
 using System.Text.RegularExpressions;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace LivingLab.Web.Controllers;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
+[Authorize(Roles = "Admin")]
 public class EnergyUsageComparisonController : Controller
 {
     private readonly ILogger<EnergyUsageComparisonController> _logger;

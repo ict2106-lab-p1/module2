@@ -6,14 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using LivingLab.Core.Interfaces.Repositories;
 using LivingLab.Core.Entities;
 using LivingLab.Web.Models.ViewModels;
-using LivingLab.Web.UIServices.EnergyUsage;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
+using LivingLab.Web.UIServices.EnergyUsage;
+using LivingLab.Web.UIServices.LabProfile;
+using LivingLab.Web.Models.ViewModels.EnergyUsage;
+
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace LivingLab.Web.Controllers;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
+[Authorize(Roles = "Admin")]
 public class EnergyUsageAnalysisController : Controller
 {
     private readonly ILogger<EnergyUsageAnalysisController> _logger;
@@ -26,15 +31,12 @@ public class EnergyUsageAnalysisController : Controller
         _repository = repository;
         _analysisService = analysisService;
     }
-
-    public IActionResult Index()
+    public async Task<IActionResult> Index(string? LabLocation = "NYP-SR7C")
     {
-        // // List<Log> Logs = logList();
+        // List<Log> Logs = logList();
         // List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
         // ViewBag.Logs = Logs;
-        // // GetAll();
-        // return View(Logs);
-
+        ViewBag.LabLocation = LabLocation;
         return View(data());
     }
 
@@ -129,7 +131,58 @@ public class EnergyUsageAnalysisController : Controller
         double Total = Math.Round((cost * (double)TotalEU * TotalEUTime),2);
         return Total;
     }
+    //
+    // [HttpPost]
+    // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
+    // {
+    //     try
+    //     {
+    //         var model = await _analysisService.GetEnergyUsageTrendSelectedLab(filter);
+    //         return model.Lab != null ? Json(model) : NotFound();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         _logger.Log(LogLevel.Error, e.Message);
+    //         return NotFound();
+    //     }
+    // }
+    
+    [HttpPost]
+    public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
+    {
+        try
+        {
+            var model = await _analysisService.GetEnergyUsageTrendSelectedLab(filter);
+            var modelAll = await _analysisService.GetEnergyUsageTrendAllLab(filter);
+            EnergyUsageAnalysisGraphViewModel combinedGraphModels = new EnergyUsageAnalysisGraphViewModel()
+            {
+                SelectedLabEnergyUsage = model,
+                AllLabEnergyUsage = modelAll
+            };
+            return Json(combinedGraphModels);
+        }
+        catch (Exception e)
+        {
+            _logger.Log(LogLevel.Error, e.Message);
+            return NotFound();
+        }
+    }
 
+    // [HttpPost]
+    // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
+    // {
+    //     try
+    //     {
+    //         var modelAll = await _analysisService.GetEnergyUsageTrendAllLab(filter);
+    //         return modelAll.Lab != null ? Json(modelAll) : NotFound();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         _logger.Log(LogLevel.Error, e.Message);
+    //         return NotFound();
+    //     }
+    // }
+    
     public EnergyUsageAnalysisViewModel data() {
         DateTime start = new DateTime(2015, 12, 25);
         DateTime end = new DateTime(2022, 12, 25);
@@ -143,8 +196,20 @@ public class EnergyUsageAnalysisController : Controller
     }
 
 
-
-
+    // [HttpGet("EnergyUsageAnalysis/Benchmark/Lab/{labId?}")]
+    public async Task<IActionResult> Benchmark(int? labId = 1)
+    {
+        try
+        {
+            var benchmark = await _analysisService.GetLabEnergyBenchmark(labId!.Value);
+            return benchmark != null ? View(benchmark) : NotFound();
+        }
+        catch (Exception e)
+        {
+            _logger.Log(LogLevel.Error, e.Message);
+            return Error();
+        }
+    }
 } 
 
 
