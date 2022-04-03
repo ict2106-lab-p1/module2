@@ -3,6 +3,7 @@ using System.Diagnostics;
 using LivingLab.Core.Entities.Identity;
 using LivingLab.Core.Interfaces.Services;
 using LivingLab.Web.Models.ViewModels;
+using LivingLab.Web.Models.ViewModels.Account;
 using LivingLab.Web.Models.ViewModels.Login;
 using LivingLab.Web.UIServices.Account;
 using LivingLab.Web.UIServices.NotificationManagement;

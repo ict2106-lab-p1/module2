@@ -1,10 +1,9 @@
-using System.Security.Policy;
-
 using AutoMapper;
 
 using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO.Device;
 using LivingLab.Core.Entities.Identity;
+using LivingLab.Core.Interfaces.Notifications;
 using LivingLab.Core.Interfaces.Services;
 using LivingLab.Web.Models.ViewModels.Device;
 
@@ -19,11 +18,11 @@ public class DeviceService : IDeviceService
     private readonly IMapper _mapper;
     private readonly ILogger<DeviceService> _logger;
     private readonly IDeviceDomainService _deviceDomainService;
-    private readonly IEmailSender _emailSender;
+    private readonly IEmailNotifier _emailSender;
     private readonly ILabProfileDomainService _labProfileDomainService;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public DeviceService(IMapper mapper, ILogger<DeviceService> logger,IDeviceDomainService deviceService, IEmailSender emailSender,ILabProfileDomainService labProfileDomainService, UserManager<ApplicationUser> userManager)
+    public DeviceService(IMapper mapper, ILogger<DeviceService> logger,IDeviceDomainService deviceService, IEmailNotifier emailSender,ILabProfileDomainService labProfileDomainService, UserManager<ApplicationUser> userManager)
     {
         _mapper = mapper;
         _logger = logger;

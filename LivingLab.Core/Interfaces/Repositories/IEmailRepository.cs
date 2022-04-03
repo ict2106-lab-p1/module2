@@ -1,4 +1,6 @@
 using LivingLab.Core.Entities;
+using LivingLab.Core.Entities.Identity;
+using LivingLab.Core.Enums;
 
 namespace LivingLab.Core.Interfaces.Repositories;
 
@@ -9,4 +11,5 @@ public interface IEmailRepository
 {
     Task<List<EmailLog>> GetEmailByStatus(string status);
     Task<List<EmailLog>> GetEmailByDateRange(DateTime start, DateTime end);
+    Task<List<ApplicationUser>> GetAccountByNotiPref(NotificationType preference);
 }

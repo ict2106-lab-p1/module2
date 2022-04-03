@@ -1,4 +1,9 @@
+using LivingLab.Core.Entities.Identity;
+using LivingLab.Core.Interfaces.Repositories;
+using LivingLab.Core.Enums;
 using LivingLab.Core.Interfaces.Services;
+
+using Microsoft.Extensions.Logging;
 
 namespace LivingLab.Core.DomainServices;
 
@@ -7,8 +12,34 @@ namespace LivingLab.Core.DomainServices;
 /// </remarks>
 public class NotificationDomainService : INotificationDomainService
 {
-    public Task SetNotificationPref()
+    private readonly IEmailRepository _emailRepository;
+    private readonly ISmsRepository _smsRepository;
+    private readonly IAccountDomainService _accountDomainService;
+    private readonly ILogger<NotificationDomainService> _logger;
+    
+    public NotificationDomainService(IAccountDomainService accountDomainService, ILogger<NotificationDomainService> logger, IEmailRepository emailRepository, ISmsRepository smsRepository)
     {
-        throw new NotImplementedException();
+        _accountDomainService = accountDomainService;
+        _logger = logger;
+        _emailRepository = emailRepository;
+        _smsRepository = smsRepository;
     }
+    public Task SetNotificationPref(ApplicationUser currentUser, NotificationType preference)
+    {
+        currentUser.PreferredNotification = preference;
+        return _accountDomainService.UpdateUser(currentUser);
+    }
+
+    /*
+     * Get list of technicians who chose Email as their preferred notification style
+     */
+    public Task<List<ApplicationUser>> GetAllTechniciansWithNotiPref(NotificationType preference)
+    {
+        return _emailRepository.GetAccountByNotiPref(preference);
+    }
+
+    /*public Task<List<ApplicationUser>> GetAllTechniciansWithNotiPref(NotificationType preference)
+    {
+        return _smsRepository.GetAccountByNotiPref(preference);
+    }*/
 }

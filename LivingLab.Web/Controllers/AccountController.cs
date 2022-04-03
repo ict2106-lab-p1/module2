@@ -1,6 +1,7 @@
 using System.Diagnostics;
 
 using LivingLab.Core.Entities.Identity;
+using LivingLab.Core.Interfaces.Notifications;
 using LivingLab.Core.Interfaces.Services;
 using LivingLab.Web.Controllers.Api;
 using LivingLab.Web.Models.ViewModels;
@@ -22,9 +23,9 @@ public class AccountController: Controller
     private readonly ILogger<AccountController> _logger;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IEmailSender _emailSender;
+    private readonly IEmailNotifier _emailSender;
 
-    public AccountController( IEmailSender emailSender, IAccountService accountService, ILogger<AccountController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+    public AccountController( IEmailNotifier emailSender, IAccountService accountService, ILogger<AccountController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
     {
         _accountService = accountService;
         _logger = logger;
