@@ -26,13 +26,13 @@ public class LabEnergyUsageConstructor: ConstructEnergyUsageTemplates<string>
     public List<LabEnergyUsageDTO> MergeIntoCollection(List<EnergyUsageLog> logs)
     {
         var identifier = this.GetIdentifier(logs);
-        Console.WriteLine("id ="+identifier[0]);
+        // Console.WriteLine("id ="+identifier[0]);
         var totalEU = this.GetTotalEU(logs,identifier);
-        Console.WriteLine("EU ="+totalEU[0]);
+        // Console.WriteLine("EU ="+totalEU[0]);
         var intensity = this.GetIntensity(totalEU,LabArea);
-        Console.WriteLine("inte ="+intensity[0]);
+        // Console.WriteLine("inte ="+intensity[0]);
         var cost = this.GetEUCost(totalEU);
-        Console.WriteLine("cost ="+cost[0]);
+        // Console.WriteLine("cost ="+cost[0]);
         var labDTO = new List<LabEnergyUsageDTO>();
         for (int i = 0; i < identifier.Count; i++)
         {
