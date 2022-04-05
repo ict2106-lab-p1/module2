@@ -1,7 +1,7 @@
 /* <remarks>*/
 /* Author: Team P1-3*/
 /* </remarks>*/
-$(document).ready(function () {
+$(document).ready(function() {
     //$('#table_id').DataTable();
     var table = $("#table_id").DataTable({
         dom: "<'ui stackable grid'" +
@@ -12,8 +12,8 @@ $(document).ready(function () {
             "<'sixteen wide column'tr>" +
             ">" +
             "<'row'" +
-            "<'seven wide column'i>" +
-            "<'eight wide column'l>" +
+            "<'seven wide column 'i>" +
+            "<'eight wide column 'l>" +
             "<'left aligned nine wide column'p>" +
             ">" +
             ">",
@@ -42,7 +42,6 @@ $(document).ready(function () {
 
     // Add Overlay
     const addOverlay = document.querySelector("#addOverlay");
-    const addBtn = document.querySelector("#addDeviceBtn");
     const closeAddBtn = document.querySelector(".closeAddModal");
 
     const toggleAddModal = () => {
@@ -60,6 +59,19 @@ $(document).ready(function () {
     $(document).on("click", "#addDeviceBtn", function() {
         clickAdd(this);
         toggleAddModal();
+    });
+
+    /***
+     * Display new type input when user choose others
+     */
+    $("#add-device-type").change(function() {
+        console.log("click");
+        var selectedValue = jQuery(this).val();
+        if (selectedValue === "Others") {
+            $(".newType").removeClass("hidden");
+        } else {
+            $(".newType").addClass("hidden");
+        }
     });
 
     // Edit Overlay
@@ -89,30 +101,50 @@ $(document).ready(function () {
         clickDelete(this);
         toggleDeleteModal();
     });
+
+    $("#del-cfm").on("input", function() {
+        if (this.value === $("#deviceName").text()) {
+            $("#delBtn").removeClass("disabled");
+        } else {
+            $("#delBtn").addClass("disabled");
+        }
+    });
+
+    $("#addForm").submit(function() {
+        alert("Device added successfully and is pending approval!");
+    });
+
+    $("#editForm").submit(function() {
+        alert("Device edited successfully!");
+    });
+
+    $("#delForm").submit(function() {
+        alert("Device deleted successfully!");
+    });
+
 });
 
 function clickAdd(e) {
     $.get("/Device/ViewAddDetails", function(data) {
-        console.log("ViewAddDetails: " + data);
-        console.log("Last row Id: " + data.id);
-        document.getElementById("add-device-id").value = data.id + 1;
-        document.getElementById("labId").value = data.accessory.lab.labId
-        document.getElementById("labLocation").value = data.accessory.lab.labLocation
+        console.log(data);
+        console.log("Last row Id: " + data.device.id);
+        document.getElementById("add-device-id").value = data.device.id + 1;
+        // document.getElementById("add-labId").value = data.device.lab.labId
+        // document.getElementById("add-labLocation").value = data.device.lab.labLocation
+        var deviceTypeDDL = document.getElementById("add-device-type")
+        if (deviceTypeDDL.length === 0) {
+            for (var i = 0; i < data.deviceTypes.length; i++) {
+                var element = document.createElement("option")
+                element.textContent = data.deviceTypes[i]
+                element.value = data.deviceTypes[i]
+                deviceTypeDDL.appendChild(element)
+            }
+            var last = document.createElement("option");
+            last.textContent = "Others";
+            last.value = "Others";
+            deviceTypeDDL.appendChild(last);
+        }
     });
-    /*
-              $.get('/Device/ViewType',
-                  function (data) {
-                      console.log("View all: " + data)
-                      var deviceTypeDDL = document.getElementById("add-device-type")
-                      if (deviceTypeDDL.length === 0) {
-                          for (var i = 0; i < data.type.length; i++) {
-                              var element = document.createElement("option")
-                              element.textContent = data.type
-                              element.value = data.type
-                              deviceTypeDDL.appendChild(element)
-                          }
-                      }
-                  })*/
 }
 
 function clickEdit(e) {
@@ -147,11 +179,3 @@ function clickDelete(e) {
         }
     );
 }
-
-$("#del-cfm").on("input", function() {
-    if (this.value === $("#deviceName").text()) {
-        $("#delBtn").removeClass("disabled");
-    } else {
-        $("#delBtn").addClass("disabled");
-    }
-});

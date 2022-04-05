@@ -80,10 +80,14 @@ $(document).ready(function() {
     $(document).on("click", ".closeEditModal", function() {
         toggleEditModal();
     });
+    $(document).on("click", ".cancelEditBtn", function() {
+        toggleEditModal();
+    });
     $(document).on("click", ".editAccessoryBtn", function() {
         clickEdit(this);
         toggleEditModal();
     });
+
 
     // Delete Overlay
     const deleteOverlay = document.querySelector("#deleteOverlay");
@@ -98,6 +102,28 @@ $(document).ready(function() {
         clickDelete(this);
         toggleDeleteModal();
     });
+
+    $("#del-cfm").on("input", function() {
+        console.log($("#del-cfm").val);
+        if (this.value === $("#accessory-name").text()) {
+            $("#delBtn").removeClass("disabled");
+        } else {
+            $("#delBtn").addClass("disabled");
+        }
+    });
+
+    $("#addForm").submit(function() {
+        alert("Accessory added successfully and is pending approval!");
+    });
+
+    $("#editForm").submit(function() {
+        alert("Accessory edited successfully!");
+    });
+
+    $("#delForm").submit(function() {
+        alert("Accessory deleted successfully!");
+    });
+
 });
 
 function clickAdd(e) {
@@ -116,8 +142,8 @@ function clickAdd(e) {
             last.value = "Others";
             accessoryTypeDDL.appendChild(last);
         }
-        document.getElementById("labId").value = data.accessory.labId
-        document.getElementById("labLocation").value = data.accessory.lab.labLocation
+        // document.getElementById("labId").value = data.accessory.labId
+        // document.getElementById("labLocation").value = data.accessory.lab.labLocation
     });
 }
 
@@ -130,6 +156,7 @@ function clickEdit(e) {
             document.getElementById("editAccessoryId").value = data.accessory.id;
             document.getElementById("AccessoryId").value = data.accessory.id;
             var accessoryTypeDDL = document.getElementById("editAccessoryType");
+            // populate accessoryType ddl
             if (accessoryTypeDDL.length === 0) {
                 // populate the dropdown list
                 for (var i = 0; i < data.accessoryTypes.length; i++) {
@@ -146,6 +173,17 @@ function clickEdit(e) {
                     option.selected = true;
                 }
             }
+            //populate borrowers ddl
+            var borrowerDDL = document.getElementById("editLabUser");
+            if (borrowerDDL.length === 0) {
+                // populate the dropdown list
+                for (var i = 0; i < data.userList.length; i++) {
+                    var element = document.createElement("option");
+                    element.textContent = data.userList[i].firstName + " " + data.userList[i].lastName;
+                    element.value = data.userList[i].id;
+                    borrowerDDL.appendChild(element);
+                }
+            }
             document.getElementById("AccessoryType").value =
                 accessoryTypeDDL.options[accessoryTypeDDL.selectedIndex].textContent;
             document.getElementById("editAccessoryName").value =
@@ -156,6 +194,17 @@ function clickEdit(e) {
             document.getElementById("editDueDate").value = data.accessory.dueDate;
             document.getElementById("editLabUser").value = data.accessory.labUserId;
             document.getElementById("editLabLocation").value = data.accessory.lab.labLocation
+            if (data.accessory.accessoryType.borrowable == false) {
+                document.getElementById("editDueDate").disabled = true;
+                document.getElementById("editLabUser").disabled = true;
+                document.getElementById("editDueDate").classList.add("bg-gray-100");
+                document.getElementById("editLabUser").classList.add("bg-gray-100");
+            } else {
+                document.getElementById("editDueDate").disabled = false;
+                document.getElementById("editLabUser").disabled = false;
+                document.getElementById("editDueDate").classList.remove("bg-gray-100");
+                document.getElementById("editLabUser").classList.remove("bg-gray-100");
+            }
         }
     );
 }
@@ -179,11 +228,3 @@ function clickDelete(e) {
         }
     );
 }
-$("#del-cfm").on("input", function() {
-    console.log($("#del-cfm").val);
-    if (this.value === $("#accessory-name").text()) {
-        $("#delBtn").removeClass("disabled");
-    } else {
-        $("#delBtn").addClass("disabled");
-    }
-});
