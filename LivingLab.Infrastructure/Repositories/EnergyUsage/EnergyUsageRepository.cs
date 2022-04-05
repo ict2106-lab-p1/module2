@@ -31,12 +31,6 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         await _context.SaveChangesAsync();
     }
 
-    public async Task BulkInsertAsyncByUser(ICollection<EnergyUsageLog> logs, ApplicationUser loggedBy)
-    {
-        logs.ToList().ForEach(log => log.LoggedBy = loggedBy);
-        await BulkInsertAsync(logs);
-    }
-
     public async Task<List<EnergyUsageLog>> GetDeviceEnergyUsageByDateTime(DateTime start, DateTime end)
     {
         var logsForDateRange = await IncludeReferences(
@@ -57,7 +51,6 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
             .ToListAsync();
         return logsForTypeInDateRange;
     }
-
 
     public async Task<List<EnergyUsageLog>> GetLabEnergyUsageByLabNameAndDate(string labName, DateTime start, DateTime end)
     {
@@ -85,24 +78,8 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
             .ToListAsync();
         return logsForLabInDateRange;
     }
-
-    public Task<List<EnergyUsageLog>> GetDistinctDeviceEnergyUsage()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<EnergyUsageLog>> GetDistinctLabEnergyUsage()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<List<EnergyUsageLog>> GetAllDeviceByLab()
-    {
-        throw new NotImplementedException();
-    }
     
     // JOEY: start
-
     public async Task<List<EnergyUsageLog>> GetLabEnergyUsageByLocationAndDate(string labLocation, DateTime? start, DateTime? end)
     {
         var now = DateTime.Now;
@@ -168,28 +145,7 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
             .ToListAsync();
         return logsForLab;
     }
-
-
     
-    public Task<List<EnergyUsageLog>> GetUsageByUser(ApplicationUser? user)
-    {
-        if (user == null)
-        {
-            return IncludeReferences(
-                    _context.EnergyUsageLogs
-                    .Where(log => log.LoggedBy != null)
-                )
-                .ToListAsync();
-        }
-        else
-        {
-            return IncludeReferences(
-                    _context.EnergyUsageLogs
-                    .Where(log => log.LoggedBy != null && log.LoggedBy.Equals(user))
-                )
-                .ToListAsync();
-        }
-    }
     protected override IQueryable<EnergyUsageLog> IncludeReferences(IQueryable<EnergyUsageLog> logQuery)
     {
         return base.IncludeReferences(logQuery)
@@ -204,5 +160,4 @@ public class EnergyUsageRepository : Repository<EnergyUsageLog>, IEnergyUsageRep
         var labLoadTask = _context.Entry(log).Reference(l => l.Lab).LoadAsync();
         await Task.WhenAll(deviceLoadTask, labLoadTask);
     }
-
 }

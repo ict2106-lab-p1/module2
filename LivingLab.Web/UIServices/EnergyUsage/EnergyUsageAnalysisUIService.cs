@@ -35,7 +35,6 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
     {
         return _analysis.GetLabEnergyUsageByDate(start,end);
     }
-
     public async Task<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end)
     {
         throw new NotImplementedException();

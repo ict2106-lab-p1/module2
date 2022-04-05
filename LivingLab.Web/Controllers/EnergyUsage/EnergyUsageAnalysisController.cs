@@ -1,24 +1,18 @@
 using System.Diagnostics;
 
-using Microsoft.AspNetCore.Mvc;
-
-using LivingLab.Core.Entities;
-using LivingLab.Core.Entities.DTO.EnergyUsage;
 using LivingLab.Core.Repositories.EnergyUsage;
 using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.EnergyUsage;
-using LivingLab.Web.UIServices.LabProfile;
-using LivingLab.Web.Models.ViewModels.EnergyUsage;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-
-namespace LivingLab.Web.Controllers;
+namespace LivingLab.Web.Controllers.EnergyUsage;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Labtech")]
 public class EnergyUsageAnalysisController : Controller
 {
     private readonly ILogger<EnergyUsageAnalysisController> _logger;
@@ -60,7 +54,6 @@ public class EnergyUsageAnalysisController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
 
     // [HttpPost]
     // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
