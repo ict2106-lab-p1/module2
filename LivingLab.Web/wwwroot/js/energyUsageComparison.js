@@ -252,7 +252,7 @@ function compareData() {
                                     { title: "Lab Location", data: "labLocation" },
                                     { title: "Energy Usage (kWh)", data: "energyUsage" },
                                     { title: "Energy Usage Cost (SGD)", data: "energyUsageCost" },
-                                    { title: "Energy Intensity (kW/SQM)", data: "energyIntensity" }
+                                    { title: "Energy Intensity (kWh/SQM)", data: "energyIntensity" }
                                 ],
                                 lengthChange: false,
                                 paging: false,
