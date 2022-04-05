@@ -1,18 +1,10 @@
 using System.Diagnostics;
-
 using Microsoft.AspNetCore.Mvc;
-
-using LivingLab.Core.Entities;
-using LivingLab.Core.Entities.DTO.EnergyUsage;
 using LivingLab.Core.Repositories.EnergyUsage;
 using LivingLab.Web.Models.ViewModels;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.UIServices.EnergyUsage;
-using LivingLab.Web.UIServices.LabProfile;
-using LivingLab.Web.Models.ViewModels.EnergyUsage;
-
 using Microsoft.AspNetCore.Authorization;
-
 
 namespace LivingLab.Web.Controllers;
 /// <remarks>
@@ -61,22 +53,6 @@ public class EnergyUsageAnalysisController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-
-    // [HttpPost]
-    // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
-    // {
-    //     try
-    //     {
-    //         var model = await _analysisService.GetEnergyUsageTrendSelectedLab(filter);
-    //         return model.Lab != null ? Json(model) : NotFound();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         _logger.Log(LogLevel.Error, e.Message);
-    //         return NotFound();
-    //     }
-    // }
-    
     [HttpPost]
     public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
     {
@@ -98,22 +74,6 @@ public class EnergyUsageAnalysisController : Controller
         }
     }
 
-    // [HttpPost]
-    // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
-    // {
-    //     try
-    //     {
-    //         var modelAll = await _analysisService.GetEnergyUsageTrendAllLab(filter);
-    //         return modelAll.Lab != null ? Json(modelAll) : NotFound();
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         _logger.Log(LogLevel.Error, e.Message);
-    //         return NotFound();
-    //     }
-    // }
-    
-
     public EnergyUsageAnalysisViewModel data() {
         DateTime start = new DateTime(2015, 12, 25);
         DateTime end = new DateTime(2022, 12, 25);
@@ -126,9 +86,6 @@ public class EnergyUsageAnalysisController : Controller
         return viewModel;
     }
 
-
-
-    // [HttpGet("EnergyUsageAnalysis/Benchmark/Lab/{labId?}")]
     public async Task<IActionResult> Benchmark(int? labId = 1)
     {
         try
