@@ -33,10 +33,6 @@ public class EnergyUsageAnalysisController : Controller
     }
     public async Task<IActionResult> Index(string? LabLocation = "NYP-SR7C")
     {
-        // List<Log> Logs = logList();
-        // List<DeviceEnergyUsageDTO> Logs = DeviceEUList1();
-        // ViewBag.Logs = Logs;
-        ViewBag.LabLocation = LabLocation;
         return View(data());
     }
 
@@ -65,73 +61,7 @@ public class EnergyUsageAnalysisController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    public List<DeviceEnergyUsageDTO> DeviceEUList() 
-    {
-        var Logs = new List<DeviceEnergyUsageDTO>(){
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Sensor-12120",DeviceType="Sensor",TotalEnergyUsage=234,EnergyUsageCost=23.21},
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Actuator-0881",DeviceType="Actuator",TotalEnergyUsage=121,EnergyUsageCost=12.21},
-            new DeviceEnergyUsageDTO{DeviceSerialNo="Robot-73",DeviceType="Robot",TotalEnergyUsage=671,EnergyUsageCost=72.45}
-        };
-        return Logs;
-    }
 
-    public List<DeviceEnergyUsageDTO> DeviceEUList1() 
-    {
-        DateTime start = new DateTime(2015, 12, 25);
-        DateTime end = new DateTime(2022, 12, 25);
-        return _analysisService.GetDeviceEnergyUsageByDate(start,end);
-    }
-
-    [HttpGet]
-    public IActionResult GetAll()
-    {
-        var records = _repository.GetAllAsync().Result;
-                // var records = DeviceEUList();
-        return Ok(records);
-    }
-    public void GetAlla()
-    {
-        var records = _repository.GetAllAsync().Result;
-        var AllDevices = FindAllUniqueID(records);
-        foreach (var item in AllDevices)
-        {
-            Console.WriteLine(item);
-        }
-    }
-
-    public List<int> FindAllUniqueID (List<EnergyUsageLog> Records) 
-    {
-        List<int> IdList = new List<int>();
-        foreach (var item in Records)
-        {
-            if (!IdList.Contains(item.Device.Id))
-            {
-                IdList.Add(item.Device.Id);
-            } 
-        }
-        return IdList;
-    }
-
-    // convert time in minutes to hour
-    public double ConvertTimeToHour(int TimeInMinute) 
-    {
-        return (double)TimeInMinute / (double)60;
-    }
-    // calculate energy usage per hour
-    public double? CalculateEUPerHour (double? TotalEU, int? TotalEUTime) 
-    {
-        double? hour = (double)TotalEUTime / (double)60;
-        double? EUPerHour = TotalEU / hour;
-        return (int)EUPerHour;
-    }
-
-    // calculate total energy usage cost
-    public double CalculateEUCost(double cost, int TotalEU, double TotalEUTime) 
-    {
-        double Total = Math.Round((cost * (double)TotalEU * TotalEUTime),2);
-        return Total;
-    }
-    //
     // [HttpPost]
     // public async Task<IActionResult> ViewUsage([FromBody] EnergyUsageFilterViewModel filter)
     // {
@@ -183,6 +113,7 @@ public class EnergyUsageAnalysisController : Controller
     //     }
     // }
     
+
     public EnergyUsageAnalysisViewModel data() {
         DateTime start = new DateTime(2015, 12, 25);
         DateTime end = new DateTime(2022, 12, 25);
@@ -194,6 +125,7 @@ public class EnergyUsageAnalysisController : Controller
         };
         return viewModel;
     }
+
 
 
     // [HttpGet("EnergyUsageAnalysis/Benchmark/Lab/{labId?}")]
