@@ -2,12 +2,13 @@ using System.Text;
 
 using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageBuilder;
 using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageCalculation;
+using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageTemplate;
 using LivingLab.Core.DomainServices.Equipment;
+using LivingLab.Core.DomainServices.Equipment.Device;
 using LivingLab.Core.Entities;
 using LivingLab.Core.Entities.DTO.EnergyUsage;
 using LivingLab.Core.Repositories.EnergyUsage;
 using LivingLab.Core.Repositories.Lab;
-using LivingLab.Core.DomainServices.EnergyUsageServices.EnergyUsageTemplate;
 
 using Microsoft.AspNetCore.Mvc;
 
