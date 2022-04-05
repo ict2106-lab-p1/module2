@@ -39,8 +39,8 @@ public class LabEnergyUsageConstructor: ConstructEnergyUsageTemplates<string>
             labDTO.Add(
                 new LabEnergyUsageDTO{
                     LabLocation = identifier[i],
-                    TotalEnergyUsage = totalEU[i],
-                    EnergyUsageIntensity = intensity[i],
+                    TotalEnergyUsage = Math.Round(totalEU[i]/1000,2),
+                    EnergyUsageIntensity = Math.Round(intensity[i]/1000,2),
                     EnergyUsageCost = cost[i]
                 }
             );
