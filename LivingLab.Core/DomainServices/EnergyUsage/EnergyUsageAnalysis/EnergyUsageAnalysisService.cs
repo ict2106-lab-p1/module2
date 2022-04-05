@@ -32,7 +32,6 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         _labRepository = labRepository;
     }
 
-    // chendong
     public byte[] ExportDeviceEU(List<DeviceEnergyUsageDTO> DeviceEUList) 
     {
         var builder = new StringBuilder();
@@ -63,12 +62,10 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end) 
     {
         List<EnergyUsageLog> result = _repository.GetDeviceEnergyUsageByDateTime(start,end).Result;
-
         LabEnergyUsageConstructor labEUCon = new LabEnergyUsageConstructor();
         var LabEUList = labEUCon.MergeIntoCollection(result);
         return LabEUList;
     }
-    
     // joey
     public List<TopSevenLabEnergyUsageDTO> GetTopSevenLabEnergyUsage(DateTime start, DateTime end) 
     {
@@ -91,7 +88,7 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
             })
             .OrderBy(log => log.LoggedDate).ToList();
 
-        // get by id
+        // get by date
         var lab = await _labRepository.GetByIdAsync(filter.LabId);
         
         var dto = new MonthlyEnergyUsageDTO
@@ -133,15 +130,6 @@ public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
         return dto;
     }
     
-    // weijie
-    public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, int labId)
-    {
-        throw new NotImplementedException();
-    }
-    public List<DeviceInLabDTO> GetEnergyUsageDeviceDistribution(DateTime start, DateTime end, string deviceType)
-    {
-        throw new NotImplementedException();
-    }
 }
 
 public class EUWatt{

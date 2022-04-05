@@ -16,10 +16,5 @@ public interface IEnergyUsageAnalysisService
     Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter);
     Task<Entities.Lab> GetLabEnergyBenchmark(int labId);
 
-    // weijie
-    // not sure what will be your DTO looks like may have to create in LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
-    public List<DeviceInLabDTO> GetEnergyUsageLabDistribution(DateTime start, DateTime end, int labId);
-    public List<DeviceInLabDTO> GetEnergyUsageDeviceDistribution(DateTime start, DateTime end, string deviceType);
-
 
 }
