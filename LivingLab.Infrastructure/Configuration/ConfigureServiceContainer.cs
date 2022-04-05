@@ -1,12 +1,9 @@
-using LivingLab.Core.DomainServices;
+using LivingLab.Core.DomainServices.Notifications;
 using LivingLab.Core.Entities.Identity;
-using LivingLab.Core.Factory;
-using LivingLab.Core.Interfaces.Notifications;
-using LivingLab.Core.Interfaces.Repositories;
-using LivingLab.Core.Interfaces.Services;
+using LivingLab.Core.Notifications;
 using LivingLab.Infrastructure.Data;
 using LivingLab.Infrastructure.InfraServices;
-using LivingLab.Infrastructure.Repositories;
+using LivingLab.Infrastructure.InfraServices.Notification;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,9 +40,6 @@ public static class ConfigureServiceContainer
     {
         services.AddEnergyMonitoringServices();
         services.AddManagementServices();
-       
-        services.AddTransient<ITodoDomainService, TodoDomainService>();
-        services.AddTransient<ITodoRepository, TodoRepository>();
 
         // Shared Email Service Provider
         services.AddTransient<IEmailNotifier, EmailNotifier>();

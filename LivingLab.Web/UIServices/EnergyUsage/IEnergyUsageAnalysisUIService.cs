@@ -1,4 +1,4 @@
-using LivingLab.Core.Entities.DTO.EnergyUsageDTOs;
+using LivingLab.Core.Entities.DTO.EnergyUsage;
 using LivingLab.Web.Models.ViewModels.EnergyUsage;
 using LivingLab.Web.Models.ViewModels.LabProfile;
 

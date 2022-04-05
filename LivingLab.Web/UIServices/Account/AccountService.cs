@@ -1,6 +1,6 @@
+using LivingLab.Core.DomainServices.Account;
 using LivingLab.Core.Entities.Identity;
-using LivingLab.Core.Interfaces.Notifications;
-using LivingLab.Core.Interfaces.Services;
+using LivingLab.Core.Notifications;
 using LivingLab.Web.Models.ViewModels.Login;
 using LivingLab.Web.UIServices.NotificationManagement;
 
@@ -60,6 +60,7 @@ public class AccountService : IAccountService
             user.UserFaculty = input.Faculty;
             user.LastName = input.LastName;
             user.FirstName = input.FirstName;
+            user.PreferredNotification = 0;
             if (input.IsGoogleAuth)
             {
                 user.AuthenticationType = "Email";
