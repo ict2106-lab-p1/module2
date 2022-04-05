@@ -1,6 +1,5 @@
 using System.Text;
-using LivingLab.Core.CsvParser;
-using LivingLab.Core.Entities.DTO.EnergyUsage;
+
 using Microsoft.AspNetCore.Http;
 using TinyCsvParser;
 using TinyCsvParser.Mapping;
@@ -10,19 +9,16 @@ namespace LivingLab.Infrastructure.InfraServices.CsvParser;
 /// <remarks>
 /// Author: Team P1-1
 /// </remarks>
-public abstract class CsvParserTemplate : IEnergyUsageLogCsvParser
+public abstract class CsvParserTemplate<T> where T : class
 {
-    public IEnumerable<EnergyUsageCsvDTO> Parse(IFormFile file)
+    public IEnumerable<T> Parse(IFormFile file)
     {
         var filePath = SaveFile(file);
-        var options = new CsvParserOptions(true, ',');
-        var mapper = new EnergyUsageLogCsvMapper();
-        var parser = new CsvParser<EnergyUsageCsvDTO>(options, mapper);
-        var result = parser.ReadFromFile(filePath, Encoding.Default);
-
+        var result = ReadFile(filePath);
         return MapResult(result);    
     }
     
-    public abstract string SaveFile(IFormFile file);
-    public abstract IEnumerable<EnergyUsageCsvDTO> MapResult(ParallelQuery<CsvMappingResult<EnergyUsageCsvDTO>> result);
+    protected abstract string SaveFile(IFormFile file);
+    protected abstract ParallelQuery<CsvMappingResult<T>> ReadFile(string filePath);
+    protected abstract IEnumerable<T> MapResult(ParallelQuery<CsvMappingResult<T>> result);
 }

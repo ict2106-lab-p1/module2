@@ -13,12 +13,12 @@ namespace LivingLab.Infrastructure.InfraServices.CsvParser;
 /// <remarks>
 /// Author: Team P1-1
 /// </remarks>
-public class EnergyUsageLogCsvParser : CsvParserTemplate
+public class EnergyUsageLogCsvParser : CsvParserTemplate<EnergyUsageCsvDTO>, IEnergyUsageLogCsvParser
 {
     /**
      * Create a temporary random file.
      */
-    public override string SaveFile(IFormFile file)
+    protected override string SaveFile(IFormFile file)
     {
         var filePath = Path.GetTempFileName();
         using var stream = new FileStream(filePath, FileMode.Create);
@@ -26,10 +26,19 @@ public class EnergyUsageLogCsvParser : CsvParserTemplate
         return filePath;
     }
 
+    protected override ParallelQuery<CsvMappingResult<EnergyUsageCsvDTO>> ReadFile(string filePath)
+    {
+        var options = new CsvParserOptions(true, ',');
+        var mapper = new EnergyUsageLogCsvMapper();
+        var parser = new CsvParser<EnergyUsageCsvDTO>(options, mapper);
+        var result = parser.ReadFromFile(filePath, Encoding.Default);
+        return result;
+    }
+    
     /**
      * Map processes data to Model.
      */
-    public override IEnumerable<EnergyUsageCsvDTO> MapResult(ParallelQuery<CsvMappingResult<EnergyUsageCsvDTO>> result)
+    protected override IEnumerable<EnergyUsageCsvDTO> MapResult(ParallelQuery<CsvMappingResult<EnergyUsageCsvDTO>> result)
     {
         var list = new List<EnergyUsageCsvDTO>();
 
