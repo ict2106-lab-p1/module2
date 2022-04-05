@@ -1,8 +1,8 @@
-using LivingLab.Core.Entities;
-using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageCalculation;
 using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageAnalysis;
+using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageCalculation;
+using LivingLab.Core.Entities;
 
-namespace LivingLab.Core.DomainServices.EnergyUsageServices.EnergyUsageTemplate;
+namespace LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageTemplate;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>

@@ -1,7 +1,7 @@
-using LivingLab.Core.Entities.DTO.EnergyUsage;
 using LivingLab.Core.Entities;
+using LivingLab.Core.Entities.DTO.EnergyUsage;
 
-namespace LivingLab.Core.DomainServices.EnergyUsageServices.EnergyUsageTemplate;
+namespace LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageTemplate;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
@@ -39,8 +39,8 @@ public class LabEnergyUsageConstructor: ConstructEnergyUsageTemplates<string>
             labDTO.Add(
                 new LabEnergyUsageDTO{
                     LabLocation = identifier[i],
-                    TotalEnergyUsage = totalEU[i],
-                    EnergyUsageIntensity = intensity[i],
+                    TotalEnergyUsage = Math.Round(totalEU[i]/1000,2),
+                    EnergyUsageIntensity = Math.Round(intensity[i]/1000,2),
                     EnergyUsageCost = cost[i]
                 }
             );

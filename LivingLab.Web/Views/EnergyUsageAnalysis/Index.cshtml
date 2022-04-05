@@ -32,7 +32,7 @@
             <div class="flex items-end">
                 <div class="relative inline-flex">
                     <select id="selectLabLocation" class="input-border border-gray-300 text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none">
-                        @* should for loop this part to get all avail (can see viewlabEU)  *@
+                        @* TODO: should for loop this part to get all available lab*@
                         <option>NYP-SR7C</option>
                         <option>NYP-SR2A</option>
                     </select>
@@ -146,7 +146,7 @@
                                 $ @item.EnergyUsageCost
                             </td>
                             <td class="py-4 px-6 text-sm text-gray-900 whitespace-nowrap dark:text-gray-400">
-                                @item.EnergyUsageIntensity kW/m<sup>2</sup>
+                                @item.EnergyUsageIntensity kWh/m<sup>2</sup>
                             </td>
                         </tr>
                     }

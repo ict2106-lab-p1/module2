@@ -33,7 +33,7 @@ public class EnergyUsageAnalysisController : Controller
     }
     public async Task<IActionResult> Index(string? LabLocation = "NYP-SR7C")
     {
-        return View(data());
+        return View(GetData());
     }
 
     public IActionResult DMoreData()
@@ -51,7 +51,7 @@ public class EnergyUsageAnalysisController : Controller
     [HttpGet]
     public IActionResult Export()
     {
-        byte [] content =  _analysisService.Export(data().DeviceEUList);
+        byte [] content =  _analysisService.Export(GetData().DeviceEUList);
         return File(content, "text/csv", "Device Energy Usage.csv");
     }
 
@@ -114,7 +114,7 @@ public class EnergyUsageAnalysisController : Controller
     // }
     
 
-    public EnergyUsageAnalysisViewModel data() {
+    public EnergyUsageAnalysisViewModel GetData() {
         DateTime start = new DateTime(2015, 12, 25);
         DateTime end = new DateTime(2022, 12, 25);
         var deviceEUList = _analysisService.GetDeviceEnergyUsageByDate(start,end);
@@ -143,7 +143,6 @@ public class EnergyUsageAnalysisController : Controller
         }
     }
 } 
-
 
 
 
