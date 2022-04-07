@@ -1,0 +1,72 @@
+@using LivingLab.Core.Entities.Identity
+@using Microsoft.AspNetCore.Identity
+@model LivingLab.Web.Models.ViewModels.LabProfile.LabRegisterViewModel
+@inject UserManager<ApplicationUser> UserManager
+@* /// <remarks> *@
+@* /// Author: Team P1-5 *@
+@* /// </remarks> *@
+@{
+    ViewData["Title"] = "Lab Register";
+    var listofusers = await UserManager.GetUsersInRoleAsync("labtech");
+}
+<div class="row">
+    <div class="col-md-4">
+        <form id="registerLab" method="post" asp-controller="LabProfile" asp-action="LabRegister">
+            <div class="bg-white shadow p-12  mb-12  rounded-lg">
+
+                <div>
+                    <h2 class="text-2xl font-bold">
+                        Register Labs
+                    </h2>
+                    <p class="text-base mt-3 font-medium text-lg">Enter basic information </p>
+                </div>
+                <div class="mt-6">
+                    <p>
+                        <label asp-for="LabLocation" class="font-semibold">Lab Location</label>
+                    </p> <input asp-for="LabLocation" type="text" placeholder="Enter Lab Location" class="input input-bordered w-full max-w-xs">
+                </div>
+                <div class="mt-6">
+                    <p>
+                        <label asp-for="LabInCharge" class="font-semibold">Lab In-Charge</label>
+                    </p>
+                    <select class="select select-bordered w-full max-w-xs" aria-required="true" asp-for="LabInCharge">
+                        @foreach (var user in @listofusers)
+                        {
+                            <option value="@user.Id">@user.FirstName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mt-6">
+                    <p>
+                        <label asp-for="LabStatus" class="font-semibold">Lab Status</label>
+                    </p>
+                    <select class="select select-bordered w-full max-w-xs" name="faculty" asp-for="LabStatus">
+                        <option disabled selected>Select Lab Status</option>
+                        <option value="Available">Available</option>
+                        <option value="Not Available">Not Available</option>
+                        <option value="Under Construction">Under Construction</option>
+                    </select>
+                </div>
+                <div class="mt-6">
+                    <p>
+                        <label asp-for="Capacity" class="font-semibold">Lab Capacity</label>
+                    </p> <input asp-for="Capacity" type="text" placeholder="Enter Lab Capacity" class="input input-bordered w-full max-w-xs">
+                </div>
+                <div class="mt-6">
+                    <p>
+                        <label asp-for="Area" class="font-semibold">Area</label>
+                    </p> <input asp-for="Area" type="text" placeholder="Enter Area" class="input input-bordered w-full max-w-xs">
+                </div>
+                <div class="mt-6">
+                    <p>
+                        <label asp-for="EnergyUsageBenchmark" class="font-semibold">Energy Usage Benchmark</label>
+                    </p> <input asp-for="EnergyUsageBenchmark" type="text" placeholder="Enter Energy Usage" class="input input-bordered w-full max-w-xs">
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <button id="registersubmit" type="submit" class="btn btn-primary w-6/12">Create Lab</button>
+            </div>
+        </form>
+    </div>
+    
+</div>

@@ -2,10 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-    content: [
-        './Pages/**/*.cshtml',
-        './Views/**/*.cshtml',
-    ],
+    content: ["./Pages/**/*.cshtml", "./Views/**/*.cshtml"],
 
     safelist: [
         "w-64",
@@ -27,9 +24,15 @@ module.exports = {
     ],
 
     theme: {
+        screens: {
+          'md':  '1056px',
+            'lg': '1664px',
+        },
         extend: {
             colors: {
-                brand: "#FFC523",
+                dark: "#363740",
+                highlight: "#9FA2B4",
+                brand: "#FFC523",/*
                 olive: {
                     50: "#faf9f0",
                     100: "#f8efa2",
@@ -149,7 +152,7 @@ module.exports = {
                     700: "#88301e",
                     800: "#602116",
                     900: "#3c150e",
-                },
+                },*/
                 black: colors.black,
                 white: colors.white,
                 gray: colors.neutral,
@@ -168,12 +171,9 @@ module.exports = {
         },
     },
 
-    plugins: [
-        require("@tailwindcss/forms"),
-        require("daisyui"),
-    ],
+    plugins: [require("@tailwindcss/forms"), require("daisyui")],
 
     daisyui: {
-        themes: false,
+        themes: ["light", "dark", "cupcake", "corporate"]
     },
 };

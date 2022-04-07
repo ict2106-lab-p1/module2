@@ -1,28 +1,46 @@
-## Creating a new branch (from dev branch)
-- `$ git checkout -b <[group-number]-[issue-id]-[feature]> dev`
-- example: `$ git checkout -b g1-50-file-processing dev`
-- example: `$ git checkout -b g2-100-dashboard dev`
+# Living Lab Dashboard
+
+### Link to the hosted version of this project: [livinglab.amatsuka.me](http://livinglab.amatsuka.me)
+
+## Login Credentials
+### ADMIN:
+Email: `chuashengyu98@gmail.com`  
+Password: `P@ssw0rd`
+
+### LAB TECHNICIAN:
+Email: `hanyi.hyng@gmail.com`  
+Password: `P@ssw0rd`
+
+---
+
+## Development Workflow
+Refer to WORKFLOW.md for instructions on the development flow.
+
 
 ## Getting started
-- Have Node >v16
+- Download .NET Core 6.0
+- Have Node >v 16
 - Run `npm install` 
 
 ## Running
 - `cd LivingLab.Web && npm run dev`
 - Then, in a separate window: `dotnet watch --project LivingLab.Web`
 
-## For Production
-- `npm run prod`
+## Running the project
+1. Run `npm run dev` in /LivingLab.Web
+2. Then, in a separate terminal, run `dotnet watch --project LivingLab.Web` from the root folder 
 
-## Format
-`dotnet format --severity warn`
 
-## Migrations 
-**skip this part if no changes to db.  
-`dotnet ef migrations add CreateInitialDB -s LivingLab.Web -p LivingLab.Infrastructure`
+## Updates to DB 
+### Migrations
+```
+dotnet ef migrations add CreateInitialDB -s LivingLab.Web -p LivingLab.Infrastructure
+```
 
-## DB
-`dotnet ef database update -s LivingLab.Web -p LivingLab.Infrastructure`
+### Populating / Update Values
+```
+dotnet ef database update -s LivingLab.Web -p LivingLab.Infrastructure
+```
 
 ## Structure
 Items that belongs to each layer:
@@ -70,23 +88,51 @@ It's output will be stored at `webroot/dist/site.css`, where it will be referenc
 Running `npm run dev` will start tailwindcli in "watch" mode. Any changes you make will automatically be reflected.
 
 #### prod
-Running `npm run dev` will start tailwindcli in build mode. In addition to compiling your `index.css`, the resulting output will be minified as well.
+Running `npm run prod` will start tailwindcli in build mode. In addition to compiling your `index.css`, the resulting output will be minified as well.
 
 ### Nullable warnings
 It's "safe" to ignore warnings on startup about nullables. These are scaffolded from a template. Feel free to correct them. See https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references.
 
-### Database
-Install ef tools if they aren't already present.
-`dotnet tool install --global dotnet-ef`
 
 #### Run migrations
 - `dotnet ef database update -s LivingLab.Web -p LivingLab.Infrastructure`
-
 Alternatively, run the web app and let dotnet run migrations automatically. If you encounter an exception page, click on "Run migrations" and refresh.
 
 #### Clean state
 Remove `livinglab.sqlite`, rerun migrations.
 
----
-
-Credits: Thanks Percy for setting up the MVC skeleton + Tailwind integration.
+## Github ID
+### P1-01 Student ID & Name & Github ID
+- 2002437 | Han Yi           | hanyi97
+- 2002362 | Jia Jia          | jiajiatan
+- 2002288 | Mary Michelle    | mmichelle1
+- 2001868 | Yong Zheng       | PixlRainbow
+### P1-02 Student ID & Name & Github ID
+- 2002230 | Joey Chua        | 170joeychua
+- 2000522 | Chen Dong        | Don-Whis
+- 2000990 | Lee Wei Jie      | Guthixo
+- 2001631 | Hong Ying        | HongYing222
+### P1-03 Student ID & Name & Github ID
+- 2001206 | Chua Sheng Yu    | shengyu98
+- 2002220 | Angelene Joshna  | angelenejoshna
+- 2002262 | Hui Xuan Vanna   | thxcvanna
+- 2002226 | Eddie Tan DeJun  | EddieTanDJ
+- 2000621 | Carlton Anthoni  | CarltonFoo
+### P1-04 Student ID & Name & Github ID
+- 2002111 | Percy            | senkawa
+- 2002841 | Leong Kah En     | kahenll
+- 2001505 | M.d Nasarudin    | SpaceNas
+- 2001191 | Goh Jun Jie      | junjie167
+- 2002773 | Kamarullah Bin   | Kamarul917
+### P1-05 Student ID & Name & Github ID
+- 2000721 | Yip Hou Liang    | SageSG
+- 2001317 | Cai Ting Celine  | celineangct
+- 2002795 | Belle Sim        | bellesim
+- 2002820 | Gou Hang         | gouhang26
+- 2001476 | Ter KaiSiang     | kiasiang419
+### P1-06 Student ID & Name & Github ID
+- 2001701 | Gabriel Kok      | gabrielkhh
+- 2002452 | Aloysius Yeo     | aloywj
+- 2001632 | Yang Xiao        | 2000859YangXiao
+- 2000545 | Thomas Lee       | thomaslwk
+- 2001632 | Tan Yu Hui       | TanYuHui
