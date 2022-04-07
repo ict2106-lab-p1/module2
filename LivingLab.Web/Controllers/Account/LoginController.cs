@@ -36,41 +36,47 @@ public class LoginController : Controller
         _notificationManagementService = notificationManagementService;
     }
 
+    /// <summary>
+    /// Redirect the user to login page
+    /// </summary>
+    /// <returns>Login Page</returns>
     [AllowAnonymous]
     [HttpGet]
-    /* Reroute the user to login page */
     public IActionResult Index()
     {
         return View();
     }
 
-    /*Login if user details is true*/
+    /// <summary>
+    /// Check if user credentials entered is correct
+    /// 2. Go to OTP session if true
+    /// </summary>
+    /// <param name="loginDetails">Username and Password</param>
+    /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> Index(LoginViewModel? userDetails)
+    public async Task<IActionResult> Index(LoginViewModel? loginDetails)
     {
         if (ModelState.IsValid)
         {
             try
             {
-
-                if (userDetails == null)
+                if (loginDetails == null)
                 {
                     return View(nameof(Index), new LoginViewModel());
                 }
-                
-                var result = await _signInManager.PasswordSignInAsync(userDetails?.Email, userDetails?.Password,
-                    userDetails!.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(loginDetails?.Email, loginDetails?.Password,
+                    loginDetails!.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(userDetails.Email);
+                    var user = await _userManager.FindByEmailAsync(loginDetails.Email);
 
                     _logger.LogInformation(user.ToString());
-                    
+
                     if (user.AuthenticationType != null && user.AuthenticationType.Contains("SMS"))
                     {
                         _logger.LogInformation("Verify Code");
                         await _accountService.GenerateCodeSMS(user);
-                        
+
                         return RedirectToAction("verifycodesms", "Login");
                     }
                     else if (user.AuthenticationType != null && user.AuthenticationType.Contains("Email"))
@@ -87,7 +93,7 @@ public class LoginController : Controller
                 else
                 {
                     _logger.LogInformation("Fail to login");
-                    ModelState.AddModelError(nameof(userDetails.Password), "Password entered wrongly");
+                    ModelState.AddModelError(nameof(loginDetails.Password), "Password entered wrongly");
                     return View("Index", new LoginViewModel());
                 }
             }
@@ -100,7 +106,11 @@ public class LoginController : Controller
 
         return View(nameof(Index));
     }
-    
+
+    /// <summary>
+    /// Reroutes user to verify OTP via email
+    /// </summary>
+    /// <returns>VerifyCodeEmail</returns>    
     [Authorize]
     /*User routes to verify code*/
     public IActionResult VerifyCodeEmail()
@@ -108,27 +118,34 @@ public class LoginController : Controller
         return View("VerifyCodeEmail");
     }
 
+    /// <summary>
+    /// User has to go to their email to verify 6 digit code
+    /// Check if user entered the correct OTP on email page
+    /// </summary>
+    /// <param name="validationCode">OTP code</param>
+    /// <returns>Redirect to Dashboard Page</returns>
     [HttpPost]
-    /* User has to go to their email to verify 6 digit code */
-    public async Task<ActionResult> VerifyCodeEmail(VerifyViewModel inputDetails)
+    public async Task<ActionResult> VerifyCodeEmail(VerifyViewModel validationCode)
     {
         // Get the User after the user has logged in
         ApplicationUser user = await _userManager.GetUserAsync(User);
-        var result = await _accountService.VerifyCode(user.Id, inputDetails);
+        var result = await _accountService.VerifyCode(user.Id, validationCode.OTP);
         if (result)
         {
             return RedirectToAction("Dashboard", "Home");
         }
         else
         {
-            _logger.LogInformation("HENRY FAIL");
-            ModelState.AddModelError(nameof(inputDetails.OTP), "OTP has expired, please re-email new OTP");
-            return View(inputDetails);
+            ModelState.AddModelError(nameof(validationCode.OTP), "OTP has expired, please re-email new OTP");
+            return View(validationCode);
         }
     }
-    
+
+    /// <summary>
+    /// Generate new OTP for user via email
+    /// </summary>
+    /// <returns>Generates a new sms OTP</returns>
     [Authorize]
-    /*User routes to verify code*/
     public async Task<RedirectToActionResult> NewCodeEmail()
     {
         ApplicationUser user = await _userManager.GetUserAsync(User);
@@ -141,36 +158,47 @@ public class LoginController : Controller
             return RedirectToAction(nameof(VerifyCodeEmail));
         }
     }
-    
+
+    /// <summary>
+    /// 1. Route user to reset password Page
+    /// 2. Check if token or email exist
+    /// </summary>
+    /// <param name="token">EF core token</param>
+    /// <param name="email">Valid email</param>
+    /// <returns></returns>
     [Authorize]
-    /* User can login with their SMS*/
-    [Route("verifycodesms")]
     public IActionResult VerifyCodeSMS()
     {
         return View("VerifyCodeSMS");
     }
 
+    /// <summary>
+    /// 1. Check if user has fill the viewModel
+    /// 2. Reset the password for the user
+    /// </summary>
+    /// <param name="model">Reset password and confirmed password</param>
+    /// <returns>Goes to Confirmation Page if password resetted</returns>
     [HttpPost]
-    [Route("verifycodesms")]
-    /*Logs in with the OTP generated by the SMS*/
-    public async Task<ActionResult> VerifyCodeSMS(VerifyViewModel inputDetails)
+    public async Task<ActionResult> VerifyCodeSMS(VerifyViewModel validationCode)
     {
         ApplicationUser user = await _userManager.GetUserAsync(User);
-        var result = await _accountService.VerifyCode(user.Id, inputDetails);
+        var result = await _accountService.VerifyCode(user.Id, validationCode.OTP);
         if (result)
         {
             return RedirectToAction("Dashboard", "Home");
         }
         else
         {
-            ModelState.AddModelError(nameof(inputDetails.OTP), "OTP has expired, please generate new OTP");
-            return View(inputDetails);
+            ModelState.AddModelError(nameof(validationCode.OTP), "OTP has expired, please generate new OTP");
+            return View(validationCode);
         }
     }
 
+    /// <summary>
+    /// 1. Goes to Password Recovery Page
+    /// </summary>
+    /// <returns>return forgot password</returns>
     [Authorize]
-    [Route("newcodesms")]
-    /*Generates a new sms OTP*/
     public async Task<RedirectToActionResult> NewCodeSMS()
     {
         ApplicationUser user = await _userManager.GetUserAsync(User);
@@ -228,9 +256,9 @@ public class LoginController : Controller
 
     [HttpGet]
     /*Goes to the password recovery page*/
-    public async Task<ViewResult> ForgotPassword()
+    public Task<ViewResult> ForgotPassword()
     {
-        return View("_ForgotPassword");
+        return Task.FromResult(View("_ForgotPassword"));
     }
 
     [HttpPost]
@@ -244,13 +272,13 @@ public class LoginController : Controller
             if (user != null && await _userManager.IsEmailConfirmedAsync(user))
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var passwordResetLink = Url.Action("ResetPassword", "Login", new {email = model.Email, token = token},
+                var passwordResetLink = Url.Action("ResetPassword", "Login", new { email = model.Email, token = token },
                     Request.Scheme);
                 _logger.Log(LogLevel.Warning, passwordResetLink);
 
-                await _notificationManagementService.SendTextToEmail(model.Email, 
-                    "Reset Password", 
-                    "Please reset your password by clicking this link: <a href=\"" 
+                await _notificationManagementService.SendTextToEmail(model.Email,
+                    "Reset Password",
+                    "Please reset your password by clicking this link: <a href=\""
                     + passwordResetLink + "\">link</a>");
 
                 return View("_ForgotPasswordConfirmation");
@@ -259,19 +287,19 @@ public class LoginController : Controller
             return View("_ForgotPasswordConfirmation");
         }
 
-        return View("_ForgotPassword",model);
+        return View("_ForgotPassword", model);
     }
-    
+
     [AllowAnonymous]
     /*Contact admin page if user lost their email / phone number*/
-    public async Task<ViewResult> ContactAdmin()
+    public Task<ViewResult> ContactAdmin()
     {
-        return View("_ContactAdmin");
+        return Task.FromResult(View("_ContactAdmin"));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

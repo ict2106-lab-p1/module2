@@ -1,32 +1,35 @@
 /* <remarks>*/
 /* Author: Team P1-3*/
 /* </remarks>*/
-$(document).ready(function() {
+
+/*
+* Scripts for View Accessory DataTable by Accessory Type, Add Accessory Modal
+*/
+
+$(document).ready(function () {
 
     //Add Overlay
-    const overlay = document.querySelector("#overlay");
     const viewMoreBtns = document.querySelectorAll('#viewMoreBtn')
-    const toggleModal = () => {
-        console.log('click')
-        overlay.classList.toggle('hidden')
-        overlay.classList.toggle('flex')
-    }
 
-    $(document).on("click", "#close-modal", function() {
-        toggleModal();
+    const addOverlay = document.querySelector("#addOverlay");
+    const toggleAddModal = () => {
+        addOverlay.classList.toggle("hidden");
+        addOverlay.classList.toggle("flex");
+    };
+
+    $("#addAccessoryModalBtn").click(function () {
+        fillAddModal(this);
+        toggleAddModal();
     });
-    $(document).on("click", "#addAccessoryBtn", function() {
-        console.log("click add modal")
-        clickAdd(this);
-        toggleModal();
-    });
-    $(document).on("click", "#cancelBtn", function() {
-        toggleModal();
+    $(".closeAddModal").click(function () {
+        toggleAddModal();
     });
 
-    $("#accessoryType").change(function() {
-        console.log("click");
-        var selectedValue = jQuery(this).val();
+    /***
+     * Display new type input when user choose others
+     */
+    $("#addAccessoryType").change(function () {
+        const selectedValue = jQuery(this).val();
         if (selectedValue === "Others") {
             $("#forNewType").removeClass("hidden");
         } else {
@@ -44,12 +47,16 @@ $(document).ready(function() {
     }
     viewMoreBtns.forEach(btn => btn.addEventListener('click', viewwMoreEventHandler))
 
+    // Misc Alerts
+    $("#addForm").submit(function () {
+        alert("Accessory added successfully and is pending approval!");
+    });
 });
 
-function clickAdd(e) {
-    $.get("/Accessory/AddAccessoryDetails", function(data) {
+function fillAddModal(e) {
+    $.get("/Accessory/AddAccessoryDetails", function (data) {
         document.getElementById("accessoryId").value = data.accessory.id + 1;
-        var accessoryTypeDDL = document.getElementById("accessoryType");
+        var accessoryTypeDDL = document.getElementById("addAccessoryType");
         if (accessoryTypeDDL.length === 0) {
             for (var i = 0; i < data.accessoryTypes.length; i++) {
                 var element = document.createElement("option");

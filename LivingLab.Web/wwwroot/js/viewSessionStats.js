@@ -2,8 +2,11 @@
 /* Author: Team P1-3*/
 /* </remarks>*/
 
-$(document).ready(function() {
-    //$('#table_id').DataTable();
+/*
+* Scripts for View Session Statistics DataTable
+*/
+
+$(document).ready(function () {
     var table = $('#table_id').DataTable({
         "dom": "<'ui stackable grid'" +
             "<'row'" +
@@ -24,12 +27,4 @@ $(document).ready(function() {
         }],
         "bInfo": false
     });
-
-<<<<<<< HEAD
 });
-=======
-    
-
-});
-  
->>>>>>> 5b141044963b93d42f188e3562dc8090c95eea28
