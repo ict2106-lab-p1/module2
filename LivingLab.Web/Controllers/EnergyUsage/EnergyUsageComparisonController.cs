@@ -17,10 +17,10 @@ namespace LivingLab.Web.Controllers.EnergyUsage;
 public class EnergyUsageComparisonController : Controller
 {
     private readonly ILogger<EnergyUsageComparisonController> _logger;
-    private readonly IEnergyUsageComparisonUIService _comparisonService;
+    private readonly IEnergyUsageComparisonService _comparisonService;
 
     public EnergyUsageComparisonController(ILogger<EnergyUsageComparisonController> logger,
-        IEnergyUsageComparisonUIService comparisonService)
+        IEnergyUsageComparisonService comparisonService)
     {
         _logger = logger;
         _comparisonService = comparisonService;

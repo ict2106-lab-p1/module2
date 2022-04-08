@@ -99,7 +99,8 @@ public class HomeController : Controller
         foreach (var lab in listOfLabs)
         {
             renderList += "<li><a href=\"/ViewLab/" + lab.LabLocation +
-                          "\" class=\"hover:translate-x-2 transition-transform ease-in duration-300 w-full flex items-center h-10 pl-4 cursor-pointer\"><span>" +
+                          "\" class=\"hover:translate-x-2 transition-transform ease-in " +
+                          "duration-300 w-full flex items-center h-10 pl-4 cursor-pointer\"><span>" +
                           lab.LabLocation + "</span></a></li>\n";
         }
         //query database, and get the data.

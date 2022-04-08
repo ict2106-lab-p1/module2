@@ -10,7 +10,7 @@ public interface IEnergyUsageAnalysisDomainService
     public byte[] ExportDeviceEU(List<DeviceEnergyUsageDTO> DeviceEUList);
     public List<DeviceEnergyUsageDTO> GetDeviceEnergyUsageByDate(DateTime start, DateTime end);
     public List<LabEnergyUsageDTO> GetLabEnergyUsageByDate(DateTime start, DateTime end);
-    public Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(EnergyUsageFilterDTO filter);
-    public Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter);
+    public Task<LabEnergyUsageAnalysisGraphDTO> GetEnergyUsageTrendSelectedLab(EnergyUsageFilterDTO filter);
+    public Task<LabEnergyUsageAnalysisGraphDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter);
     public Task<Entities.Lab> GetLabEnergyBenchmark(int labId);
 }

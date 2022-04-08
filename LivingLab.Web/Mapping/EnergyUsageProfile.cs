@@ -23,8 +23,8 @@ public class EnergyUsageProfile : Profile
         CreateMap<LabDetailsDTO, EnergyBenchmarkViewModel>().ReverseMap();
         CreateMap<EnergyUsageLog, EnergyUsageLogViewModel>().ReverseMap();
         CreateMap<EnergyUsageDTO, EnergyUsageViewModel>().ReverseMap();
-        CreateMap<MonthlyEnergyUsageDTO, EnergyUsageTrendAllLabViewModel>().ReverseMap();
-        CreateMap<IndividualLabMonthlyEnergyUsageDTO, EnergyUsageTrendSelectedLabViewModel>().ReverseMap();
+        CreateMap<LabEnergyUsageAnalysisGraphDTO, EnergyUsageTrendAllLabViewModel>().ReverseMap();
+        CreateMap<LabEnergyUsageAnalysisGraphDTO, EnergyUsageTrendSelectedLabViewModel>().ReverseMap();
 
         CreateMap<EnergyUsageLog, EnergyUsageLogDTO>().ReverseMap()
             .ForMember(dest => dest.Lab,

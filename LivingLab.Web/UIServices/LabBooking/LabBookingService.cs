@@ -54,8 +54,9 @@ public class LabBookingService : ILabBookingService
         var listOfLabs = await _labProfileDomainService.ViewLabs();
         //Store the lab data list in the variable listofbook .
         List<BookingDashboardViewModel> listOfLab = new List<BookingDashboardViewModel>();
+        var iterator = listOfLabs.CreateIterator();
         //Create list of BookingDashboardViewModel object to store the data
-        foreach (Lab lab in listOfLabs)
+        for (var lab = iterator.First(); iterator.HasNext(); lab = iterator.Next())
         {
             listOfLab.Add(new BookingDashboardViewModel()
             {
@@ -71,14 +72,14 @@ public class LabBookingService : ILabBookingService
     }
     /*Function to insert a new booking in database*/
 
-    public async Task<Booking?> CreateBook(BookFormModel Book, string userid)
+    public async Task<Booking?> CreateBook(BookingTableViewModel Book, string userid)
     {
         var bookWrapper = new Booking
         {
-            StartDateTime = Book.StartTime,
-            EndDateTime = Book.EndTime,
+            StartDateTime = DateTime.Parse(Book.StartTime),
+            EndDateTime = DateTime.Parse(Book.EndTime),
             Description = Book.Description,
-            LabId = Book.LabId,
+            LabId = (int)Book.LabNo,
             UserId = userid
 
             //create new Booking object which is same as the schema in database to store data of user input 

@@ -9,10 +9,7 @@
     var listofusers = await UserManager.GetUsersInRoleAsync("labtech");
 }
 @inject UserManager<ApplicationUser> UserManager
-<div class="">
-    <div class="  ">
-        <div class="">
-            <p class="font-medium text-xl ml-12 mt-4">Overview</p>
+<p class="font-medium text-xl ml-12 mt-4">Overview</p>
             <p class="font-semibold text-3xl ml-12 mb-4">Lab Profile</p>
             <div class="bg-white m-12 p-4 rounded-lg">
                 <div class="flex mt-6">
@@ -35,7 +32,6 @@
                                             			c29.765,0,53.895-24.13,53.895-53.895C458.105,346.487,367.619,256,256,256z"/>
 
                         </svg>
-                        <p class="font-semibold text-base mb-4">@Html.Raw(Model.eachlab.LabInCharge)</p>
                         <p class="font-semibold text-base mb-4">
                             @foreach (var user in @listofusers)
                             {
@@ -116,6 +112,3 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
