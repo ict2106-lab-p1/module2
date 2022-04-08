@@ -44,9 +44,9 @@ public static class ConfigureEnergyMonitoringServices
         services.AddTransient<IManualLogDomainService, ManualLogDomainService>();
         services.AddTransient<INotificationDomainService, NotificationDomainService>();
         services.AddTransient<IEnergyLogDomainService, EnergyLogDomainService>();
-        services.AddTransient<IEnergyUsageAnalysisDomainService, EnergyUsageAnalysisDomainDomainService>();
+        services.AddTransient<IEnergyUsageAnalysisDomainService, EnergyUsageAnalysisDomainService>();
         services.AddTransient<IEnergyUsageBuilder, DeviceEnergyUsageBuilder>();
-        services.AddTransient<IEnergyUsageComparisonService, EnergyUsageComparisonService>();
+        services.AddTransient<IEnergyUsageComparisonDomainService, EnergyUsageComparisonDomainService>();
         services.AddTransient<IEnergyUsageDomainService, EnergyUsageDomainService>();
 
         return services;

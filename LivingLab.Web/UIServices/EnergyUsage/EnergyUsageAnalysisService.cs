@@ -11,13 +11,13 @@ namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
+public class EnergyUsageAnalysisService : IEnergyUsageAnalysisService
 {
     private readonly IMapper _mapper;
     private readonly IEnergyUsageAnalysisDomainService _analysisDomain;
     private readonly ILabProfileService _labProfileService;
 
-    public EnergyUsageAnalysisUIService(IMapper mapper, IEnergyUsageAnalysisDomainService analysisDomain,
+    public EnergyUsageAnalysisService(IMapper mapper, IEnergyUsageAnalysisDomainService analysisDomain,
         ILabProfileService labProfileService)
     {
         _mapper = mapper;
@@ -70,7 +70,7 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
     {
         var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
         var logs = await _analysisDomain.GetEnergyUsageTrendSelectedLab(energyUsageFilter);
-        return _mapper.Map<IndividualLabMonthlyEnergyUsageDTO, EnergyUsageTrendSelectedLabViewModel>(logs);
+        return _mapper.Map<LabEnergyUsageAnalysisGraphDTO, EnergyUsageTrendSelectedLabViewModel>(logs);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public class EnergyUsageAnalysisUIService : IEnergyUsageAnalysisUIService
     {
         var energyUsageFilter = _mapper.Map<EnergyUsageFilterViewModel, EnergyUsageFilterDTO>(filter);
         var logs = await _analysisDomain.GetEnergyUsageTrendAllLab(energyUsageFilter);
-        return _mapper.Map<MonthlyEnergyUsageDTO, EnergyUsageTrendAllLabViewModel>(logs);
+        return _mapper.Map<LabEnergyUsageAnalysisGraphDTO, EnergyUsageTrendAllLabViewModel>(logs);
     }
 
     /// <summary>

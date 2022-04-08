@@ -10,7 +10,7 @@ namespace LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageComparison;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public class EnergyUsageComparisonService : IEnergyUsageComparisonService
+public class EnergyUsageComparisonDomainService : IEnergyUsageComparisonDomainService
 {
     private readonly IEnergyUsageRepository _repository;
 
@@ -18,11 +18,11 @@ public class EnergyUsageComparisonService : IEnergyUsageComparisonService
 
     private readonly ILabProfileRepository _abRepository;
 
-    private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
+    private readonly IEnergyUsageCalculationDomainService _calculator = new EnergyUsageCalculationDomainService();
 
     private double cost = 0.2544;
 
-    public EnergyUsageComparisonService(IEnergyUsageRepository repository, IDeviceRepository deviceRepository, ILabProfileRepository labRepository)
+    public EnergyUsageComparisonDomainService(IEnergyUsageRepository repository, IDeviceRepository deviceRepository, ILabProfileRepository labRepository)
     {
         _repository = repository;
         _deviceRepository = deviceRepository;

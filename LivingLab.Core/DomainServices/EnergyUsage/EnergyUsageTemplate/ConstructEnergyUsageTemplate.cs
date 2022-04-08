@@ -8,7 +8,7 @@ namespace LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageTemplate;
 /// </remarks>
 public abstract class ConstructEnergyUsageTemplates<T>
 {
-    private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
+    private readonly IEnergyUsageCalculationDomainService _calculator = new EnergyUsageCalculationDomainService();
     public abstract List<T> GetIdentifier(List<EnergyUsageLog> logs);
 
     /// <summary>

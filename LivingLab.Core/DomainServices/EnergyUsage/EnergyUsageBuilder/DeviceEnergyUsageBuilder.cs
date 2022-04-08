@@ -10,7 +10,7 @@ namespace LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageBuilder;
 public class DeviceEnergyUsageBuilder : IEnergyUsageBuilder
 {
     private readonly IEnumerable<EnergyUsageLog> _logs;
-    private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
+    private readonly IEnergyUsageCalculationDomainService _calculator = new EnergyUsageCalculationDomainService();
     private List<string> _unqiueList = new List<string>();
     private List<int> _eUList = new List<int>();
     private List<string> _deviceType = new List<string>();

@@ -4,7 +4,7 @@ namespace LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageComparison;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public interface IEnergyUsageComparisonService
+public interface IEnergyUsageComparisonDomainService
 {
     public List<EnergyComparisonGraphDTO> GetEnergyUsageByLabNameGraph(string labName, DateTime start, DateTime end);
     public List<EnergyComparisonDeviceTableDTO> GetEnergyUsageByDeviceType(string deviceType, DateTime start, DateTime end);

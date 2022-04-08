@@ -5,12 +5,11 @@ namespace LivingLab.Web.UIServices.EnergyUsage;
 /// <remarks>
 /// Author: Team P1-2
 /// </remarks>
-public class EnergyUsageComparisonUIService : IEnergyUsageComparisonUIService
+public class EnergyUsageComparisonService : IEnergyUsageComparisonService
 {
+    private readonly IEnergyUsageComparisonDomainService _comparison;
 
-    private readonly IEnergyUsageComparisonService _comparison;
-
-    public EnergyUsageComparisonUIService(IEnergyUsageComparisonService comparison)
+    public EnergyUsageComparisonService(IEnergyUsageComparisonDomainService comparison)
     {
         _comparison = comparison;
     }

@@ -1,7 +1,6 @@
 using System.Text;
 
 using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageBuilder;
-using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageCalculation;
 using LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageTemplate;
 using LivingLab.Core.DomainServices.Equipment.Device;
 using LivingLab.Core.Entities;
@@ -16,17 +15,15 @@ namespace LivingLab.Core.DomainServices.EnergyUsage.EnergyUsageAnalysis;
 /// <remarks>
 ///     Author: Team P1-2
 /// </remarks>
-public class EnergyUsageAnalysisDomainDomainService : IEnergyUsageAnalysisDomainService
+public class EnergyUsageAnalysisDomainService : IEnergyUsageAnalysisDomainService
 {
     private readonly IEnergyUsageRepository _repository;
     private readonly ILabProfileRepository _labRepository;
     private const int OneThousand = 1000;
-
-    private readonly IEnergyUsageCalculationService _calculator = new EnergyUsageCalculationService();
-
+    
     private double cost = 0.2544;
 
-    public EnergyUsageAnalysisDomainDomainService(IEnergyUsageRepository repository, ILabProfileRepository labRepository)
+    public EnergyUsageAnalysisDomainService(IEnergyUsageRepository repository, ILabProfileRepository labRepository)
     {
         _repository = repository;
         _labRepository = labRepository;
@@ -92,11 +89,11 @@ public class EnergyUsageAnalysisDomainDomainService : IEnergyUsageAnalysisDomain
     /// <summary>
     ///     1. get the lab energy usage according to start and end date
     ///     2. get lab repository by lab Id
-    ///     3. init MonthlyEnergyUsageDTO
+    ///     3. init LabEnergyUsageAnalysisGraphDTO
     /// </summary>
     /// <param name="filter">filter start and end date</param>
-    /// <returns>MonthlyEnergyUsageDTO</returns>
-    public async Task<MonthlyEnergyUsageDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter)
+    /// <returns>LabEnergyUsageAnalysisGraphDTO</returns>
+    public async Task<LabEnergyUsageAnalysisGraphDTO> GetEnergyUsageTrendAllLab(EnergyUsageFilterDTO filter)
     {
         // Grouping done here because SQLite doesn't support it
         var logs = _repository
@@ -113,7 +110,7 @@ public class EnergyUsageAnalysisDomainDomainService : IEnergyUsageAnalysisDomain
             .OrderBy(log => log.LoggedDate).ToList();
 
         var lab = await _labRepository.GetByIdAsync(filter.LabId);
-        var dto = new MonthlyEnergyUsageDTO { Logs = logs, Lab = lab };
+        var dto = new LabEnergyUsageAnalysisGraphDTO { Logs = logs, Lab = lab };
         return dto;
     }
 
@@ -130,11 +127,11 @@ public class EnergyUsageAnalysisDomainDomainService : IEnergyUsageAnalysisDomain
     /// <summary>
     ///     1. get the selected lab energy usage according to lab location, start and end date
     ///     2. get lab repository by lab location
-    ///     3. init MonthlyEnergyUsageDTO
+    ///     3. init LabEnergyUsageAnalysisGraphDTO
     /// </summary>
     /// <param name="filter">filter start and end date</param>
-    /// <returns>IndividualLabMonthlyEnergyUsageDTO</returns>
-    public async Task<IndividualLabMonthlyEnergyUsageDTO> GetEnergyUsageTrendSelectedLab(
+    /// <returns>LabEnergyUsageAnalysisGraphDTO</returns>
+    public async Task<LabEnergyUsageAnalysisGraphDTO> GetEnergyUsageTrendSelectedLab(
         [FromBody] EnergyUsageFilterDTO filter)
     {
         // Grouping done here because SQLite doesn't support it
@@ -151,7 +148,7 @@ public class EnergyUsageAnalysisDomainDomainService : IEnergyUsageAnalysisDomain
             .OrderBy(log => log.LoggedDate).ToList();
 
         var lab = await _labRepository.GetByIdAsync(filter.LabId);
-        var dto = new IndividualLabMonthlyEnergyUsageDTO { Logs = logs, Lab = lab };
+        var dto = new LabEnergyUsageAnalysisGraphDTO { Logs = logs, Lab = lab };
         return dto;
     }
 }
